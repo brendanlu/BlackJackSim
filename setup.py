@@ -2,5 +2,5 @@ from setuptools import setup
 from Cython.Build import cythonize
 
 setup(
-    ext_modules = cythonize("CardStream.pyx")
+    ext_modules = cythonize("CardStream/CardStream.pyx")
 )
