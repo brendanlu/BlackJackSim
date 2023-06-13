@@ -4,12 +4,12 @@
 {
     "distutils": {
         "language": "c++",
-        "name": "CardStream",
+        "name": "cardstream",
         "sources": [
-            "CardStream/CardStream.pyx"
+            "cardstream/cardstream.pyx"
         ]
     },
-    "module_name": "CardStream"
+    "module_name": "cardstream"
 }
 END: Cython Metadata */
 
@@ -765,8 +765,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__CardStream
-#define __PYX_HAVE_API__CardStream
+#define __PYX_HAVE__cardstream
+#define __PYX_HAVE_API__cardstream
 /* Early includes */
 #include "../src/SimEngine.cpp"
 #include "../src/SimEngine.hpp"
@@ -979,40 +979,10 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "CardStream\\CardStream.pyx",
+  "cardstream\\cardstream.pyx",
 };
-/* None.proto */
-#if defined(__GNUC__)
-#define __Pyx_PACKED __attribute__((__packed__))
-#else
-#define __Pyx_PACKED
-#endif
-
 
 /*--- Type declarations ---*/
-struct __pyx_t_10CardStream_card_dtype_struct;
-
-/* "CardStream.pyx":8
- * # Create a packed struct in C representing one card in the shoe
- * # https://cython.readthedocs.io/en/latest/src/userguide/memoryviews.html
- * cdef packed struct card_dtype_struct:             # <<<<<<<<<<<<<<
- *     char face
- *     char suit
- */
-#if defined(__SUNPRO_C)
-  #pragma pack(1)
-#elif !defined(__GNUC__)
-  #pragma pack(push, 1)
-#endif
-struct __Pyx_PACKED __pyx_t_10CardStream_card_dtype_struct {
-  char face;
-  char suit;
-};
-#if defined(__SUNPRO_C)
-  #pragma pack()
-#elif !defined(__GNUC__)
-  #pragma pack(pop)
-#endif
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1215,12 +1185,12 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'SimEngine' */
 
-/* Module declarations from 'CardStream' */
-#define __Pyx_MODULE_NAME "CardStream"
-extern int __pyx_module_is_main_CardStream;
-int __pyx_module_is_main_CardStream = 0;
+/* Module declarations from 'cardstream' */
+#define __Pyx_MODULE_NAME "cardstream"
+extern int __pyx_module_is_main_cardstream;
+int __pyx_module_is_main_cardstream = 0;
 
-/* Implementation of 'CardStream' */
+/* Implementation of 'cardstream' */
 static const char __pyx_k_a[] = "a";
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_main[] = "__main__";
@@ -1229,12 +1199,12 @@ static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_some_func[] = "some_func";
-static const char __pyx_k_CardStream[] = "CardStream";
+static const char __pyx_k_cardstream[] = "cardstream";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_CardStream_CardStream_pyx[] = "CardStream\\CardStream.pyx";
-static PyObject *__pyx_n_s_CardStream;
-static PyObject *__pyx_kp_s_CardStream_CardStream_pyx;
+static const char __pyx_k_cardstream_cardstream_pyx[] = "cardstream\\cardstream.pyx";
 static PyObject *__pyx_n_s_a;
+static PyObject *__pyx_n_s_cardstream;
+static PyObject *__pyx_kp_s_cardstream_cardstream_pyx;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
@@ -1243,13 +1213,13 @@ static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_n_s_some_func;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_pf_10CardStream_some_func(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_a); /* proto */
+static PyObject *__pyx_pf_10cardstream_some_func(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_a); /* proto */
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_codeobj__2;
 /* Late includes */
 
-/* "CardStream.pyx":12
- *     char suit
+/* "cardstream.pyx":6
+ * cimport SimEngine
  * 
  * def some_func(int a):             # <<<<<<<<<<<<<<
  *     return SimEngine.bounce_back(a)
@@ -1257,9 +1227,9 @@ static PyObject *__pyx_codeobj__2;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10CardStream_1some_func(PyObject *__pyx_self, PyObject *__pyx_arg_a); /*proto*/
-static PyMethodDef __pyx_mdef_10CardStream_1some_func = {"some_func", (PyCFunction)__pyx_pw_10CardStream_1some_func, METH_O, 0};
-static PyObject *__pyx_pw_10CardStream_1some_func(PyObject *__pyx_self, PyObject *__pyx_arg_a) {
+static PyObject *__pyx_pw_10cardstream_1some_func(PyObject *__pyx_self, PyObject *__pyx_arg_a); /*proto*/
+static PyMethodDef __pyx_mdef_10cardstream_1some_func = {"some_func", (PyCFunction)__pyx_pw_10cardstream_1some_func, METH_O, 0};
+static PyObject *__pyx_pw_10cardstream_1some_func(PyObject *__pyx_self, PyObject *__pyx_arg_a) {
   int __pyx_v_a;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -1268,22 +1238,22 @@ static PyObject *__pyx_pw_10CardStream_1some_func(PyObject *__pyx_self, PyObject
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("some_func (wrapper)", 0);
   assert(__pyx_arg_a); {
-    __pyx_v_a = __Pyx_PyInt_As_int(__pyx_arg_a); if (unlikely((__pyx_v_a == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_a = __Pyx_PyInt_As_int(__pyx_arg_a); if (unlikely((__pyx_v_a == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 6, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
-  __Pyx_AddTraceback("CardStream.some_func", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cardstream.some_func", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10CardStream_some_func(__pyx_self, ((int)__pyx_v_a));
+  __pyx_r = __pyx_pf_10cardstream_some_func(__pyx_self, ((int)__pyx_v_a));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10CardStream_some_func(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_a) {
+static PyObject *__pyx_pf_10cardstream_some_func(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_a) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1292,21 +1262,21 @@ static PyObject *__pyx_pf_10CardStream_some_func(CYTHON_UNUSED PyObject *__pyx_s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("some_func", 0);
 
-  /* "CardStream.pyx":13
+  /* "cardstream.pyx":7
  * 
  * def some_func(int a):
  *     return SimEngine.bounce_back(a)             # <<<<<<<<<<<<<<
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(bounce_back(__pyx_v_a)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(bounce_back(__pyx_v_a)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "CardStream.pyx":12
- *     char suit
+  /* "cardstream.pyx":6
+ * cimport SimEngine
  * 
  * def some_func(int a):             # <<<<<<<<<<<<<<
  *     return SimEngine.bounce_back(a)
@@ -1316,7 +1286,7 @@ static PyObject *__pyx_pf_10CardStream_some_func(CYTHON_UNUSED PyObject *__pyx_s
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("CardStream.some_func", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cardstream.some_func", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1331,17 +1301,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_CardStream(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_cardstream(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_CardStream},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_cardstream},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "CardStream",
+    "cardstream",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -1370,9 +1340,9 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_n_s_CardStream, __pyx_k_CardStream, sizeof(__pyx_k_CardStream), 0, 0, 1, 1},
-  {&__pyx_kp_s_CardStream_CardStream_pyx, __pyx_k_CardStream_CardStream_pyx, sizeof(__pyx_k_CardStream_CardStream_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_a, __pyx_k_a, sizeof(__pyx_k_a), 0, 0, 1, 1},
+  {&__pyx_n_s_cardstream, __pyx_k_cardstream, sizeof(__pyx_k_cardstream), 0, 0, 1, 1},
+  {&__pyx_kp_s_cardstream_cardstream_pyx, __pyx_k_cardstream_cardstream_pyx, sizeof(__pyx_k_cardstream_cardstream_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
@@ -1391,17 +1361,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "CardStream.pyx":12
- *     char suit
+  /* "cardstream.pyx":6
+ * cimport SimEngine
  * 
  * def some_func(int a):             # <<<<<<<<<<<<<<
  *     return SimEngine.bounce_back(a)
  * 
  */
-  __pyx_tuple_ = PyTuple_Pack(2, __pyx_n_s_a, __pyx_n_s_a); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(2, __pyx_n_s_a, __pyx_n_s_a); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_CardStream_CardStream_pyx, __pyx_n_s_some_func, 12, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cardstream_cardstream_pyx, __pyx_n_s_some_func, 6, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -1499,11 +1469,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initCardStream(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initCardStream(void)
+__Pyx_PyMODINIT_FUNC initcardstream(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initcardstream(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_CardStream(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_CardStream(void)
+__Pyx_PyMODINIT_FUNC PyInit_cardstream(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_cardstream(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -1570,7 +1540,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_CardStream(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_cardstream(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -1582,7 +1552,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_CardStream(PyObject *__pyx_pyinit_
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'CardStream' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'cardstream' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -1597,7 +1567,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_CardStream(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_cardstream(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -1634,7 +1604,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("CardStream", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("cardstream", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -1652,14 +1622,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_CardStream) {
+  if (__pyx_module_is_main_cardstream) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "CardStream")) {
-      if (unlikely(PyDict_SetItemString(modules, "CardStream", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "cardstream")) {
+      if (unlikely(PyDict_SetItemString(modules, "cardstream", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -1680,7 +1650,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "CardStream.pyx":3
+  /* "cardstream.pyx":3
  * # distutils: language = c++
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -1692,19 +1662,19 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "CardStream.pyx":12
- *     char suit
+  /* "cardstream.pyx":6
+ * cimport SimEngine
  * 
  * def some_func(int a):             # <<<<<<<<<<<<<<
  *     return SimEngine.bounce_back(a)
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10CardStream_1some_func, NULL, __pyx_n_s_CardStream); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10cardstream_1some_func, NULL, __pyx_n_s_cardstream); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_some_func, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_some_func, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "CardStream.pyx":1
+  /* "cardstream.pyx":1
  * # distutils: language = c++             # <<<<<<<<<<<<<<
  * 
  * import numpy as np
@@ -1721,11 +1691,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init CardStream", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init cardstream", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init CardStream");
+    PyErr_SetString(PyExc_ImportError, "init cardstream");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

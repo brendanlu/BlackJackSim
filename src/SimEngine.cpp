@@ -2,17 +2,24 @@
 #include <algorithm>
 #include <random>
 #include <unordered_map>
-using std::unordered_map;
+#include <array>
 
 #include "SimEngine.hpp"
 
-const char CARDS[13] = {'2','3','4','5','6','7','8','9','T','J','Q','K','A'};
-const char SUITS[4] = {'D', 'S', 'C', 'H'};
+typedef struct card {char face; char suit;} card_t;
+
+const unsigned int DECK_SIZE = 52;
+const unsigned int N_CARD_FACES = 13;
+const unsigned int N_CARD_SUITS = 4;
+
+const std::array<char, N_CARD_FACES> FACES = {'2','3','4','5','6','7','8','9','T','J','Q','K','A'};
+const std::array<char, N_CARD_SUITS> SUITS = {'D', 'S', 'C', 'H'};
+const card_t DECK[DECK_SIZE]; 
 
 
 auto rng = std::default_random_engine {}; 
 
 
 
-
-int bounce_back(int a) {return a;}
+// testing function
+int bounce_back(int a) {return 21;}

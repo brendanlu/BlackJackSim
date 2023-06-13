@@ -1,6 +1,6 @@
 import numpy as np
 
-import CardStream
+import cardstream
 
 
-print(CardStream.some_func(5))
+print(cardstream.some_func(5))
