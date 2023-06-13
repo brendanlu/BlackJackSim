@@ -9,6 +9,6 @@ cdef packed struct card_dtype_struct:
     char face
     char suit
 
-def some_func(card_dtype_struct[:] shoe): 
+def some_func(int a): 
     return SimEngine.bounce_back(a)
 
