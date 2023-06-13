@@ -1,3 +1,5 @@
+# distutils: language = c++
+
 from SimEngine cimport bounce_back
 
 def some_func(int a): 
