@@ -7,7 +7,6 @@ build_files = [
     r"cardstream\cardstream.cpp",
 ]
 
-print('Removing old build files')
 for file in build_files: 
     os.remove(file)
 

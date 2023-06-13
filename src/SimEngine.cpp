@@ -22,4 +22,4 @@ auto rng = std::default_random_engine {};
 
 
 // testing function
-int bounce_back(int a) {return 25;}
+int bounce_back(int a) {return 69;}
