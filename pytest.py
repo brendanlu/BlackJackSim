@@ -10,4 +10,4 @@ else:
     os.system("python clean.py")
     os.system("python setup.py build_ext --inplace")
     print("\nTesting in python-------------------------------------")
-    os.system("python pytestcall.py")
+    os.system("python callfunc.py")

@@ -16,4 +16,3 @@ if "-d" not in sys.argv:
     if "testcpp.exe" in os.listdir():
         print("Found file; output-------------------------------------------")
         os.system("testcpp.exe")
-        print("\nEnd output ------------------------------------------------")
