@@ -3,7 +3,8 @@ import shutil
 
 # Cython build files
 build_files = [
-    r"cardstream.cp39-win_amd64.pyd", 
+    r"cardstream.cp39-win_amd64.pyd", # python 3.9
+    r"cardstream.cp310-win_amd64.pyd", # python 3.10
     r"cardstream\cardstream.cpp",
 ]
 
@@ -20,4 +21,3 @@ try:
 except FileNotFoundError:
     print("Build folder was not found.")
 
-    
