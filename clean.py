@@ -8,6 +8,12 @@ build_files = [
 ]
 
 for file in build_files: 
-    os.remove(file)
+    try:
+        os.remove(file)
+    except FileNotFoundError:
+        print(file, "was not found.")
 
-shutil.rmtree(r"build")
+try:
+    shutil.rmtree(r"build")
+except FileNotFoundError:
+    print("Build folder was not found.")
