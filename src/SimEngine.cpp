@@ -18,7 +18,6 @@ constexpr std::array<char, N_CARD_SUITS> SUITS = {'D', 'S', 'C', 'H'};
 
 card_t DECK[DECK_SIZE]; 
 
-
 auto rng = std::default_random_engine {}; 
 
 

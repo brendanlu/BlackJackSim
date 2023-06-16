@@ -10,7 +10,7 @@ if "testcpp.exe" in os.listdir():
 # can pass -d flag for just delete, and not this next bit
 if "-d" not in sys.argv:
     print("Compiling testcpp")
-    os.system("g++ -o testcpp cardstream/test.cpp")
+    os.system("g++ -o testcpp src/test.cpp")
     # let it compile - hopefully
     time.sleep(1)
     if "testcpp.exe" in os.listdir():
