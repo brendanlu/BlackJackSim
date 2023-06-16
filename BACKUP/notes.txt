@@ -1,0 +1,3 @@
+https://cython.readthedocs.io/en/latest/src/tutorial/strings.html
+    - python bytes and C chars (python reads as int)
+    - see type conversion/casting

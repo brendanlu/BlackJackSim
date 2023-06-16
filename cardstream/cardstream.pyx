@@ -4,5 +4,5 @@ import numpy as np
 cimport simengine
 
 def some_func(int a): 
-    return simengine.bounce_back(a)
+    return (<bytes> simengine.bounce_back(a))
 

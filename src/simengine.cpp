@@ -11,7 +11,5 @@ card_t DECK[DECK_SIZE];
 
 auto rng = std::default_random_engine {}; 
 
-
-
 // testing function
-int bounce_back(int a) {return FACES[0];}
+char bounce_back(int a) {return FACES[0];}
