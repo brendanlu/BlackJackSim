@@ -20,10 +20,7 @@ using std::cout;
 
 SimEngine::SimEngine(unsigned int deckIn) : NDECKS(deckIn) 
 {
-    cout<< sizeof(cardStream) << "\n";
-    cout<< NDECKS<<"in constructor \n"; 
-
-    // fill cardStream 
+    // fill cardStream for NDECKS
     unsigned int filledIdx = 0;
     for (const auto &f: FACE_VALS) {
     for (const auto &s: SUIT_VALS) {
@@ -33,12 +30,12 @@ SimEngine::SimEngine(unsigned int deckIn) : NDECKS(deckIn)
             filledIdx += 1;
         }
     }}
-
-    cout<<filledIdx<<"\n\n";
-
+    
+    // fill remaining stack array with BLANK_CARD
     for (; filledIdx<MAX_DECKS*DECK_SIZE; filledIdx++) {cardStream[filledIdx] = BLANK_CARD;}
-
-    for (auto thing: cardStream) {cout<< thing;}
-
-    cout<<"\n\n"<<filledIdx<<"\n\n";
+    // for (auto thing: cardStream) {cout<< thing;}
 }
+
+void SimEngine::shuffle() 
+{}
+

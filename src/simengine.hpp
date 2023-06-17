@@ -11,6 +11,12 @@ class SimEngine
 public:
     SimEngine(unsigned int deckIn);
 
+    void shuffle();
+
+
+
+
+
     unsigned int NDECKS; 
 
 private:
