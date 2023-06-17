@@ -7,3 +7,7 @@ https://web.stanford.edu/class/archive/cs/cs109/cs109.1204/psets/contest/RileyNo
     - card shuffling algorithms
     - we will go to some trouble of preserving the full card information; 
         this means some weird house rules such as flushes and perfect pairs can be modelled later
+
+
+CMAKE:
+    gnu make docs
