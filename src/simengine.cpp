@@ -4,11 +4,13 @@
 #include <array>
 
 #include "simengine.hpp"
-#include "deck.hpp"
+#include "types.hpp"
 
-card_t DECK[DECK_SIZE]; 
 
-auto rng = std::default_random_engine {}; 
+// auto rng = std::default_random_engine {}; 
 
 // testing function
-char bounce_back(int a) {return FACES[0];}
+// char bounce_back(int a) {return 6969;}
+
+
+SimEngine::SimEngine() {;}
