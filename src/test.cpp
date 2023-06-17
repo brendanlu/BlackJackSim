@@ -7,6 +7,10 @@ using std::cout;
 int main() {
     cout << "Something OLD";
 
+    SimEngine SimEngineInstance(6969);
+
+    cout<< SimEngineInstance.test;
+
 
 
 

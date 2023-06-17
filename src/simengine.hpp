@@ -9,7 +9,9 @@
 class SimEngine
 {
 public:
-    SimEngine();
+    SimEngine(unsigned int testin);
+    
+    unsigned int test; 
 
 private:
     static const unsigned int DECK_SIZE = 52;

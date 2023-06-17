@@ -13,4 +13,4 @@
 // char bounce_back(int a) {return 6969;}
 
 
-SimEngine::SimEngine() {;}
+SimEngine::SimEngine(unsigned int testin) : test(testin) {}
