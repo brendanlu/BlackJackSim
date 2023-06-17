@@ -2,7 +2,7 @@
 #define DECK_H
 #include <array>
 
-typedef struct card {char face; char suit;} card_t;
+typedef struct card {char face; char suit;} Card;
 
 constexpr unsigned int DECK_SIZE = 52;
 constexpr unsigned int N_CARD_FACE_VALS = 13;

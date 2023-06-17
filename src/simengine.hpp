@@ -2,6 +2,7 @@
 #define SIMENGINE_H 
 
 #include <array>
+#include <random>
 #include "types.hpp"
 
 // char bounce_back(int a);
@@ -16,7 +17,7 @@ public:
 
 
 
-
+    auto rng = std::default_random_engine {};
     unsigned int NDECKS; 
 
 private:
@@ -28,7 +29,7 @@ private:
     static constexpr std::array<char, N_CARD_FACE_VALS> FACE_VALS = {'2','3','4','5','6','7','8','9','T','J','Q','K','A'};
     static constexpr std::array<char, N_CARD_SUIT_VALS> SUIT_VALS = {'D', 'S', 'C', 'H'};
 
-    std::array<card_t, MAX_DECKS*DECK_SIZE> cardStream;
+    std::array<Card, MAX_DECKS*DECK_SIZE> cardStream;
 };
 
 

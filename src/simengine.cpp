@@ -37,5 +37,7 @@ SimEngine::SimEngine(unsigned int deckIn) : NDECKS(deckIn)
 }
 
 void SimEngine::shuffle() 
-{}
+{
+    ;
+}
 

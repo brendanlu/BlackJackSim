@@ -8,6 +8,9 @@ https://web.stanford.edu/class/archive/cs/cs109/cs109.1204/psets/contest/RileyNo
     - we will go to some trouble of preserving the full card information; 
         this means some weird house rules such as flushes and perfect pairs can be modelled later
 
+https://www.quora.com/Are-there-any-better-shuffling-algorithms-than-Fisher%E2%80%93Yates-shuffle
+    - partial and incremental shuffle
+
 
 CMAKE:
     gnu make docs

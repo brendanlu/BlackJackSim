@@ -25,4 +25,4 @@ enum class Face : int {
 };
 
 
-typedef struct card {Face face; Suit suit;} card_t;
+typedef struct card {Face face; Suit suit;} Card;
