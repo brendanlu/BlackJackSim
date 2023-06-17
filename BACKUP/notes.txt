@@ -1,3 +1,9 @@
 https://cython.readthedocs.io/en/latest/src/tutorial/strings.html
-    - python bytes and C chars (python reads as int)
-    - see type conversion/casting
+    - when you return a C char, python reads as int, and you need to type cast it in Cython
+    - Python types are <bytes> or ...
+
+
+https://web.stanford.edu/class/archive/cs/cs109/cs109.1204/psets/contest/RileyNoland.pdf
+    - card shuffling algorithms
+    - we will go to some trouble of preserving the full card information; 
+        this means some weird house rules such as flushes and perfect pairs can be modelled later

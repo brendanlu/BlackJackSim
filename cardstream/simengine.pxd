@@ -6,4 +6,3 @@ cdef extern from "../src/simengine.cpp":
 # include header file stuff 
 cdef extern from "../src/simengine.hpp":
     char bounce_back(int a)
-
