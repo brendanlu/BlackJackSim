@@ -12,5 +12,8 @@ https://www.quora.com/Are-there-any-better-shuffling-algorithms-than-Fisher%E2%8
     - partial and incremental shuffle
 
 
+https://stackoverflow.com/questions/46303106/compiling-multiple-c-files-with-cython
+    - later for building all
+
 CMAKE:
     gnu make docs
