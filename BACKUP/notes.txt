@@ -17,5 +17,5 @@ https://stackoverflow.com/questions/45419532/use-generated-header-file-from-cyth
 https://stackoverflow.com/questions/57170212/how-to-include-the-path-needed-by-c-in-cython
     - later for building all
 
-CMAKE:
-    gnu make docs
+https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows
+    - gnu make, for testing cpp stuff
