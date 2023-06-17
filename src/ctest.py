@@ -1,3 +1,7 @@
+"""
+Simple clunky script to automate cpp compilation, and run, for testing.
+"""
+
 import os
 import sys
 import time

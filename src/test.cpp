@@ -5,11 +5,12 @@ using std::cout;
 #include "types.hpp"
 
 int main() {
-    cout << "Something OLD";
+    cout << "Something OLD\n";
 
-    SimEngine SimEngineInstance(6969);
+    SimEngine SimEngineInstance(6);
 
-    cout<< SimEngineInstance.test;
+    cout<< "\n\nSomething in test now:\n";
+    cout<< SimEngineInstance.NDECKS;
 
 
 
