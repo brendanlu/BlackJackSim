@@ -13,6 +13,8 @@ https://www.quora.com/Are-there-any-better-shuffling-algorithms-than-Fisher%E2%8
 
 
 https://stackoverflow.com/questions/46303106/compiling-multiple-c-files-with-cython
+https://stackoverflow.com/questions/45419532/use-generated-header-file-from-cython
+https://stackoverflow.com/questions/57170212/how-to-include-the-path-needed-by-c-in-cython
     - later for building all
 
 CMAKE:
