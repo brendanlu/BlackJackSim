@@ -6,4 +6,6 @@ struct card {char face; char suit;};
 inline std::ostream& operator<< (std::ostream& os, card const& c) {os<<c.face; os<<c.suit; return os;}
 typedef struct card card_t;
 
+constexpr card_t BLANK_CARD = {'0', '0'};
+
 #endif

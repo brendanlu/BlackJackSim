@@ -34,5 +34,11 @@ SimEngine::SimEngine(unsigned int deckIn) : NDECKS(deckIn)
         }
     }}
 
-    cout<< cardStream[2];
+    cout<<filledIdx<<"\n\n";
+
+    for (; filledIdx<MAX_DECKS*DECK_SIZE; filledIdx++) {cardStream[filledIdx] = BLANK_CARD;}
+
+    for (auto thing: cardStream) {cout<< thing;}
+
+    cout<<"\n\n"<<filledIdx<<"\n\n";
 }
