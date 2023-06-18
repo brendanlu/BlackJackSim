@@ -11,6 +11,9 @@ https://web.stanford.edu/class/archive/cs/cs109/cs109.1204/psets/contest/RileyNo
 https://www.quora.com/Are-there-any-better-shuffling-algorithms-than-Fisher%E2%80%93Yates-shuffle
     - partial and incremental shuffle
 
+https://cs.stackexchange.com/questions/98273/i-want-a-fast-rank-only-shuffling-algorithm-for-a-full-52-card-deck
+    - gurus on stack exchange discussing shuffling algos and implementations
+
 
 https://stackoverflow.com/questions/46303106/compiling-multiple-c-files-with-cython
 https://stackoverflow.com/questions/45419532/use-generated-header-file-from-cython
