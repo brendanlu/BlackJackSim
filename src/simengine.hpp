@@ -11,9 +11,8 @@ class SimEngine
 {
 public:
     SimEngine(unsigned int deckIn);
-
     void shuffle();
-
+    
 
 
 
@@ -30,6 +29,8 @@ private:
     static constexpr std::array<char, N_CARD_SUIT_VALS> SUIT_VALS = {'D', 'S', 'C', 'H'};
 
     std::array<Card, MAX_DECKS*DECK_SIZE> cardStream;
+    
+    std::mt19937_64 mersenneTwister;
 };
 
 

@@ -13,6 +13,7 @@ https://www.quora.com/Are-there-any-better-shuffling-algorithms-than-Fisher%E2%8
 
 https://cs.stackexchange.com/questions/98273/i-want-a-fast-rank-only-shuffling-algorithm-for-a-full-52-card-deck
     - gurus on stack exchange discussing shuffling algos and implementations
+    - Intel AVX2 parallel instructions, for 64bit xorshift generator - supported by my intel 7700 chip
 
 
 https://stackoverflow.com/questions/46303106/compiling-multiple-c-files-with-cython
