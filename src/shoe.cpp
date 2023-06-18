@@ -8,15 +8,9 @@ using std::cout;
 #include "types.hpp"
 #include "fisheryates.hpp"
 
-
-// temp ----------------------------------------------
-#include <unordered_map>
-#include <algorithm>
-#include <array>
-//-----------------------------------------------------
 Shoe::Shoe(unsigned int nDecks) : 
     NDECKS(nDecks),
-    mersenneTwister(std::random_device()()), // seed our rng here
+    mersenneTwister(std::random_device()()), // seed our rng here, when class constructor called
     cardStreamEndIdx(NDECKS*DECK_SIZE - 1)
 {
     /* *** fill cardStream for NDECKS */
@@ -34,14 +28,15 @@ Shoe::Shoe(unsigned int nDecks) :
 
     /* *** fill remaining stack array with BLANK_CARD */ 
     for (; filledUpTo<MAX_DECKS*DECK_SIZE; filledUpTo++) {cardStream[filledUpTo] = BLANK_CARD;}
-    // for (auto thing: cardStream) {cout<< thing;}
 }
 
-void Shoe::Shuffle() 
+void Shoe::Shuffle(unsigned int partial /* = MAX_DECKS*DECK_SIZE  */) 
 {
-    FisherYatesShuffle(&cardStream[0], &cardStream[cardStreamEndIdx], 
-                        NDECKS*DECK_SIZE, // full shuffle
-                        mersenneTwister);
+    /* 
+    ***By default we will shuffle the whole deck.
+    If one passes in a smaller int than the size of the shoe, it will partial shuffle.
+     */
+    FisherYatesShuffle(&cardStream[0], &cardStream[cardStreamEndIdx], partial, mersenneTwister);
 }
 
 void Shoe::Display()

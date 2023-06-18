@@ -5,19 +5,17 @@
 #include <random>
 #include "types.hpp"
 
-// char bounce_back(int a);
-
 class Shoe
 {
 public:
     Shoe(unsigned int nDecks);
-    void Shuffle();
+    void Shuffle(unsigned int partial = MAX_DECKS*DECK_SIZE+1); // shuffles all by default
     void Display();
 
     unsigned int NDECKS; 
 
 private:
-    std::mt19937_64 mersenneTwister; // we should be able to change this
+    std::mt19937_64 mersenneTwister; // we should be able to change this later without breaking too many things
 
     static constexpr unsigned int MAX_DECKS = 8;
     static constexpr unsigned int DECK_SIZE = 52;
@@ -30,6 +28,5 @@ private:
     std::array<Card, MAX_DECKS*DECK_SIZE> cardStream;
     unsigned int cardStreamEndIdx; // this may be dodgy, but after this all cardStream values are blank
 };
-
 
 #endif
