@@ -1,6 +1,8 @@
 
 #include <random>
 #include <cassert>
+#include <iostream>
+using std::cout;
 
 #include "shoe.hpp"
 #include "types.hpp"
@@ -8,23 +10,14 @@
 
 
 // temp ----------------------------------------------
-#include <iostream>
-using std::cout;
-
 #include <unordered_map>
 #include <algorithm>
 #include <array>
 //-----------------------------------------------------
-
-// auto rng = std::default_random_engine {}; 
-
-// testing function
-// char bounce_back(int a) {return 6969;}
-
-
-Shoe::Shoe(unsigned int deckIn) : NDECKS(deckIn),
-                                            mersenneTwister(std::random_device()()), // seed our rng here
-                                            cardStreamEndIdx(NDECKS*DECK_SIZE - 1)
+Shoe::Shoe(unsigned int nDecks) : 
+    NDECKS(nDecks),
+    mersenneTwister(std::random_device()()), // seed our rng here
+    cardStreamEndIdx(NDECKS*DECK_SIZE - 1)
 {
     /* *** fill cardStream for NDECKS */
     unsigned int filledUpTo = 0;
@@ -51,3 +44,11 @@ void Shoe::Shuffle()
                         mersenneTwister);
 }
 
+void Shoe::Display()
+{
+    for (Card card: cardStream) {
+        if (card == BLANK_CARD) {break;}
+        else {cout << card << " ";}
+    }
+    cout << "\n";
+}

@@ -10,8 +10,10 @@
 class Shoe
 {
 public:
-    Shoe(unsigned int deckIn);
+    Shoe(unsigned int nDecks);
     void Shuffle();
+    void Display();
+
     unsigned int NDECKS; 
 
 private:

@@ -5,14 +5,12 @@ using std::cout;
 #include "types.hpp"
 
 int main() {
-    cout << "Something OLD\n";
 
-    Shoe ShoeInstance(6);
-
-    cout<< "\n\nSomething in test now:\n";
-    cout<< "playing with: " << ShoeInstance.NDECKS << " decks\n";
-
-    ShoeInstance.Shuffle();
+    Shoe new_shoe(1);
+    new_shoe.Display();
+    cout << "\n\n";
+    new_shoe.Shuffle();
+    new_shoe.Display();
 
     return 0;
 }

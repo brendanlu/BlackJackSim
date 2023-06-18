@@ -4,10 +4,9 @@ https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
 */
 
-
+// #include <immintrin.h> // AVX2 intrinsics header file
 #include <random>
 #include <cassert>
-// #include <immintrin.h> // AVX2 intrinsics header file
 
 #include "fisheryates.hpp"
 
@@ -15,6 +14,7 @@ https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 #include <iostream>
 //----------------------------
 
+using unifIntBounds_t = std::uniform_int_distribution<unsigned int>::param_type;
 
 template <typename T, typename randomNumGenerator>
 void FisherYatesShuffle(T* begin, T* end, unsigned int iters, randomNumGenerator& rng)
@@ -25,26 +25,19 @@ We take in a reference to our rng, which is external from this, so it preserves 
 */
 {
     int width = end - begin; 
-    assert(width > 0);
+    // assert(width > 0);
+    // assert(begin + width == end);
     
-    // uniform integer sampling transform
+    /* uniform integer sampling transform */ 
     std::uniform_int_distribution<unsigned int> unifInt(0, width);
 
-    assert(begin + width == end);
-
-
-
-    std::uniform_int_distribution<int> distribution(1,100);
-
-    int randomValue = distribution(rng); 
-
-    std::cout << "RANDOM VALUE:    " << randomValue << "\n"; 
-
-
-    std::cout << "\nWIDTH = " << width << "\n";
-
-
-
+    /* ** Fisher Yates algorithm */ 
+    unsigned int j; 
+    for (unsigned int i = width; i >= 1; --i) {
+        unifInt.param(unifIntBounds_t(0, i));
+        j = unifInt(rng);
+        std::swap(*(begin+i), *(begin+j));
+    }
 };
 
 /* **Explicit instantiation of the FisherYates shuffle for Card struct and, for now, a mersenne twister rng */

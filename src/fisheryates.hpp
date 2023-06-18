@@ -6,7 +6,4 @@
 template <typename T, typename randomNumGenerator>
 void FisherYatesShuffle(T* begin, T* end, unsigned int iters, randomNumGenerator& rng);
 
-
-
-
 #endif
