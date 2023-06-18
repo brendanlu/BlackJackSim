@@ -1,8 +1,10 @@
 
 #include <random>
+#include <cassert>
 
 #include "simengine.hpp"
 #include "types.hpp"
+#include "fisheryates.hpp"
 
 
 // temp ----------------------------------------------
@@ -21,30 +23,31 @@ using std::cout;
 
 
 SimEngine::SimEngine(unsigned int deckIn) : NDECKS(deckIn),
-                                            mersenneTwister(std::random_device()()) // initialise our rng here
+                                            mersenneTwister(std::random_device()()), // seed our rng here
+                                            cardStreamEndIdx(NDECKS*DECK_SIZE - 1)
 {
     /* *** fill cardStream for NDECKS */
-    unsigned int filledIdx = 0;
+    unsigned int filledUpTo = 0;
     for (const auto &f: FACE_VALS) {
     for (const auto &s: SUIT_VALS) {
         for (int i=0; i<NDECKS; i++) 
         {
-            cardStream[filledIdx] = {f, s};
-            filledIdx += 1;
+            cardStream[filledUpTo] = {f, s};
+            filledUpTo += 1;
         }
     }}
     
+    assert((filledUpTo - 1) == cardStreamEndIdx);
+
     /* *** fill remaining stack array with BLANK_CARD */ 
-    for (; filledIdx<MAX_DECKS*DECK_SIZE; filledIdx++) {cardStream[filledIdx] = BLANK_CARD;}
+    for (; filledUpTo<MAX_DECKS*DECK_SIZE; filledUpTo++) {cardStream[filledUpTo] = BLANK_CARD;}
     // for (auto thing: cardStream) {cout<< thing;}
-
-
-
-
 }
 
 void SimEngine::shuffle() 
 {
-    ;
+    FisherYatesShuffle(&cardStream[0], &cardStream[cardStreamEndIdx], 
+                        NDECKS*DECK_SIZE, // full shuffle
+                        mersenneTwister);
 }
 

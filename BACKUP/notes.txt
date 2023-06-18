@@ -23,3 +23,7 @@ https://stackoverflow.com/questions/57170212/how-to-include-the-path-needed-by-c
 
 https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows
     - gnu make, for testing cpp stuff
+
+https://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented-in-the-header-file
+    - TEMPLATES DECLARATION AND STUFF c++ 
+    

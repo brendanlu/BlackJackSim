@@ -12,14 +12,12 @@ class SimEngine
 public:
     SimEngine(unsigned int deckIn);
     void shuffle();
-    
-
-
-
-    // auto rng = std::default_random_engine {};
     unsigned int NDECKS; 
+    unsigned int cardStreamEndIdx; // this may be dodgy, but after this all cardStream values are blank
 
 private:
+    std::mt19937_64 mersenneTwister; // we should be able to change this
+
     static constexpr unsigned int MAX_DECKS = 8;
     static constexpr unsigned int DECK_SIZE = 52;
     static constexpr unsigned int N_CARD_FACE_VALS = 13;
@@ -29,8 +27,6 @@ private:
     static constexpr std::array<char, N_CARD_SUIT_VALS> SUIT_VALS = {'D', 'S', 'C', 'H'};
 
     std::array<Card, MAX_DECKS*DECK_SIZE> cardStream;
-    
-    std::mt19937_64 mersenneTwister;
 };
 
 

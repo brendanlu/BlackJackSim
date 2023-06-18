@@ -1,12 +1,8 @@
 #ifndef FISHERYATES_H
 #define FISHERYATES_H
+
 #include "types.hpp"
 
-void FisherYatesShuffle(Card* streamHead, 
-                        unsigned int streamSize,
-                        unsigned int numShuffle
-                        ) {};
-
-
-
+template <typename T, typename randomNumGenerator>
+void FisherYatesShuffle(T* begin, T* end, unsigned int iters, randomNumGenerator& rng);
 #endif
