@@ -1,13 +1,13 @@
 CXX=g++
-OBJs = test.o simengine.o fisheryates.o
+OBJs = test.o shoe.o fisheryates.o
 
 test : $(OBJs)
 	$(CXX) -o test $(OBJs)
 
-simengine.o : simengine.cpp simengine.hpp fisheryates.hpp types.hpp 
-	$(CXX) -c simengine.cpp
+shoe.o : shoe.cpp shoe.hpp fisheryates.hpp types.hpp 
+	$(CXX) -c shoe.cpp
 
-test.o : test.cpp simengine.hpp types.hpp
+test.o : test.cpp shoe.hpp types.hpp
 	$(CXX) -c test.cpp
 
 fisheryates.o : fisheryates.cpp fisheryates.hpp types.hpp

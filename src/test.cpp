@@ -1,18 +1,18 @@
 #include <iostream>
 using std::cout;
 
-#include "simengine.hpp"
+#include "shoe.hpp"
 #include "types.hpp"
 
 int main() {
     cout << "Something OLD\n";
 
-    SimEngine SimEngineInstance(6);
+    Shoe ShoeInstance(6);
 
     cout<< "\n\nSomething in test now:\n";
-    cout<< "playing with: " << SimEngineInstance.NDECKS << "decks\n";
+    cout<< "playing with: " << ShoeInstance.NDECKS << " decks\n";
 
-    SimEngineInstance.Shuffle();
+    ShoeInstance.Shuffle();
 
     return 0;
 }

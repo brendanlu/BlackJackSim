@@ -2,7 +2,7 @@
 #include <random>
 #include <cassert>
 
-#include "simengine.hpp"
+#include "shoe.hpp"
 #include "types.hpp"
 #include "fisheryates.hpp"
 
@@ -22,7 +22,7 @@ using std::cout;
 // char bounce_back(int a) {return 6969;}
 
 
-SimEngine::SimEngine(unsigned int deckIn) : NDECKS(deckIn),
+Shoe::Shoe(unsigned int deckIn) : NDECKS(deckIn),
                                             mersenneTwister(std::random_device()()), // seed our rng here
                                             cardStreamEndIdx(NDECKS*DECK_SIZE - 1)
 {
@@ -44,7 +44,7 @@ SimEngine::SimEngine(unsigned int deckIn) : NDECKS(deckIn),
     // for (auto thing: cardStream) {cout<< thing;}
 }
 
-void SimEngine::Shuffle() 
+void Shoe::Shuffle() 
 {
     FisherYatesShuffle(&cardStream[0], &cardStream[cardStreamEndIdx], 
                         NDECKS*DECK_SIZE, // full shuffle
