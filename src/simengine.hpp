@@ -11,7 +11,7 @@ class SimEngine
 {
 public:
     SimEngine(unsigned int deckIn);
-    void shuffle();
+    void Shuffle();
     unsigned int NDECKS; 
     unsigned int cardStreamEndIdx; // this may be dodgy, but after this all cardStream values are blank
 

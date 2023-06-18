@@ -7,7 +7,13 @@ https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
 #include <random>
 // #include <immintrin.h> // AVX2 intrinsics header file
+
 #include "fisheryates.hpp"
+
+//temp --------------------------------
+#include <iostream>
+//----------------------------
+
 
 template <typename T, typename randomNumGenerator>
 void FisherYatesShuffle(T* begin, T* end, unsigned int iters, randomNumGenerator& rng)
@@ -20,6 +26,8 @@ We take in a reference to our rng, which is contained in the simengine class whe
     std::uniform_int_distribution<int> distribution(1,100);
 
     int randomValue = distribution(rng); 
+
+    std::cout << "RANDOM VALUE:    " << randomValue << "\n\n"; 
 };
 
 /* **Explicit instantiation of the FisherYates shuffle with my Card type and, for now, a mersenne twister rng  */

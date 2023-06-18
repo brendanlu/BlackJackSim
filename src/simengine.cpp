@@ -44,7 +44,7 @@ SimEngine::SimEngine(unsigned int deckIn) : NDECKS(deckIn),
     // for (auto thing: cardStream) {cout<< thing;}
 }
 
-void SimEngine::shuffle() 
+void SimEngine::Shuffle() 
 {
     FisherYatesShuffle(&cardStream[0], &cardStream[cardStreamEndIdx], 
                         NDECKS*DECK_SIZE, // full shuffle

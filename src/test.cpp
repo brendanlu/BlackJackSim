@@ -10,10 +10,9 @@ int main() {
     SimEngine SimEngineInstance(6);
 
     cout<< "\n\nSomething in test now:\n";
-    cout<< SimEngineInstance.NDECKS;
+    cout<< "playing with: " << SimEngineInstance.NDECKS << "decks\n";
 
-
-
+    SimEngineInstance.Shuffle();
 
     return 0;
 }
