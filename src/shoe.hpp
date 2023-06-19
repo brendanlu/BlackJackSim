@@ -23,13 +23,15 @@ public:
     Shoe() {};
     Shoe(unsigned int nDecks, double penentration);
     void Shuffle(unsigned int partial = MAX_DECKS*DECK_SIZE+1); // shuffles all by default
-    void Display();
+    Card Deal();
+    
+    unsigned int dealUpTo; 
 
-    unsigned int NDECKS; 
+    void Display();
 
 private:
     std::mt19937_64 mersenneTwister; // we should be able to change this later without breaking too many things
-
+    unsigned int NDECKS; 
     static constexpr unsigned int MAX_DECKS = 8;
     static constexpr unsigned int DECK_SIZE = 52;
     static constexpr unsigned int N_CARD_FACE_VALS = 13;

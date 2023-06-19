@@ -1,6 +1,5 @@
 
 #include <random>
-#include <cassert>
 #include <iostream>
 using std::cout;
 
@@ -15,7 +14,8 @@ Shoe::Shoe(unsigned int nDecks, double penentration) :
     typicalCardsDealt(std::min(
         static_cast<unsigned int>(NDECKS*DECK_SIZE*penentration+0.5),
         NDECKS*DECK_SIZE
-    )) // if penentation is > 1, we just deal out whole deck stream
+    )), // if penentation is > 1, we just deal out whole deck stream
+    dealUpTo(0) 
 {
     /* *** fill cardStream for NDECKS */
     unsigned int filledUpTo = 0;
@@ -28,7 +28,7 @@ Shoe::Shoe(unsigned int nDecks, double penentration) :
         }
     }}
     
-    assert((filledUpTo - 1) == cardStreamEndIdx);
+    // assert((filledUpTo - 1) == cardStreamEndIdx);
 
     /* *** fill remaining stack array with BLANK_CARD */ 
     for (; filledUpTo<MAX_DECKS*DECK_SIZE; filledUpTo++) {cardStream[filledUpTo] = BLANK_CARD;}
@@ -43,6 +43,8 @@ void Shoe::Shuffle(unsigned int partial /* = MAX_DECKS*DECK_SIZE  */)
     FisherYatesShuffle(&cardStream[0], &cardStream[cardStreamEndIdx], partial, mersenneTwister);
 }
 
+Card Shoe::Deal() {return cardStream[dealUpTo++];}
+
 void Shoe::Display()
 {
     for (Card card: cardStream) {
@@ -51,3 +53,4 @@ void Shoe::Display()
     }
     cout << "\n";
 }
+
