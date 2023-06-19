@@ -12,5 +12,6 @@ void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
 }
 
 char SimEngineBJ::Test() {
-    return *(simAgent.hrdPtr + 63);
+    return spltActionFromPtr(simAgent.spltPtr, 7, 8);
+    // return *(simAgent.hrdPtr + 63);
 }

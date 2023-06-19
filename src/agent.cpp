@@ -1,4 +1,5 @@
 #include "agent.hpp"
+#include "strategyinput.hpp"
 
 Agent::Agent() : stratInit(false) {}
 
