@@ -6,7 +6,7 @@ using std::cout;
 
 int main() {
 
-    Shoe new_shoe(2);
+    Shoe new_shoe(2, 0.25);
     new_shoe.Display();
     cout << "\n\n";
     new_shoe.Shuffle(3);

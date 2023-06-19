@@ -8,10 +8,14 @@ using std::cout;
 #include "types.hpp"
 #include "fisheryates.hpp"
 
-Shoe::Shoe(unsigned int nDecks) : 
+Shoe::Shoe(unsigned int nDecks, double penentration) : 
     NDECKS(nDecks),
     mersenneTwister(std::random_device()()), // seed our rng here, when class constructor called
-    cardStreamEndIdx(NDECKS*DECK_SIZE - 1)
+    cardStreamEndIdx(NDECKS*DECK_SIZE - 1),
+    typicalCardsDealt(std::min(
+        static_cast<unsigned int>(NDECKS*DECK_SIZE*penentration+0.5),
+        NDECKS*DECK_SIZE
+    )) // if penentation is > 1, we just deal out whole deck stream
 {
     /* *** fill cardStream for NDECKS */
     unsigned int filledUpTo = 0;

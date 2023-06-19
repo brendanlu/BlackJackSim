@@ -15,8 +15,9 @@ template <typename T, typename randomNumGenerator>
 void FisherYatesShuffle(T* begin, T* end, unsigned int nPartial, randomNumGenerator& rng)
 /*
 FisherYates algorithm to shuffle a contiguous slice of array elements in place. 
-iters controls partial and incremental shuffle. 
-    iter corresponds to how many elements we will partially shuffle
+nPartial controls partial and incremental shuffle. 
+    nPartial corresponds to how many elements we will partially shuffle
+    so the first nPartial elements of the array will be new shuffles
 We take in a reference to our rng, which is external from this, so it preserves its random state. 
 */
 {

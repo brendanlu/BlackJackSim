@@ -1,5 +1,5 @@
-#ifndef SIMENGINE_H
-#define SIMENGINE_H 
+#ifndef SHOE_H
+#define SHOE_H 
 
 #include <array>
 #include <random>
@@ -8,7 +8,7 @@
 class Shoe
 {
 public:
-    Shoe(unsigned int nDecks);
+    Shoe(unsigned int nDecks, double penentration);
     void Shuffle(unsigned int partial = MAX_DECKS*DECK_SIZE+1); // shuffles all by default
     void Display();
 
@@ -25,8 +25,9 @@ private:
     static constexpr std::array<char, N_CARD_FACE_VALS> FACE_VALS = {'2','3','4','5','6','7','8','9','T','J','Q','K','A'};
     static constexpr std::array<char, N_CARD_SUIT_VALS> SUIT_VALS = {'D', 'S', 'C', 'H'};
 
-    std::array<Card, MAX_DECKS*DECK_SIZE> cardStream;
-    unsigned int cardStreamEndIdx; // this may be dodgy, but after this all cardStream values are blank
+    std::array<Card, MAX_DECKS*DECK_SIZE> cardStream; // we initialise this onto the stack, as we manipulate it alot
+    unsigned int typicalCardsDealt; // how many cards are dealt before shoe is reshuffled
+    unsigned int cardStreamEndIdx; // this may be dodgy, but after this all cardStream stack values are blank
 };
 
 #endif
