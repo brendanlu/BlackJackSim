@@ -5,6 +5,18 @@
 #include <random>
 #include "types.hpp"
 
+/*     
+*** This is the only stochastic element of our simulation. 
+All the randomness will be encapsulated in this class. 
+
+It also performs the most computationally intensive within the simulation loops:
+                simulating shuffling the deck. 
+
+We initialise the cards in the shoe on a stack array, which is declared large enough to
+            house 8 decks. 
+The Shoe has logic implemented to ignore the rest of the redundant stack space.
+*/
+
 class Shoe
 {
 public:

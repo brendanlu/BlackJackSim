@@ -22,9 +22,9 @@ private:
 
     char* hrdPtr; char* sftPtr; char* spltPtr; float* cntPtr;
 
-    void fetchHrdAction(); 
-    void fetchSftAction(); 
-    void fetchCntAction();
+    //void fetchHrdAction(); 
+    //void fetchSftAction(); 
+    //void fetchCntAction();
 
 };
 
