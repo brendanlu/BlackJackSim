@@ -8,4 +8,6 @@ Our contiguous C array from Numpy memoryviews will rely on this file to be
 We use templated strategy input file , so we can hardcode this logic.
 */
 
+
+
 #endif

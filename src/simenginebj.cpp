@@ -12,5 +12,5 @@ void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
 }
 
 char SimEngineBJ::Test() {
-    return *(simAgent.hrdPtr);
+    return *(simAgent.hrdPtr + 63);
 }
