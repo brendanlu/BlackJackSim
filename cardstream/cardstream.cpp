@@ -2592,7 +2592,7 @@ static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_2pySetAgentStrat(struct _
  *         self.cppSimEngine.SetAgentStrat(&hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
  * 
  *     def pyTest(self):             # <<<<<<<<<<<<<<
- *         return <bytes>(self.cppSimEngine.Test())
+ *         return (self.cppSimEngine.Test())
  * 
  */
 
@@ -2612,8 +2612,7 @@ static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_5pyTest(PyObject *__pyx_v
 static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_4pyTest(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  char __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_1 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2622,28 +2621,27 @@ static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_4pyTest(struct __pyx_obj_
   /* "cardstream.pyx":20
  * 
  *     def pyTest(self):
- *         return <bytes>(self.cppSimEngine.Test())             # <<<<<<<<<<<<<<
+ *         return (self.cppSimEngine.Test())             # <<<<<<<<<<<<<<
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_v_self->cppSimEngine.Test();
-  __pyx_t_2 = PyBytes_FromStringAndSize(&__pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 20, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->cppSimEngine.Test()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 20, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
   goto __pyx_L0;
 
   /* "cardstream.pyx":19
  *         self.cppSimEngine.SetAgentStrat(&hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
  * 
  *     def pyTest(self):             # <<<<<<<<<<<<<<
- *         return <bytes>(self.cppSimEngine.Test())
+ *         return (self.cppSimEngine.Test())
  * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("cardstream.PySimEngineBJ.pyTest", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;

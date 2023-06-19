@@ -11,7 +11,7 @@ void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
     simAgent = Agent(hrd, sft, splt, cnt);
 }
 
-char SimEngineBJ::Test() {
-    return spltActionFromPtr(simAgent.spltPtr, 7, 8);
+double SimEngineBJ::Test() {
+    return cntFromPtr(simAgent.cntPtr, 11);
     // return *(simAgent.hrdPtr + 63);
 }

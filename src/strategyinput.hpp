@@ -24,9 +24,9 @@ inline char spltActionFromPtr(char* head, unsigned int p, unsigned int d)
         return *(head + (p-2)*10 + (d-2));
 }
 
-inline float cntFromPtr(char* head, char face)
+inline double cntFromPtr(double* head, char face)
 {
-        ;
+        return *(head + (face-2));
 }
 
 #endif

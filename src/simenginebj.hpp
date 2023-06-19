@@ -12,7 +12,7 @@ public:
 
     void SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt);
 
-    char Test(); 
+    double Test(); 
 
 private:
     Shoe simShoe;
