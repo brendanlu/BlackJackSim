@@ -6,10 +6,11 @@ import os
 srcs = []
 for file in os.listdir("src/"): 
     if file.endswith(".cpp"): 
-        srcs.append(file)
+        srcs.append("src/" + file)
+srcs.append("cardstream/cardstream.pyx")
 
 extensions = [
-    Extension("cardstream", srcs.append("cardstream/cardstream.pyx"))
+    Extension("cardstream", srcs)
 ]
 
 print(srcs)

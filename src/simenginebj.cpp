@@ -3,7 +3,7 @@
 
 SimEngineBJ::SimEngineBJ(
         unsigned int ndecks, double penen, 
-        char* hrd, char* sft, char* splt, float* cnt
+        char* hrd, char* sft, char* splt, double* cnt
     ) : 
     simShoe(ndecks, penen), hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt)
 {

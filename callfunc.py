@@ -24,4 +24,4 @@ count = pd.read_csv(r"Strategy Input\HiLoCount.csv", header=None)
 cnt = count.iloc[:,1].values.astype(float, order='C')
 
 tryme = cardstream.PySimEngineBJ(1, 1, hrd, sft, splts, cnt)
-print(tryme.Test())
+print(tryme.pyTest())

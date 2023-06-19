@@ -15,7 +15,7 @@ public:
         char* hrd, 
         char* sft, 
         char* splt, 
-        float* cnt
+        double* cnt
     );
 
     char Test(); 
@@ -24,7 +24,7 @@ private:
     Shoe simShoe;
     Agent simAgent; 
 
-    char* hrdPtr; char* sftPtr; char* spltPtr; float* cntPtr;
+    char* hrdPtr; char* sftPtr; char* spltPtr; double* cntPtr;
 
     //void fetchHrdAction(); 
     //void fetchSftAction(); 
