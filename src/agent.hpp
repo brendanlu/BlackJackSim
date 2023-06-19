@@ -4,9 +4,13 @@
 class Agent 
 {
 public:
-    Agent();
+    Agent() {};
+    Agent(char* hrd, char* sft, char* splt, double* cnt);
 
+    char* hrdPtr; 
+
+private:
+    char* sftPtr; char* spltPtr; double* cntPtr;
 };
-
 
 #endif

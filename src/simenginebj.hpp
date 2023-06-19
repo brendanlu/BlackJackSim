@@ -7,24 +7,16 @@
 class SimEngineBJ
 {
 public: 
-    SimEngineBJ() {};
+    SimEngineBJ() {}; // Cython needs nullary constructor to init to stack
+    SimEngineBJ(unsigned int ndecks, double penen);
 
-    SimEngineBJ(
-        unsigned int ndecks,
-        double penen, 
-        char* hrd, 
-        char* sft, 
-        char* splt, 
-        double* cnt
-    );
+    void SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt);
 
     char Test(); 
 
 private:
     Shoe simShoe;
     Agent simAgent; 
-
-    char* hrdPtr; char* sftPtr; char* spltPtr; double* cntPtr;
 
     //void fetchHrdAction(); 
     //void fetchSftAction(); 

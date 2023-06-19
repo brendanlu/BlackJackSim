@@ -2187,10 +2187,11 @@ static PyObject *__pyx_kp_s_unable_to_allocate_array_data;
 static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
-static int __pyx_pf_10cardstream_13PySimEngineBJ___init__(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self, unsigned int __pyx_v_nd, double __pyx_v_p, __Pyx_memviewslice __pyx_v_hrd, __Pyx_memviewslice __pyx_v_sft, __Pyx_memviewslice __pyx_v_splt, __Pyx_memviewslice __pyx_v_cnt); /* proto */
-static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_2pyTest(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_10cardstream_13PySimEngineBJ___init__(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self, unsigned int __pyx_v_nd, double __pyx_v_p); /* proto */
+static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_2pySetAgentStrat(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self, __Pyx_memviewslice __pyx_v_hrd, __Pyx_memviewslice __pyx_v_sft, __Pyx_memviewslice __pyx_v_splt, __Pyx_memviewslice __pyx_v_cnt); /* proto */
+static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_4pyTest(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_6__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_8__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -2277,9 +2278,9 @@ static PyObject *__pyx_codeobj__28;
 /* "cardstream.pyx":9
  *     cdef SimEngineBJ cppSimEngine
  * 
- *     def __init__(self, unsigned int nd, double p,             # <<<<<<<<<<<<<<
- *     char[:,:] hrd,
- *     char[:,:] sft,
+ *     def __init__(self, unsigned int nd, double p):             # <<<<<<<<<<<<<<
+ *         # we read in memviews of our numpy arrays - THESE MUST BE C CONTIGUOUS BYTE ARRAYS
+ *         # we then pass in the pointer to the first element to our cpp level class constructor
  */
 
 /* Python wrapper */
@@ -2287,10 +2288,6 @@ static int __pyx_pw_10cardstream_13PySimEngineBJ_1__init__(PyObject *__pyx_v_sel
 static int __pyx_pw_10cardstream_13PySimEngineBJ_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   unsigned int __pyx_v_nd;
   double __pyx_v_p;
-  __Pyx_memviewslice __pyx_v_hrd = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_v_sft = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_v_splt = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_v_cnt = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2298,20 +2295,12 @@ static int __pyx_pw_10cardstream_13PySimEngineBJ_1__init__(PyObject *__pyx_v_sel
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_nd,&__pyx_n_s_p,&__pyx_n_s_hrd,&__pyx_n_s_sft,&__pyx_n_s_splt,&__pyx_n_s_cnt,0};
-    PyObject* values[6] = {0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_nd,&__pyx_n_s_p,0};
+    PyObject* values[2] = {0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
-        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
-        CYTHON_FALLTHROUGH;
-        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
-        CYTHON_FALLTHROUGH;
-        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-        CYTHON_FALLTHROUGH;
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-        CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
         CYTHON_FALLTHROUGH;
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -2328,70 +2317,175 @@ static int __pyx_pw_10cardstream_13PySimEngineBJ_1__init__(PyObject *__pyx_v_sel
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_p)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 6, 6, 1); __PYX_ERR(1, 9, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  2:
-        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_hrd)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 6, 6, 2); __PYX_ERR(1, 9, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  3:
-        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_sft)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 6, 6, 3); __PYX_ERR(1, 9, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  4:
-        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_splt)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 6, 6, 4); __PYX_ERR(1, 9, __pyx_L3_error)
-        }
-        CYTHON_FALLTHROUGH;
-        case  5:
-        if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_cnt)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 6, 6, 5); __PYX_ERR(1, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(1, 9, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 9, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 6) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
-      values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
     }
     __pyx_v_nd = __Pyx_PyInt_As_unsigned_int(values[0]); if (unlikely((__pyx_v_nd == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 9, __pyx_L3_error)
     __pyx_v_p = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_p == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 9, __pyx_L3_error)
-    __pyx_v_hrd = __Pyx_PyObject_to_MemoryviewSlice_dsds_char(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_hrd.memview)) __PYX_ERR(1, 10, __pyx_L3_error)
-    __pyx_v_sft = __Pyx_PyObject_to_MemoryviewSlice_dsds_char(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_sft.memview)) __PYX_ERR(1, 11, __pyx_L3_error)
-    __pyx_v_splt = __Pyx_PyObject_to_MemoryviewSlice_dsds_char(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_splt.memview)) __PYX_ERR(1, 12, __pyx_L3_error)
-    __pyx_v_cnt = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_cnt.memview)) __PYX_ERR(1, 13, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 9, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 9, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cardstream.PySimEngineBJ.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10cardstream_13PySimEngineBJ___init__(((struct __pyx_obj_10cardstream_PySimEngineBJ *)__pyx_v_self), __pyx_v_nd, __pyx_v_p, __pyx_v_hrd, __pyx_v_sft, __pyx_v_splt, __pyx_v_cnt);
+  __pyx_r = __pyx_pf_10cardstream_13PySimEngineBJ___init__(((struct __pyx_obj_10cardstream_PySimEngineBJ *)__pyx_v_self), __pyx_v_nd, __pyx_v_p);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_10cardstream_13PySimEngineBJ___init__(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self, unsigned int __pyx_v_nd, double __pyx_v_p, __Pyx_memviewslice __pyx_v_hrd, __Pyx_memviewslice __pyx_v_sft, __Pyx_memviewslice __pyx_v_splt, __Pyx_memviewslice __pyx_v_cnt) {
+static int __pyx_pf_10cardstream_13PySimEngineBJ___init__(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self, unsigned int __pyx_v_nd, double __pyx_v_p) {
   int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  SimEngineBJ __pyx_t_1;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__init__", 0);
+
+  /* "cardstream.pyx":12
+ *         # we read in memviews of our numpy arrays - THESE MUST BE C CONTIGUOUS BYTE ARRAYS
+ *         # we then pass in the pointer to the first element to our cpp level class constructor
+ *         self.cppSimEngine = SimEngineBJ(nd, p)             # <<<<<<<<<<<<<<
+ * 
+ *         # self.cppSimEngine = SimEngineBJ(nd, p, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
+ */
+  try {
+    __pyx_t_1 = SimEngineBJ(__pyx_v_nd, __pyx_v_p);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_v_self->cppSimEngine = __pyx_t_1;
+
+  /* "cardstream.pyx":9
+ *     cdef SimEngineBJ cppSimEngine
+ * 
+ *     def __init__(self, unsigned int nd, double p):             # <<<<<<<<<<<<<<
+ *         # we read in memviews of our numpy arrays - THESE MUST BE C CONTIGUOUS BYTE ARRAYS
+ *         # we then pass in the pointer to the first element to our cpp level class constructor
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("cardstream.PySimEngineBJ.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cardstream.pyx":16
+ *         # self.cppSimEngine = SimEngineBJ(nd, p, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
+ * 
+ *     def pySetAgentStrat(self, char[:,:] hrd, char[:,:] sft, char[:,:] splt, double[:] cnt):             # <<<<<<<<<<<<<<
+ *         self.cppSimEngine.SetAgentStrat(&hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_3pySetAgentStrat(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_3pySetAgentStrat(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  __Pyx_memviewslice __pyx_v_hrd = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_sft = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_splt = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_cnt = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("pySetAgentStrat (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_hrd,&__pyx_n_s_sft,&__pyx_n_s_splt,&__pyx_n_s_cnt,0};
+    PyObject* values[4] = {0,0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_hrd)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_sft)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("pySetAgentStrat", 1, 4, 4, 1); __PYX_ERR(1, 16, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_splt)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("pySetAgentStrat", 1, 4, 4, 2); __PYX_ERR(1, 16, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_cnt)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("pySetAgentStrat", 1, 4, 4, 3); __PYX_ERR(1, 16, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "pySetAgentStrat") < 0)) __PYX_ERR(1, 16, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+    }
+    __pyx_v_hrd = __Pyx_PyObject_to_MemoryviewSlice_dsds_char(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_hrd.memview)) __PYX_ERR(1, 16, __pyx_L3_error)
+    __pyx_v_sft = __Pyx_PyObject_to_MemoryviewSlice_dsds_char(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_sft.memview)) __PYX_ERR(1, 16, __pyx_L3_error)
+    __pyx_v_splt = __Pyx_PyObject_to_MemoryviewSlice_dsds_char(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_splt.memview)) __PYX_ERR(1, 16, __pyx_L3_error)
+    __pyx_v_cnt = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_cnt.memview)) __PYX_ERR(1, 16, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("pySetAgentStrat", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 16, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cardstream.PySimEngineBJ.pySetAgentStrat", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_10cardstream_13PySimEngineBJ_2pySetAgentStrat(((struct __pyx_obj_10cardstream_PySimEngineBJ *)__pyx_v_self), __pyx_v_hrd, __pyx_v_sft, __pyx_v_splt, __pyx_v_cnt);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_2pySetAgentStrat(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self, __Pyx_memviewslice __pyx_v_hrd, __Pyx_memviewslice __pyx_v_sft, __Pyx_memviewslice __pyx_v_splt, __Pyx_memviewslice __pyx_v_cnt) {
+  PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   Py_ssize_t __pyx_t_1;
   Py_ssize_t __pyx_t_2;
@@ -2401,16 +2495,15 @@ static int __pyx_pf_10cardstream_13PySimEngineBJ___init__(struct __pyx_obj_10car
   Py_ssize_t __pyx_t_6;
   Py_ssize_t __pyx_t_7;
   Py_ssize_t __pyx_t_8;
-  SimEngineBJ __pyx_t_9;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__init__", 0);
+  __Pyx_RefNannySetupContext("pySetAgentStrat", 0);
 
-  /* "cardstream.pyx":14
- *     char[:,:] splt,
- *     double[:] cnt):
- *         self.cppSimEngine = SimEngineBJ(nd, p, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])             # <<<<<<<<<<<<<<
+  /* "cardstream.pyx":17
+ * 
+ *     def pySetAgentStrat(self, char[:,:] hrd, char[:,:] sft, char[:,:] splt, double[:] cnt):
+ *         self.cppSimEngine.SetAgentStrat(&hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])             # <<<<<<<<<<<<<<
  * 
  *     def pyTest(self):
  */
@@ -2427,7 +2520,7 @@ static int __pyx_pf_10cardstream_13PySimEngineBJ___init__(struct __pyx_obj_10car
   } else if (unlikely(__pyx_t_2 >= __pyx_v_hrd.shape[1])) __pyx_t_3 = 1;
   if (unlikely(__pyx_t_3 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_3);
-    __PYX_ERR(1, 14, __pyx_L1_error)
+    __PYX_ERR(1, 17, __pyx_L1_error)
   }
   __pyx_t_4 = 0;
   __pyx_t_5 = 0;
@@ -2442,7 +2535,7 @@ static int __pyx_pf_10cardstream_13PySimEngineBJ___init__(struct __pyx_obj_10car
   } else if (unlikely(__pyx_t_5 >= __pyx_v_sft.shape[1])) __pyx_t_3 = 1;
   if (unlikely(__pyx_t_3 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_3);
-    __PYX_ERR(1, 14, __pyx_L1_error)
+    __PYX_ERR(1, 17, __pyx_L1_error)
   }
   __pyx_t_6 = 0;
   __pyx_t_7 = 0;
@@ -2457,7 +2550,7 @@ static int __pyx_pf_10cardstream_13PySimEngineBJ___init__(struct __pyx_obj_10car
   } else if (unlikely(__pyx_t_7 >= __pyx_v_splt.shape[1])) __pyx_t_3 = 1;
   if (unlikely(__pyx_t_3 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_3);
-    __PYX_ERR(1, 14, __pyx_L1_error)
+    __PYX_ERR(1, 17, __pyx_L1_error)
   }
   __pyx_t_8 = 0;
   __pyx_t_3 = -1;
@@ -2467,41 +2560,36 @@ static int __pyx_pf_10cardstream_13PySimEngineBJ___init__(struct __pyx_obj_10car
   } else if (unlikely(__pyx_t_8 >= __pyx_v_cnt.shape[0])) __pyx_t_3 = 0;
   if (unlikely(__pyx_t_3 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_3);
-    __PYX_ERR(1, 14, __pyx_L1_error)
+    __PYX_ERR(1, 17, __pyx_L1_error)
   }
-  try {
-    __pyx_t_9 = SimEngineBJ(__pyx_v_nd, __pyx_v_p, (&(*((char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_hrd.data + __pyx_t_1 * __pyx_v_hrd.strides[0]) ) + __pyx_t_2 * __pyx_v_hrd.strides[1]) )))), (&(*((char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_sft.data + __pyx_t_4 * __pyx_v_sft.strides[0]) ) + __pyx_t_5 * __pyx_v_sft.strides[1]) )))), (&(*((char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_splt.data + __pyx_t_6 * __pyx_v_splt.strides[0]) ) + __pyx_t_7 * __pyx_v_splt.strides[1]) )))), (&(*((double *) ( /* dim=0 */ (__pyx_v_cnt.data + __pyx_t_8 * __pyx_v_cnt.strides[0]) )))));
-  } catch(...) {
-    __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 14, __pyx_L1_error)
-  }
-  __pyx_v_self->cppSimEngine = __pyx_t_9;
+  __pyx_v_self->cppSimEngine.SetAgentStrat((&(*((char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_hrd.data + __pyx_t_1 * __pyx_v_hrd.strides[0]) ) + __pyx_t_2 * __pyx_v_hrd.strides[1]) )))), (&(*((char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_sft.data + __pyx_t_4 * __pyx_v_sft.strides[0]) ) + __pyx_t_5 * __pyx_v_sft.strides[1]) )))), (&(*((char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_splt.data + __pyx_t_6 * __pyx_v_splt.strides[0]) ) + __pyx_t_7 * __pyx_v_splt.strides[1]) )))), (&(*((double *) ( /* dim=0 */ (__pyx_v_cnt.data + __pyx_t_8 * __pyx_v_cnt.strides[0]) )))));
 
-  /* "cardstream.pyx":9
- *     cdef SimEngineBJ cppSimEngine
+  /* "cardstream.pyx":16
+ *         # self.cppSimEngine = SimEngineBJ(nd, p, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
  * 
- *     def __init__(self, unsigned int nd, double p,             # <<<<<<<<<<<<<<
- *     char[:,:] hrd,
- *     char[:,:] sft,
+ *     def pySetAgentStrat(self, char[:,:] hrd, char[:,:] sft, char[:,:] splt, double[:] cnt):             # <<<<<<<<<<<<<<
+ *         self.cppSimEngine.SetAgentStrat(&hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
+ * 
  */
 
   /* function exit code */
-  __pyx_r = 0;
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("cardstream.PySimEngineBJ.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
+  __Pyx_AddTraceback("cardstream.PySimEngineBJ.pySetAgentStrat", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_hrd, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_sft, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_splt, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_cnt, 1);
+  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "cardstream.pyx":16
- *         self.cppSimEngine = SimEngineBJ(nd, p, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
+/* "cardstream.pyx":19
+ *         self.cppSimEngine.SetAgentStrat(&hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
  * 
  *     def pyTest(self):             # <<<<<<<<<<<<<<
  *         return <bytes>(self.cppSimEngine.Test())
@@ -2509,19 +2597,19 @@ static int __pyx_pf_10cardstream_13PySimEngineBJ___init__(struct __pyx_obj_10car
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_3pyTest(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_3pyTest(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_5pyTest(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_5pyTest(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("pyTest (wrapper)", 0);
-  __pyx_r = __pyx_pf_10cardstream_13PySimEngineBJ_2pyTest(((struct __pyx_obj_10cardstream_PySimEngineBJ *)__pyx_v_self));
+  __pyx_r = __pyx_pf_10cardstream_13PySimEngineBJ_4pyTest(((struct __pyx_obj_10cardstream_PySimEngineBJ *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_2pyTest(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self) {
+static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_4pyTest(struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   char __pyx_t_1;
@@ -2531,7 +2619,7 @@ static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_2pyTest(struct __pyx_obj_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("pyTest", 0);
 
-  /* "cardstream.pyx":17
+  /* "cardstream.pyx":20
  * 
  *     def pyTest(self):
  *         return <bytes>(self.cppSimEngine.Test())             # <<<<<<<<<<<<<<
@@ -2539,14 +2627,14 @@ static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_2pyTest(struct __pyx_obj_
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = __pyx_v_self->cppSimEngine.Test();
-  __pyx_t_2 = PyBytes_FromStringAndSize(&__pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_2 = PyBytes_FromStringAndSize(&__pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cardstream.pyx":16
- *         self.cppSimEngine = SimEngineBJ(nd, p, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
+  /* "cardstream.pyx":19
+ *         self.cppSimEngine.SetAgentStrat(&hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
  * 
  *     def pyTest(self):             # <<<<<<<<<<<<<<
  *         return <bytes>(self.cppSimEngine.Test())
@@ -2571,19 +2659,19 @@ static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_2pyTest(struct __pyx_obj_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_10cardstream_13PySimEngineBJ_4__reduce_cython__(((struct __pyx_obj_10cardstream_PySimEngineBJ *)__pyx_v_self));
+  __pyx_r = __pyx_pf_10cardstream_13PySimEngineBJ_6__reduce_cython__(((struct __pyx_obj_10cardstream_PySimEngineBJ *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self) {
+static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_6__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2628,19 +2716,19 @@ static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_4__reduce_cython__(CYTHON
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_10cardstream_13PySimEngineBJ_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_10cardstream_13PySimEngineBJ_6__setstate_cython__(((struct __pyx_obj_10cardstream_PySimEngineBJ *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_10cardstream_13PySimEngineBJ_8__setstate_cython__(((struct __pyx_obj_10cardstream_PySimEngineBJ *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_10cardstream_13PySimEngineBJ_8__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10cardstream_PySimEngineBJ *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -15744,9 +15832,10 @@ static void __pyx_tp_dealloc_10cardstream_PySimEngineBJ(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_10cardstream_PySimEngineBJ[] = {
-  {"pyTest", (PyCFunction)__pyx_pw_10cardstream_13PySimEngineBJ_3pyTest, METH_NOARGS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_10cardstream_13PySimEngineBJ_5__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_10cardstream_13PySimEngineBJ_7__setstate_cython__, METH_O, 0},
+  {"pySetAgentStrat", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_10cardstream_13PySimEngineBJ_3pySetAgentStrat, METH_VARARGS|METH_KEYWORDS, 0},
+  {"pyTest", (PyCFunction)__pyx_pw_10cardstream_13PySimEngineBJ_5pyTest, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_10cardstream_13PySimEngineBJ_7__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_10cardstream_13PySimEngineBJ_9__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 

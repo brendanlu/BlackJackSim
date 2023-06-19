@@ -14,5 +14,7 @@ THE ONLINE DOCS ONLY INCLUDE THIS AS A SIMPLE EXAMPLE, BUT IN OUR CASE, INCLUDIN
 cdef extern from "../src/simenginebj.hpp":
     cdef cppclass SimEngineBJ: 
         SimEngineBJ() except + 
-        SimEngineBJ(unsigned int, double, char*, char*, char*, double*) except + 
+        SimEngineBJ(unsigned int, double) except +
+        # SimEngineBJ(unsigned int, double, char*, char*, char*, double*) except + 
+        void SetAgentStrat(char*, char*, char*, double*)
         char Test()
