@@ -9,3 +9,7 @@ SimEngineBJ::SimEngineBJ(
 {
     ;
 }
+
+char SimEngineBJ::Test() {
+    return *hrdPtr;
+}

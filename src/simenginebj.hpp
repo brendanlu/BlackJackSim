@@ -7,6 +7,8 @@
 class SimEngineBJ
 {
 public: 
+    SimEngineBJ() {};
+
     SimEngineBJ(
         unsigned int ndecks,
         double penen, 
@@ -15,6 +17,8 @@ public:
         char* splt, 
         float* cnt
     );
+
+    char Test(); 
 
 private:
     Shoe simShoe;

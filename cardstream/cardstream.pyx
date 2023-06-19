@@ -1,8 +1,18 @@
 # distutils: language = c++
 
 import numpy as np
-cimport simengine
+from simengine cimport SimEngineBJ
 
-def some_func(int a): 
-    return (<bytes> simengine.bounce_back(a))
+cdef class PySimEngineBJ: 
+    cdef SimEngineBJ cppSimEngine
+
+    def __init__(self, unsigned int nd, double p, 
+    char[:,:] hrd, 
+    char[:,:] sft, 
+    char[:,:] splt, 
+    double[:] cnt,): 
+        self.cppSimEngine = SimEngineBJ(nd, p, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
+
+    def Test(): 
+        return <bytes>(self.cppSimEngine.Test())
 

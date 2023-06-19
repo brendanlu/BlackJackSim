@@ -23,4 +23,5 @@ splts = splits[1:,1:].astype('S1', order='C')
 count = pd.read_csv(r"Strategy Input\HiLoCount.csv", header=None)
 cnt = count.iloc[:,1].values.astype(float, order='C')
 
-print(cardstream.some_func(5))
+tryme = cardstream.PySimEngineBJ(1, 1, hrd, sft, splts, cnt)
+print(tryme.Test())

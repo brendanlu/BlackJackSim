@@ -20,6 +20,7 @@ The Shoe has logic implemented to ignore the rest of the redundant stack space.
 class Shoe
 {
 public:
+    Shoe() {};
     Shoe(unsigned int nDecks, double penentration);
     void Shuffle(unsigned int partial = MAX_DECKS*DECK_SIZE+1); // shuffles all by default
     void Display();
