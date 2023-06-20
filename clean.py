@@ -5,6 +5,7 @@ import shutil
 build_files = [
     r"cardstream.cp39-win_amd64.pyd", # python 3.9
     r"cardstream.cp310-win_amd64.pyd", # python 3.10
+    r"cardstream.cp311-win_amd64.pyd", # python 3.11
     r"cardstream\cardstream.cpp",
 ]
 
