@@ -4,6 +4,6 @@
 #include "types.hpp"
 
 template <typename T, typename randomNumGenerator>
-void FisherYatesShuffle(T* begin, T* end, unsigned int iters, randomNumGenerator& rng);
+void FisherYatesShuffle(T* arrHead, unsigned int n, unsigned int nPartial, randomNumGenerator& rng);
 
 #endif

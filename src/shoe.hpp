@@ -42,7 +42,7 @@ private:
 
     std::array<Card, MAX_DECKS*DECK_SIZE> cardStream; // we initialise this onto the stack, as we manipulate it alot
     unsigned int typicalCardsDealt; // how many cards are dealt before shoe is reshuffled
-    unsigned int cardStreamEndIdx; // this may be dodgy, but after this all cardStream stack values are blank
+    unsigned int nNonBlank; // number of non blank cards in stream
 };
 
 #endif

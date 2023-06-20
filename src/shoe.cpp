@@ -1,7 +1,6 @@
 
 #include <random>
 #include <iostream>
-using std::cout;
 
 #include "shoe.hpp"
 #include "types.hpp"
@@ -10,7 +9,7 @@ using std::cout;
 Shoe::Shoe(unsigned int nDecks, double penentration) : 
     NDECKS(nDecks),
     mersenneTwister(std::random_device()()), // seed our rng here, when class constructor called
-    cardStreamEndIdx(NDECKS*DECK_SIZE - 1),
+    nNonBlank(NDECKS*DECK_SIZE),
     typicalCardsDealt(std::min(
         static_cast<unsigned int>(NDECKS*DECK_SIZE*penentration+0.5),
         NDECKS*DECK_SIZE
@@ -28,19 +27,20 @@ Shoe::Shoe(unsigned int nDecks, double penentration) :
         }
     }}
     
-    // assert((filledUpTo - 1) == cardStreamEndIdx);
+    // assert(filledUpTo == nNonBlank);
 
     /* *** fill remaining stack array with BLANK_CARD */ 
     for (; filledUpTo<MAX_DECKS*DECK_SIZE; filledUpTo++) {cardStream[filledUpTo] = BLANK_CARD;}
 }
 
-void Shoe::Shuffle(unsigned int partial /* = MAX_DECKS*DECK_SIZE  */) 
+void Shoe::Shuffle(unsigned int partial /* = MAX_DECKS*DECK_SIZE+1 */) 
 {
     /* 
     ***By default we will shuffle the whole deck.
     If one passes in a smaller int than the size of the shoe, it will partial shuffle.
      */
-    FisherYatesShuffle(&cardStream[0], &cardStream[cardStreamEndIdx], partial, mersenneTwister);
+    FisherYatesShuffle(&cardStream[0], nNonBlank, partial, mersenneTwister);
+    dealUpTo = 0; // rest deal status
 }
 
 Card Shoe::Deal() {return cardStream[dealUpTo++];}
@@ -49,8 +49,8 @@ void Shoe::Display()
 {
     for (Card card: cardStream) {
         if (card == BLANK_CARD) {break;}
-        else {cout << card << " ";}
+        else {std::cout << card << " ";}
     }
-    cout << "\n";
+    std::cout << "\n";
 }
 
