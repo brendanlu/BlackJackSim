@@ -23,6 +23,7 @@ public:
     Shoe() {};
     Shoe(unsigned int nDecks, double penentration);
     void Shuffle(unsigned int partial = MAX_DECKS*DECK_SIZE+1); // shuffles all by default
+    
     Card Deal();
     
     unsigned int dealUpTo; 
