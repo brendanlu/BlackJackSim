@@ -7,8 +7,8 @@
 #include "fisheryates.hpp"
 
 Shoe::Shoe(unsigned int nDecks, double penentration) : 
-    NDECKS(nDecks),
     mersenneTwister(std::random_device()()), // seed our rng here, when class constructor called
+    NDECKS(nDecks),
     nNonBlank(NDECKS*DECK_SIZE),
     typicalCardsDealt(std::min(
         static_cast<unsigned int>(NDECKS*DECK_SIZE*penentration+0.5),
