@@ -14,6 +14,6 @@ void SimEngineBJ::SetBJPayout(double payout)
 
 
 
-char SimEngineBJ::Test() {
-    return simShoe.Deal().face;
+int SimEngineBJ::Test() {
+    return 1; 
 }

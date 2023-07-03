@@ -3,6 +3,7 @@
 
 #include <array>
 #include <random>
+#include "agent.hpp"
 #include "types.hpp"
 
 /*     
@@ -20,13 +21,14 @@ The Shoe has logic implemented to ignore the rest of the redundant stack space.
 class Shoe
 {
 public:
-    Shoe() {};
+    Shoe();
     Shoe(unsigned int nDecks, double penentration);
     void Shuffle(unsigned int partial = MAX_DECKS*DECK_SIZE+1); // shuffles all by default
     
-    Card Deal();
+    bool Deal(Agent targetAgent);
     
-    unsigned int dealUpTo; 
+    unsigned int nValidShuffled; 
+    unsigned int nDealt; 
 
     void Display();
 
@@ -42,7 +44,7 @@ private:
     static constexpr std::array<char, N_CARD_SUIT_VALS> SUIT_VALS = {'D', 'S', 'C', 'H'};
 
     std::array<Card, MAX_DECKS*DECK_SIZE> cardStream; // we initialise this onto the stack, as we manipulate it alot
-    unsigned int typicalCardsDealt; // how many cards are dealt before shoe is reshuffled
+    unsigned int nDeal; // how many cards are dealt before shoe is reshuffled
     unsigned int nNonBlank; // number of non blank cards in stream
 };
 

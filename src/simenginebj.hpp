@@ -14,7 +14,7 @@ public:
     void SetBJPayout(double payout);
     
 
-    char Test(); 
+    int Test(); 
     // for Python API user to be able to call
     unsigned int _NDECKS; 
     double _PENEN; 

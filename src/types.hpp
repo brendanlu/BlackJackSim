@@ -12,6 +12,12 @@ inline bool operator== (Card c1, const Card c2) {return ((c1.face==c2.face) && (
 
 constexpr Card BLANK_CARD = {'0', '0'};
 
+// struct to hold relevent simple information of the hand
+struct HandInfo {
+    unsigned int hrdVal; // hard value of the hand 
+    unsigned int sftVal; // soft value of the hand
+};
+
 constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
 
 #endif

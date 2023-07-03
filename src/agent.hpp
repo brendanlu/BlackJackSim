@@ -11,15 +11,16 @@ public:
     // construct an object by passing in pointers to the strategy template
     Agent(char* hrd, char* sft, char* splt, double* cnt); 
 
-    long long stackVal; // bankroll 
+    void dealHandler(Card dCard);
 
-    unsigned int hrdVal; // hard value of the hand 
-    unsigned int sftVal; // soft value of the hand
-    unsigned int cntVal; // card count as dictated by count input
+    long long stackVal; // bankroll 
+    bool stratInit; // keeps track of if the pointers below are actually pointing to strats
 
 private:
-    bool stratInit; // basically keeps track of if the pointers below are actually pointing to strats
     char* hrdPtr; char* sftPtr; char* spltPtr; double* cntPtr;  
+    unsigned int cntVal; // card count as dictated by count input
+
+    HandInfo hInfo; 
 };
 
 #endif

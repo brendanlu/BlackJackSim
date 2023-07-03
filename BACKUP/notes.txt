@@ -46,3 +46,8 @@ https://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented
 
 https://stackoverflow.com/questions/19036141/vary-range-of-uniform-int-distribution
     - varying range of C++ random integers, which we do all the time for Fisheryates
+
+
+Later, we can add count-deviated strategies as multiple strategy files. 
+    Perhaps agents can have an unordered map of count cutoffs (or something)
+    to the strategy pointer. 

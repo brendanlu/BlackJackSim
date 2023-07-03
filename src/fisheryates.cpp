@@ -10,13 +10,14 @@ https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 using unifIntBounds_t = std::uniform_int_distribution<unsigned int>::param_type;
 
 template <typename T, typename randomNumGenerator>
-void FisherYatesShuffle(T* arrHead, unsigned int n, unsigned int nPartial, randomNumGenerator& rng)
+unsigned int FisherYatesShuffle(T* arrHead, unsigned int n, unsigned int nPartial, randomNumGenerator& rng)
 /*
 FisherYates algorithm to shuffle a contiguous slice of array elements in place. 
 nPartial controls partial and incremental shuffle. 
     nPartial corresponds to how many elements we will partially shuffle
     so the first nPartial elements of the array will be new shuffles
 We take in a reference to our rng, which is external from this, so it preserves its random state. 
+The function returns the effective number of items it ends up shuffling. 
 */
 {
     unsigned int nEffective = std::min(nPartial, n);
@@ -29,8 +30,10 @@ We take in a reference to our rng, which is external from this, so it preserves 
         j = unifInt(rng);
         std::swap(*(arrHead+i), *(arrHead+j));
     }
+
+    return nEffective; // return the number of elements shuffled 
 };
 
 /* **Explicit instantiation of the FisherYates shuffle for Cards, and a mersenne twister rng */
-template void FisherYatesShuffle<Card, std::mt19937_64>
+template unsigned int FisherYatesShuffle<Card, std::mt19937_64>
 (Card* arrHead, unsigned int n, unsigned int nPartial, std::mt19937_64& mersenneTwister);

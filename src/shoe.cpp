@@ -6,15 +6,19 @@
 #include "types.hpp"
 #include "fisheryates.hpp"
 
+
+Shoe::Shoe() {};
+
 Shoe::Shoe(unsigned int nDecks, double penentration) : 
     mersenneTwister(std::random_device()()), // seed our rng here, when class constructor called
     NDECKS(nDecks),
     nNonBlank(NDECKS*DECK_SIZE),
-    typicalCardsDealt(std::min(
+    nDeal(std::min(
         static_cast<unsigned int>(NDECKS*DECK_SIZE*penentration+0.5),
         NDECKS*DECK_SIZE
     )), // if penentation is > 1, we just deal out whole deck stream
-    dealUpTo(0) 
+    nValidShuffled(0), 
+    nDealt(0)
 {
     /* *** fill cardStream for NDECKS */
     unsigned int filledUpTo = 0;
@@ -39,11 +43,18 @@ void Shoe::Shuffle(unsigned int partial /* = MAX_DECKS*DECK_SIZE+1 */)
     ***By default we will shuffle the whole deck.
     If one passes in a smaller int than the size of the shoe, it will partial shuffle.
      */
-    FisherYatesShuffle(&cardStream[0], nNonBlank, partial, mersenneTwister);
-    dealUpTo = 0; // rest deal status
+    nValidShuffled = FisherYatesShuffle(&cardStream[0], nNonBlank, partial, mersenneTwister);
+    nDealt = 0; // reset deal status
 }
 
-Card Shoe::Deal() {return cardStream[dealUpTo++];}
+bool Shoe::Deal(Agent targetAgent) 
+{
+    if (nDealt <= nValidShuffled) {
+        targetAgent.dealHandler(cardStream[nDealt++]);
+        return true;
+    }
+    else {return false;}
+}
 
 void Shoe::Display()
 {
