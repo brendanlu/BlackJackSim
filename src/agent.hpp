@@ -2,7 +2,6 @@
 #define AGENT_H 
 
 #include "types.hpp"
-
 class Agent 
 {
 public:
@@ -17,8 +16,10 @@ public:
     bool stratInit; // keeps track of if the pointers below are actually pointing to strats
 
 private:
-    char* hrdPtr; char* sftPtr; char* spltPtr; double* cntPtr;  
-    unsigned int cntVal; // card count as dictated by count input
+    double* cntPtr; // pointer to count values of various cards 
+    char* hrdPtr; char* sftPtr; char* spltPtr;  // pointer to strategy input files
+    
+    double cntVal; // card count as dictated by count input
 
     HandInfo hInfo; 
 };

@@ -13,12 +13,12 @@ Shoe::Shoe(unsigned int nDecks, double penentration) :
     mersenneTwister(std::random_device()()), // seed our rng here, when class constructor called
     NDECKS(nDecks),
     nNonBlank(NDECKS*DECK_SIZE),
-    nDeal(std::min(
+    nTilCut(std::min(
         static_cast<unsigned int>(NDECKS*DECK_SIZE*penentration+0.5),
         NDECKS*DECK_SIZE
     )), // if penentation is > 1, we just deal out whole deck stream
     nValidShuffled(0), 
-    nDealt(0)
+    nTilCutt(0)
 {
     /* *** fill cardStream for NDECKS */
     unsigned int filledUpTo = 0;
@@ -44,13 +44,18 @@ void Shoe::Shuffle(unsigned int partial /* = MAX_DECKS*DECK_SIZE+1 */)
     If one passes in a smaller int than the size of the shoe, it will partial shuffle.
      */
     nValidShuffled = FisherYatesShuffle(&cardStream[0], nNonBlank, partial, mersenneTwister);
-    nDealt = 0; // reset deal status
+    nTilCutt = 0; // reset deal status
 }
 
 bool Shoe::Deal(Agent targetAgent) 
 {
-    if (nDealt <= nValidShuffled) {
-        targetAgent.dealHandler(cardStream[nDealt++]);
+    /*
+    Simulates delaing a card to a player (Agent_t).
+
+    Returns the success status of this deal. 
+    */
+    if (nTilCutt <= nValidShuffled) {
+        targetAgent.dealHandler(cardStream[nTilCutt++]);
         return true;
     }
     else {return false;}

@@ -28,7 +28,7 @@ public:
     bool Deal(Agent targetAgent);
     
     unsigned int nValidShuffled; 
-    unsigned int nDealt; 
+    unsigned int nTilCutt; 
 
     void Display();
 
@@ -44,7 +44,7 @@ private:
     static constexpr std::array<char, N_CARD_SUIT_VALS> SUIT_VALS = {'D', 'S', 'C', 'H'};
 
     std::array<Card, MAX_DECKS*DECK_SIZE> cardStream; // we initialise this onto the stack, as we manipulate it alot
-    unsigned int nDeal; // how many cards are dealt before shoe is reshuffled
+    unsigned int nTilCut; // how many cards are dealt before we draw the (imaginary) cut card
     unsigned int nNonBlank; // number of non blank cards in stream
 };
 
