@@ -23,10 +23,10 @@ The function returns the effective number of items it ends up shuffling.
     unsigned int nEffective = std::min(nPartial, n);
     
     unsigned int j;
-    std::uniform_int_distribution<unsigned int> unifInt(0, nEffective-1);
+    std::uniform_int_distribution<unsigned int> unifInt(0, n-1);
     for (unsigned int i=0; i<=nEffective-1; ++i) 
     {
-        unifInt.param(unifIntBounds_t(i, nEffective-1));
+        unifInt.param(unifIntBounds_t(i, n-1));
         j = unifInt(rng);
         std::swap(*(arrHead+i), *(arrHead+j));
     }

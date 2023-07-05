@@ -50,7 +50,9 @@ void Shoe::Shuffle(unsigned int partial /* = MAX_DECKS*DECK_SIZE+1 */)
 bool Shoe::Deal(Agent targetAgent) 
 {
     /*
-    Simulates delaing a card to a player (Agent_t).
+    Simulates delaing a card to a player (Agent type).
+    Does some simple housekeeping on the Shoe side to make sure deal is ok.
+    Then calls the dealHandler method of the target Agent object.
 
     Returns the success status of this deal. 
     */
