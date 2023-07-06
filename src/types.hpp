@@ -20,4 +20,11 @@ struct HandInfo {
 
 constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
 
+// quick way to transform card faces into their corresponding numeric value
+/*
+enum class NumValue : int {
+    ;
+}
+*/
+
 #endif

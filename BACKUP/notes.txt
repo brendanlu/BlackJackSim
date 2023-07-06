@@ -51,3 +51,7 @@ https://stackoverflow.com/questions/19036141/vary-range-of-uniform-int-distribut
 Later, we can add count-deviated strategies as multiple strategy files. 
     Perhaps agents can have an unordered map of count cutoffs (or something)
     to the strategy pointer. 
+
+
+Use gperf (GNU) to generate a perfect hashtable, we want to be able 
+to convert card faces into their numeric values wickedly fast. 
