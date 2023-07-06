@@ -13,5 +13,8 @@ int main()
     new_shoe.Display();
     cout << "\n\n";
 
+    Card tryCard = {'3', 'D'};
+    cout << tryCard.val();
+
     return 0;
 }

@@ -20,7 +20,6 @@ private:
     char* hrdPtr; char* sftPtr; char* spltPtr;  // pointer to strategy input files
     
     double cntVal; // card count as dictated by count input
-
     HandInfo hInfo; 
 };
 
