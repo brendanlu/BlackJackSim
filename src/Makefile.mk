@@ -1,8 +1,9 @@
 CXX=g++
 OBJs = test.o \
+shoe.o \
+fisheryates.o \
 simenginebj.o \
-shoe.o fisheryates.o \
-agent.o
+agent.o 
 
 test : $(OBJs)
 	$(CXX) -o test $(OBJs)
@@ -22,7 +23,8 @@ simenginebj.o : simenginebj.cpp simenginebj.hpp shoe.hpp agent.hpp strategyinput
 agent.o : agent.cpp agent.hpp types.hpp
 	$(CXX) -c agent.cpp
 
-.PHONY : clean
-clean :
+# .PHONY : clean # run clean every time we make, might be redundant as we clunkily call it from Python already
+
+# clean : \
 	del test.exe $(OBJs)
 	
