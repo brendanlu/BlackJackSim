@@ -28,9 +28,9 @@ inline char spltActionFromPtr(char* head, unsigned int p, unsigned int d)
         return *(head + (p-2)*10 + (d-2));
 }
 
-inline double cntFromPtr(double* head, char face)
-{
-        return *(head + (face-2));
+inline double cntFromPtr(double* head, unsigned int val)
+{ // val is nominal value of the card 
+        return *(head + (val-2));
 }
 
 #endif

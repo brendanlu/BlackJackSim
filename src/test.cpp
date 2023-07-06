@@ -11,6 +11,7 @@ int main()
     cout << "\n\n";
     new_shoe.Shuffle(10);
     new_shoe.Display();
+    cout << "\n\n";
 
     return 0;
 }

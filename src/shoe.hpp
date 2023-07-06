@@ -31,7 +31,7 @@ public:
     unsigned int nTilCut; // how many cards are dealt before we draw the (imaginary) cut card
 
     void Display();
-
+    
 private:
     std::mt19937_64 mersenneTwister; // we should be able to change this later without breaking too many things
     unsigned int NDECKS; 
