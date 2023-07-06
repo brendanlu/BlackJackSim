@@ -20,11 +20,23 @@ struct HandInfo {
 
 constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
 
-// quick way to transform card faces into their corresponding numeric value
-/*
-enum class NumValue : int {
-    ;
+// we need a quick way to convert card face chars into ints
+// this operation happens very often, so we have tried to design an efficient implementation here
+constexpr unsigned int VALS[10] = {2,3,4,5,6,7,8,9,10,11};
+constexpr int ASCII_2 = 50; // ascii value of 2 
+constexpr int ASCII_9 = 57;
+constexpr int ASCII_A = 65; 
+
+inline unsigned int NUMVAL(char face) {
+    if ((int)face <= ASCII_9) { // 2-9 chars 
+        return VALS[(int)face - ASCII_2]; 
+    }
+    else if ((int)face == ASCII_A) { // A
+        return VALS[9];
+    }
+    else { // Must be T, J, Q, K
+        return VALS[8];
+    }
 }
-*/
 
 #endif
