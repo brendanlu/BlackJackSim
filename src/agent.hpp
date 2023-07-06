@@ -16,7 +16,7 @@ public:
     bool stratInit; // keeps track of if the pointers below are actually pointing to strats
 
 private:
-    double* cntPtr; // pointer to count values of various cards 
+    double* cntPtr; // pointer to find count values of various cards 
     char* hrdPtr; char* sftPtr; char* spltPtr;  // pointer to strategy input files
     
     double cntVal; // card count as dictated by count input
