@@ -1,6 +1,8 @@
 #ifndef TYPES_H
 #define TYPES_H 
-#include <iostream> // we need this to pass Card into std::ostream operator<<
+#include <iostream> // we need this to overload << for Card_t
+
+constexpr unsigned int BJVAL = 21; 
 
 constexpr unsigned int VALS[10] = {2,3,4,5,6,7,8,9,10,11};
 constexpr int ASCII_2 = 50; // ascii value of 2 
@@ -9,13 +11,13 @@ constexpr int ASCII_A = 65;
 struct Card {
     char face; 
     char suit;
-    // we need a quick way to convert card face chars into ints; their numeric values
-    // this operation happens very often, so we have tried to design an efficient implementation here
+    // quick, simple way to convert card face chars into ints; their numeric values
+    // this operation happens often
     inline unsigned int val() {
         // 2-9 chars 
         if ((int)face <= ASCII_9) {return VALS[(int)face - ASCII_2];}
         // A
-        else if ((int)face == ASCII_A) {return VALS[9];}
+        else if (face == 'A') {return VALS[9];}
         // Must be T, J, Q, K
         else {return VALS[8];}
     }
@@ -28,14 +30,5 @@ inline bool operator== (Card c1, const Card c2) {return ((c1.face==c2.face) && (
     // similarly inline, so we can compare with blank card
 
 constexpr Card BLANK_CARD = {'0', '0'};
-
-// struct to hold relevent simple information of the hand
-struct HandInfo {
-    unsigned int hrdVal; // hard value of the hand 
-    unsigned int sftVal; // soft value of the hand
-    unsigned int nCards; // number of cards in hand
-};
-
-constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
 
 #endif

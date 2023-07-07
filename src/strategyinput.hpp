@@ -8,7 +8,7 @@ Our contiguous C array from Numpy memoryviews will rely on this file to be
 We use this to perform correct pointer arithmetic on both 1D and 2D C arrays
         using the head of the array passed in at Cython level. 
 
-We use templated strategy input file , so we can hardcode this logic into inline functions.
+We use templated strategy input files, so we can hardcode this logic into inline functions.
         This is directly based off the templated csv files. 
 */
 

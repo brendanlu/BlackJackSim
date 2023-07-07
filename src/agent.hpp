@@ -2,14 +2,26 @@
 #define AGENT_H 
 
 #include "types.hpp"
+
+constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
+
+// struct to hold relevent information of the hand
+// can adjust relatively easily, and change the relevant methods (& constructor)
+struct HandInfo {
+    unsigned int handVal; // soft/hard value of the hand, depending on if we have aces
+    unsigned int nSoftAces; // number of aces that are (soft) counted as 11 in hand
+    unsigned int nCards; // number of cards in hand
+};
+
 class Agent 
 {
 public:
-    Agent(); // cython needs nullary constructor, and this is memeber class of simenginebj
-
+    // cython needs nullary constructor, and this is memeber class of simenginebj
+    Agent(); 
     // construct an object by passing in pointers to the strategy template
     Agent(char* hrd, char* sft, char* splt, double* cnt); 
 
+    // logic for recieving one card
     void dealHandler(Card dCard);
 
     long long stackVal; // bankroll 
