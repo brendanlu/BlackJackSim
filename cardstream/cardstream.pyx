@@ -17,5 +17,5 @@ cdef class PySimEngineBJ:
         self.cppSimEngine.SetAgentStrat(&hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
 
     def pyTest(self): 
-        return self.cppSimEngine.Test()
+        return <int>self.cppSimEngine.RunSimulation(1000)
 

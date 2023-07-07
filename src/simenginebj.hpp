@@ -4,6 +4,11 @@
 #include "shoe.hpp"
 #include "agent.hpp"
 
+enum class ERR_CODE : int {
+    NO_AGENT_STRAT = 1, 
+    SUCCESS = 100, 
+};
+
 class SimEngineBJ
 {
 public: 
@@ -13,6 +18,7 @@ public:
     void SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt);
     void SetBJPayout(double payout);
     
+    ERR_CODE RunSimulation(unsigned long long nIters);
 
     int Test(); 
     // for Python API user to be able to call

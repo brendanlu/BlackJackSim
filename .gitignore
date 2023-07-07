@@ -202,4 +202,6 @@ cython_debug/
 *.app
 
 # Cython generated files ------------------------------
-cardstream.cpp
+
+# this is Cython generated code
+cardstream.cpp 
