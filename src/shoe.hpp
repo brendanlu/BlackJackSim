@@ -23,18 +23,14 @@ class Shoe
 public:
     Shoe();
     Shoe(unsigned int nDecks, double penentration);
-    void Shuffle(unsigned int partial = MAX_DECKS*DECK_SIZE+1); // shuffles all by default
+
+    void Shuffle(unsigned int partial = MAX_DECKS * DECK_SIZE); // shuffles all by default
     
     bool Deal(Agent targetAgent);
     
-    unsigned int nValidShuffled; 
-    unsigned int nTilCut; // how many cards are dealt before we draw the (imaginary) cut card
-
     void Display();
     
 private:
-    std::mt19937_64 mersenneTwister; // we should be able to change this later without breaking too many things
-    unsigned int NDECKS; 
     static constexpr unsigned int MAX_DECKS = 8;
     static constexpr unsigned int DECK_SIZE = 52;
     static constexpr unsigned int N_CARD_FACE_VALS = 13;
@@ -43,8 +39,16 @@ private:
     static constexpr std::array<char, N_CARD_FACE_VALS> FACE_VALS = {'2','3','4','5','6','7','8','9','T','J','Q','K','A'};
     static constexpr std::array<char, N_CARD_SUIT_VALS> SUIT_VALS = {'D', 'S', 'C', 'H'};
 
+    std::mt19937_64 mersenneTwister; // we should be able to change this later without breaking too many things
+
+    unsigned int NDECKS; 
+    unsigned int nCards; // number of non blank cards in stream
+    unsigned int nValidShuffled; // if we partial shuffled, how many were partially shuffled last time
+    unsigned int nDealt; // how many cards shoe has dealt
+    unsigned int nTilCut; // how many cards are dealt before we draw the (imaginary) cut card
+    
     std::array<Card, MAX_DECKS*DECK_SIZE> cardStream; // we initialise this onto the stack, as we manipulate it alot
-    unsigned int nNonBlank; // number of non blank cards in stream
+    
 };
 
 #endif

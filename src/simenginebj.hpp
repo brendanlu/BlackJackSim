@@ -4,6 +4,7 @@
 #include "shoe.hpp"
 #include "agent.hpp"
 
+// a collection of some error codes
 enum class ERR_CODE : int {
     NO_AGENT_STRAT = 1, 
     SUCCESS = 100, 

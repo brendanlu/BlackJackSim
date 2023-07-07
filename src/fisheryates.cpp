@@ -16,8 +16,12 @@ FisherYates algorithm to shuffle a contiguous slice of array elements in place.
 nPartial controls partial and incremental shuffle. 
     nPartial corresponds to how many elements we will partially shuffle
     so the first nPartial elements of the array will be new shuffles
+
 We take in a reference to our rng, which is external from this, so it preserves its random state. 
 The function returns the effective number of items it ends up shuffling. 
+
+When nPartial in {n, n-1}, I think the last iteration of the loop is redundant. 
+But in other cases, we need that last iteration for an appropriate partial shuffle. 
 */
 {
     unsigned int nEffective = std::min(nPartial, n);

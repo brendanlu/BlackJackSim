@@ -11,6 +11,8 @@ struct HandInfo {
     unsigned int handVal; // soft/hard value of the hand, depending on if we have aces
     unsigned int nSoftAces; // number of aces that are (soft) counted as 11 in hand
     unsigned int nCards; // number of cards in hand
+    char lastFace; // for triggering pair flag
+    bool holdingPair; // flag if we are holding a pair
 };
 
 class Agent 

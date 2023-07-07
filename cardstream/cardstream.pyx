@@ -18,3 +18,10 @@ cdef class PySimEngineBJ:
 
     def pyTest(self, unsigned int nIters): 
         return <int>self.cppSimEngine.RunSimulation(nIters)
+
+
+
+"""
+Low priority: Interpret c++ error flags here somehow.
+Can we wrap our enum class somehow??? 
+"""
