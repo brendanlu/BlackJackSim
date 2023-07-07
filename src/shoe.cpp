@@ -37,14 +37,24 @@ Shoe::Shoe(unsigned int N_DECKS, double penentration) :
     for (; filledUpTo<MAX_DECKS*DECK_SIZE; filledUpTo++) {cardStream[filledUpTo] = BLANK_CARD;}
 }
 
-void Shoe::Shuffle(unsigned int partial /* = MAX_DECKS*DECK_SIZE */) 
+void Shoe::fullShuffle() 
 {
-    /* 
-    ***By default we will shuffle the whole deck.
-    If one passes in a smaller int than the size of the shoe, it will partial shuffle.
-     */
-    nValidShuffled = FisherYatesShuffle(&cardStream[0], N_CARDS, partial, mersenneTwister);
+    /* Shuffle the whole deck, at the start of a simulation run */
+    nValidShuffled = FisherYatesShuffle(&cardStream[0], N_CARDS, N_CARDS, mersenneTwister);
     nDealt = 0; // reset deal status
+}
+
+void Shoe::efficientShuffle() 
+{
+    /*
+    We shuffle the shoe a lot in simulations.
+    We can save some computation by not fully shuffling the shoe always, 
+    but only shuffling as we need. 
+
+    We process the shuffle need to make an appropriate call to the FY shuffle algorithm.
+    Also update Shoe status variables appropriately. 
+    */
+    ;
 }
 
 bool Shoe::Deal(Agent targetAgent) 

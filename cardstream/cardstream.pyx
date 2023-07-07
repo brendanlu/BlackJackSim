@@ -22,6 +22,5 @@ cdef class PySimEngineBJ:
 
 
 """
-Low priority: Interpret c++ error flags here somehow.
-Can we wrap our enum class somehow??? 
+Low priority: Write some Python errors to hand the ERR_CODES and give information back out here.
 """

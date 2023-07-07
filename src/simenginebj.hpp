@@ -4,7 +4,11 @@
 #include "shoe.hpp"
 #include "agent.hpp"
 
-// a collection of some error codes
+/*
+This SimEngine uses the Shoe and Agent objects, which have been designed for Blackjack,
+This class actually implements the game logic by ochestrating the method calls. 
+*/
+
 enum class ERR_CODE : int {
     NO_AGENT_STRAT = 1, 
     SUCCESS = 100, 
@@ -14,18 +18,12 @@ class SimEngineBJ
 {
 public: 
     SimEngineBJ() {}; // Cython needs nullary constructor to init to stack...
-    // ... but this wil always be called from the Python init method
+    // ... but this second constructor wil always be called from the Python init method
     SimEngineBJ(unsigned int N_DECKS, double penen);
 
     void SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt);
-    void SetBJPayout(double payout);
     
     ERR_CODE RunSimulation(unsigned long long nIters);
-
-    // for Python API user to be able to call
-    unsigned int _N_DECKS; 
-    double _PENEN; 
-    double _BJPAYOUT; 
 
 private:
     Shoe simShoe;

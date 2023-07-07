@@ -24,7 +24,14 @@ public:
     Shoe();
     Shoe(unsigned int N_DECKS, double penentration);
 
-    void Shuffle(unsigned int partial = MAX_DECKS * DECK_SIZE); // shuffles all by default
+    unsigned int N_DECKS; 
+    unsigned int N_CARDS; // number of non blank cards in stream
+    unsigned int N_UNTIL_CUT; // how many cards are dealt before we draw an (imaginary) cut card
+    unsigned int nValidShuffled; // if we partial shuffled, how many were partially shuffled last time
+    unsigned int nDealt; // how many cards shoe has dealt
+
+    void fullShuffle(); // shuffles all by default
+    void efficientShuffle(); // partial shuffle
     
     bool Deal(Agent targetAgent);
     
@@ -41,12 +48,6 @@ private:
 
     std::mt19937_64 mersenneTwister; // we should be able to change this later without breaking too many things
 
-    unsigned int N_DECKS; 
-    unsigned int N_CARDS; // number of non blank cards in stream
-    unsigned int N_UNTIL_CUT; // how many cards are dealt before we draw an (imaginary) cut card
-    unsigned int nValidShuffled; // if we partial shuffled, how many were partially shuffled last time
-    unsigned int nDealt; // how many cards shoe has dealt
-    
     std::array<Card, MAX_DECKS*DECK_SIZE> cardStream; // we initialise this onto the stack, as we manipulate it alot
     
 };

@@ -3,6 +3,16 @@
 
 #include "types.hpp"
 
+/*
+The Agent is quite a simple class, as most of its game logic comes from the 
+    input strategy files. 
+
+Potential downstream users can choose to directly alter this class, to encode some 
+    more complex and intricate game variations. 
+The logic in the handler methods are the best place to start, and only affect the
+    behaviour of the Agent, and are not critical to the correct operation of the simulation. 
+*/
+
 constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
 
 // struct to hold relevent information of the hand
