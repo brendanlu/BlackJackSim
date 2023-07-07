@@ -12,9 +12,14 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
     // So at this point it will be populated and ready to go
     if (!simAgent.stratInit) {return ERR_CODE::NO_AGENT_STRAT;}
 
-    simShoe.fullShuffle(); // do a full shuffle of the shoe
+    simShoe.FullShuffle(); // do a full shuffle of the shoe
     for (unsigned long long i=0; i<nIters; ++i) { // each iteration is playing one shoe
-        simShoe.efficientShuffle();
+        simShoe.EfficientShuffle(); // partial fresh shuffle - see Shoe implementation
+        simAgent.ShuffleHandler(); 
+
+
+        // another event loop to play one hand
+
     }
 
     return ERR_CODE::SUCCESS;

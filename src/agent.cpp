@@ -1,5 +1,5 @@
-#include "types.hpp"
 #include "agent.hpp"
+#include "types.hpp"
 #include "strategyinput.hpp"
 
 Agent::Agent() : stratInit(false) {} // flag that we do not have pointers to strats yet
@@ -18,7 +18,7 @@ hInfo({
 {}
 
 // logic for recieving one card
-void Agent::dealHandler(Card dCard) {
+void Agent::DealHandler(Card dCard) {
     // change internal running count
     cntVal += cntFromPtr(cntPtr, dCard.val()); 
 
@@ -38,4 +38,8 @@ void Agent::dealHandler(Card dCard) {
     {
         if (hInfo.lastFace == dCard.face) {hInfo.holdingPair = true;}
     }
+}
+
+void Agent::ShuffleHandler() {
+    cntVal = 0;
 }

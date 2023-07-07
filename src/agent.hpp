@@ -34,7 +34,8 @@ public:
     Agent(char* hrd, char* sft, char* splt, double* cnt); 
 
     // logic for recieving one card
-    void dealHandler(Card dCard);
+    void DealHandler(Card dCard);
+    void ShuffleHandler(); 
 
     long long stackVal; // bankroll 
     bool stratInit; // keeps track of if the pointers below are actually pointing to strats

@@ -9,7 +9,7 @@
 
 Shoe::Shoe() {};
 
-Shoe::Shoe(unsigned int N_DECKS, double penentration) : 
+Shoe::Shoe(unsigned int NDECKS, double penentration) : 
     mersenneTwister(std::random_device()()), // seed our rng here, when class constructor called
     N_DECKS(N_DECKS),
     N_CARDS(N_DECKS*DECK_SIZE),
@@ -18,7 +18,8 @@ Shoe::Shoe(unsigned int N_DECKS, double penentration) :
         N_CARDS
     )),
     nValidShuffled(0),
-    nDealt(0)
+    nDealt(0),
+    nDiscarded(0)
 {
     /* *** fill cardStream for N_DECKS */
     unsigned int filledUpTo = 0;
@@ -35,14 +36,15 @@ Shoe::Shoe(unsigned int N_DECKS, double penentration) :
     for (; filledUpTo<MAX_DECKS*DECK_SIZE; filledUpTo++) {cardStream[filledUpTo] = BLANK_CARD;}
 }
 
-void Shoe::fullShuffle() 
+void Shoe::FullShuffle() 
 {
     /* Shuffle the whole deck, at the start of a simulation run */
     nValidShuffled = FisherYatesShuffle(&cardStream[0], N_CARDS, N_CARDS, mersenneTwister);
     nDealt = 0; // reset deal status
+    nDiscarded = 0;
 }
 
-void Shoe::efficientShuffle(unsigned int from /*=0*/, unsigned int nPartial) 
+void Shoe::EfficientShuffle(unsigned int from /*=0*/, unsigned int nPartial) 
 {
     /*
     We shuffle the shoe a lot in simulations.
@@ -56,6 +58,9 @@ void Shoe::efficientShuffle(unsigned int from /*=0*/, unsigned int nPartial)
         it needs to deal fresh cards exceeding nValidShuffled.
     */
 
+    unsigned int nNonBlankRemaining; // for nontrivial cases, compute how many cards until the end of the stream
+    unsigned int nSuccessShuffled; // how many did our Fisher Yates shuffle algorithm shuffle fresh for us?
+
     if (nPartial == 0) { // default is to shuffle up until cut card
         nPartial == N_UNTIL_CUT; 
     }
@@ -63,26 +68,36 @@ void Shoe::efficientShuffle(unsigned int from /*=0*/, unsigned int nPartial)
     if (from == 0) { // just a new partial "reset" shuffle of the shoe
         nValidShuffled = FisherYatesShuffle(&cardStream[0], N_CARDS, nPartial, mersenneTwister); 
         nDealt = 0;
+        nDiscarded = 0;
     }
     else { // in this case, we are asking for more shuffled cards, we are still playing the same shoe
-        ;
+        nNonBlankRemaining = N_CARDS - nDealt;
+        nSuccessShuffled = FisherYatesShuffle(&cardStream[from], nNonBlankRemaining, nPartial, mersenneTwister);
+
+        nValidShuffled += nSuccessShuffled;
+        // WE NEED TO HANDLE THE CASE WHERE THE ACTIVE SHOE ACTUALLY RUNS OUT OF CARDS
+            // NOT JUST FRESH CARDS, BUT COMPLETELY OUT OF CARDS
     }
 }
 
-bool Shoe::Deal(Agent targetAgent) 
+void Shoe::Deal(Agent targetAgent) 
 {
     /*
     Simulates delaing a card to a player (Agent type).
     Does some simple housekeeping on the Shoe side to make sure deal is ok.
-    Then calls the dealHandler method of the target Agent object.
+    Then calls the DealHandler method of the target Agent object.
 
     Returns the success status of this deal. 
     */
-    if (nDealt + 1 <= nValidShuffled) {
-        targetAgent.dealHandler(cardStream[nDealt++]);
-        return true;
+
+    if (nDealt + 1 <= nValidShuffled) { // we have "fresh" shuffled cards to deal
+        targetAgent.DealHandler(cardStream[nDealt++]);
     }
-    else {return false;}
+    else { // we can just get some more "fresh" shuffled cards in the cardstream
+        this->EfficientShuffle(nDealt, 1);
+        targetAgent.DealHandler(cardStream[nDealt++]); 
+    }
+    // SAME PROBLEM - WE NEED TO HANDLE THE CASE WHERE WE DO NOT HAVE ENOUGH REAL CARDS TO DEAL
 }
 
 void Shoe::Display()

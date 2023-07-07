@@ -9,7 +9,7 @@ int main()
     Shoe new_shoe(1, 0.25);
     new_shoe.Display();
     cout << "\n\n";
-    new_shoe.fullShuffle();
+    new_shoe.FullShuffle();
     new_shoe.Display();
     cout << "\n\n";
 
