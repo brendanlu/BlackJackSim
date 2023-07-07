@@ -24,6 +24,6 @@ count = pd.read_csv(r"Strategy Input\HiLoCount.csv", header=None)
 cnt = count.iloc[:,1].values.astype(float, order='C')
 
 tryme = cardstream.PySimEngineBJ(1, 1)
-print(tryme.pyTest())
+print(tryme.pyTest(1000))
 tryme.pySetAgentStrat(hrd, sft, splts, cnt)
-print(tryme.pyTest())
+print(tryme.pyTest(1000))

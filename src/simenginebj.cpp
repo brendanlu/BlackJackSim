@@ -15,7 +15,3 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
 
     return ERR_CODE::SUCCESS;
 }
-
-int SimEngineBJ::Test() {
-    return 1; 
-}

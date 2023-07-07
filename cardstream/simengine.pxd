@@ -10,7 +10,7 @@ BECAUSE WE ACTUALLY LIST THE CPP FILE AS A SOURCE, CYTHON CAN FIND IT VIA THE CO
 THE ONLINE DOCS ONLY INCLUDE THIS AS A SIMPLE EXAMPLE, BUT IN OUR CASE, INCLUDING IT IS LIKE INCLUDING CPP FILES IN CPP CODE.
 """
 
-# include header file stuff 
+# Cython C type method/attribute declarations for the simengine cpp class
 cdef extern from "../src/simenginebj.hpp":
     cdef cppclass SimEngineBJ: 
         SimEngineBJ() except + 
@@ -18,4 +18,3 @@ cdef extern from "../src/simenginebj.hpp":
         # SimEngineBJ(unsigned int, double, char*, char*, char*, double*) except + 
         void SetAgentStrat(char*, char*, char*, double*)
         int RunSimulation(unsigned long long)
-        int Test()

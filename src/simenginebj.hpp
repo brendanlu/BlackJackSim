@@ -12,7 +12,8 @@ enum class ERR_CODE : int {
 class SimEngineBJ
 {
 public: 
-    SimEngineBJ() {}; // Cython needs nullary constructor to init to stack
+    SimEngineBJ() {}; // Cython needs nullary constructor to init to stack...
+    // ... but this wil always be called from the Python init method
     SimEngineBJ(unsigned int ndecks, double penen);
 
     void SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt);
@@ -20,7 +21,6 @@ public:
     
     ERR_CODE RunSimulation(unsigned long long nIters);
 
-    int Test(); 
     // for Python API user to be able to call
     unsigned int _NDECKS; 
     double _PENEN; 
