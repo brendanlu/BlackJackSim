@@ -31,7 +31,7 @@ public:
     unsigned int nDealt; // how many cards shoe has dealt
 
     void fullShuffle(); // shuffles all by default
-    void efficientShuffle(); // partial shuffle
+    void efficientShuffle(unsigned int from = 0, unsigned int nPartial = 0); // partial shuffle
     
     bool Deal(Agent targetAgent);
     

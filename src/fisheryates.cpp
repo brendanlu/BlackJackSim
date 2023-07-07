@@ -16,6 +16,7 @@ FisherYates algorithm to shuffle a contiguous slice of array elements in place.
 nPartial controls partial and incremental shuffle. 
     nPartial corresponds to how many elements we will partially shuffle
     so the first nPartial elements of the array will be new shuffles
+    it can take nPartial > n, where it will then default to n 
 
 We take in a reference to our rng, which is external from this, so it preserves its random state. 
 The function returns the effective number of items it ends up shuffling. 

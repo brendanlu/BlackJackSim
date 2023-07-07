@@ -30,8 +30,6 @@ Shoe::Shoe(unsigned int N_DECKS, double penentration) :
             filledUpTo += 1;
         }
     }}
-    
-    // assert(filledUpTo == N_CARDS);
 
     /* *** fill remaining stack array with BLANK_CARD */ 
     for (; filledUpTo<MAX_DECKS*DECK_SIZE; filledUpTo++) {cardStream[filledUpTo] = BLANK_CARD;}
@@ -44,7 +42,7 @@ void Shoe::fullShuffle()
     nDealt = 0; // reset deal status
 }
 
-void Shoe::efficientShuffle() 
+void Shoe::efficientShuffle(unsigned int from /*=0*/, unsigned int nPartial) 
 {
     /*
     We shuffle the shoe a lot in simulations.
@@ -53,8 +51,22 @@ void Shoe::efficientShuffle()
 
     We process the shuffle need to make an appropriate call to the FY shuffle algorithm.
     Also update Shoe status variables appropriately. 
+
+    This method is called by the simulation engine, but also the Shoe itself when 
+        it needs to deal fresh cards exceeding nValidShuffled.
     */
-    ;
+
+    if (nPartial == 0) { // default is to shuffle up until cut card
+        nPartial == N_UNTIL_CUT; 
+    }
+
+    if (from == 0) { // just a new partial "reset" shuffle of the shoe
+        nValidShuffled = FisherYatesShuffle(&cardStream[0], N_CARDS, nPartial, mersenneTwister); 
+        nDealt = 0;
+    }
+    else { // in this case, we are asking for more shuffled cards, we are still playing the same shoe
+        ;
+    }
 }
 
 bool Shoe::Deal(Agent targetAgent) 
