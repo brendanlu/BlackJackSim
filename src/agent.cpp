@@ -11,7 +11,7 @@ hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), cntVal(0)
 hInfo({
     0, // handVal
     0, // nSoftAces
-    0, // nCards
+    0, // N_CARDS
     '0', // lastFace
     false // holdingPair
 }) 
@@ -22,7 +22,7 @@ void Agent::dealHandler(Card dCard) {
     // change internal running count
     cntVal += cntFromPtr(cntPtr, dCard.val()); 
 
-    hInfo.nCards += 1;
+    hInfo.nHolding += 1;
 
     // adjust hand value - with soft count logic
     if (dCard.face == 'A') {hInfo.nSoftAces += 1;}
@@ -33,8 +33,8 @@ void Agent::dealHandler(Card dCard) {
     }
 
     // track if we have pairs
-    if (hInfo.nCards == 1) {hInfo.lastFace = dCard.face;}
-    else if (hInfo.nCards == 2) 
+    if (hInfo.nHolding == 1) {hInfo.lastFace = dCard.face;}
+    else if (hInfo.nHolding == 2) 
     {
         if (hInfo.lastFace == dCard.face) {hInfo.holdingPair = true;}
     }

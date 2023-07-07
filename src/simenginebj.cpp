@@ -1,8 +1,8 @@
 #include "simenginebj.hpp"
 #include "strategyinput.hpp"
 
-SimEngineBJ::SimEngineBJ(unsigned int ndecks, double penen) : 
-    simShoe(ndecks, penen), _NDECKS(ndecks), _PENEN(penen), _BJPAYOUT(1.5) {;}
+SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
+    simShoe(N_DECKS, penen), _N_DECKS(N_DECKS), _PENEN(penen), _BJPAYOUT(1.5) {;}
 
 void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
 {simAgent = Agent(hrd, sft, splt, cnt);}
