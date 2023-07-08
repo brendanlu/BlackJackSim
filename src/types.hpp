@@ -31,4 +31,9 @@ inline bool operator== (Card c1, const Card c2) {return ((c1.face==c2.face) && (
 
 constexpr Card BLANK_CARD = {'0', '0'};
 
+enum class ERR_CODE : int {
+    NO_AGENT_STRAT = 1, 
+    SUCCESS = 100, 
+};
+
 #endif

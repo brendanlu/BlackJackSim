@@ -27,14 +27,16 @@ public:
     unsigned int N_DECKS; 
     unsigned int N_CARDS; // number of non blank cards in stream
     unsigned int N_UNTIL_CUT; // how many cards are dealt before we draw an (imaginary) cut card
+
     unsigned int nValidShuffled; // if we partial shuffled, how many were partially shuffled last time
     unsigned int nDealt; // how many cards shoe has dealt
     unsigned int nDiscarded; // these are cards dealt, and also off the table in the discard tray
 
-    void FullShuffle(); // shuffles all by default
-    void EfficientShuffle(unsigned int from = 0, unsigned int nPartial = 0); // partial shuffle
-    
+    bool needReshuffle; // flag that cut card has been drawn
+
+    void EfficientShuffle(unsigned int from, unsigned int nPartial); 
     void Deal(Agent targetAgent);
+    void Clear(); 
     
     void Display();
     
@@ -50,7 +52,6 @@ private:
     std::mt19937_64 mersenneTwister; // we should be able to change this later without breaking too many things
 
     std::array<Card, MAX_DECKS*DECK_SIZE> cardStream; // we initialise this onto the stack, as we manipulate it alot
-    
 };
 
 #endif

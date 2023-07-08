@@ -1,5 +1,5 @@
+#include "types.hpp"
 #include "simenginebj.hpp"
-#include "strategyinput.hpp"
 
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
     simShoe(N_DECKS, penen) {;}
@@ -12,11 +12,12 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
     // So at this point it will be populated and ready to go
     if (!simAgent.stratInit) {return ERR_CODE::NO_AGENT_STRAT;}
 
-    simShoe.FullShuffle(); // do a full shuffle of the shoe
+    simShoe.EfficientShuffle(0, simShoe.N_CARDS); // do a full shuffle of the shoe
     for (unsigned long long i=0; i<nIters; ++i) { // each iteration is playing one shoe
-        simShoe.EfficientShuffle(); // partial fresh shuffle - see Shoe implementation
+        simShoe.EfficientShuffle(0, simShoe.N_UNTIL_CUT); // partial fresh shuffle - see Shoe implementation
         simAgent.ShuffleHandler(); 
 
+        
 
         // another event loop to play one hand
 

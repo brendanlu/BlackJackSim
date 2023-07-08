@@ -1,6 +1,7 @@
 #ifndef SIMENGINE_H
 #define SIMENGINE_H 
 
+#include "types.hpp"
 #include "shoe.hpp"
 #include "agent.hpp"
 
@@ -8,11 +9,6 @@
 This SimEngine uses the Shoe and Agent objects, which have been designed for Blackjack,
 This class actually implements the game logic by ochestrating the method calls. 
 */
-
-enum class ERR_CODE : int {
-    NO_AGENT_STRAT = 1, 
-    SUCCESS = 100, 
-};
 
 class SimEngineBJ
 {

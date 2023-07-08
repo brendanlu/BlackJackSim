@@ -34,10 +34,7 @@ void Agent::DealHandler(Card dCard) {
 
     // track if we have pairs
     if (hInfo.nHolding == 1) {hInfo.lastFace = dCard.face;}
-    else if (hInfo.nHolding == 2) 
-    {
-        if (hInfo.lastFace == dCard.face) {hInfo.holdingPair = true;}
-    }
+    else if (hInfo.nHolding == 2 && hInfo.lastFace == dCard.face) {hInfo.holdingPair = true;}
 }
 
 void Agent::ShuffleHandler() {
