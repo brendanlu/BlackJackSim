@@ -4,6 +4,11 @@
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
     simShoe(N_DECKS, penen) {;}
 
+struct SimEngineBJ::simDealer 
+{
+    bool hitSoft17; 
+};
+
 void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
 {simAgent = Agent(hrd, sft, splt, cnt);}
 
@@ -17,7 +22,7 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
         simShoe.EfficientShuffle(0, simShoe.N_UNTIL_CUT); // partial fresh shuffle - see Shoe implementation
         simAgent.ShuffleHandler(); 
 
-        
+
 
         // another event loop to play one hand
 

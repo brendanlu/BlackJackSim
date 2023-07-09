@@ -10,7 +10,7 @@ int main()
     Shoe new_shoe(1, 0.25);
     new_shoe.Display();
     cout << "\n\n";
-    new_shoe.EfficientShuffle(49, 1);
+    new_shoe.EfficientShuffle(2, 3);
     new_shoe.Display();
     cout << "\n\n";
 

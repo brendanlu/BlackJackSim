@@ -5,6 +5,7 @@
 #include "shoe.hpp"
 #include "types.hpp"
 #include "fisheryates.hpp"
+#include "simenginebj.hpp"
 
 // Cython needs a nullary constructor
 Shoe::Shoe() {};
@@ -70,7 +71,7 @@ void Shoe::EfficientShuffle(unsigned int from, unsigned int nPartial)
     }
 }
 
-void Shoe::Deal(Agent targetAgent) 
+template<typename targetType> void Shoe::Deal(targetType &target) 
 {
     /*
     Simulates delaing a card to a player (Agent type).
@@ -81,14 +82,17 @@ void Shoe::Deal(Agent targetAgent)
     */
 
     if (nDealt + 1 <= nValidShuffled) { // we have "fresh" shuffled cards to deal
-        targetAgent.DealHandler(cardStream[nDealt++]);
+        target.DealHandler(cardStream[nDealt++]);
     }
     else { // we can just get some more "fresh" shuffled cards in the cardstream
         needReshuffle = true;
         EfficientShuffle(nDealt, 1);
-        Deal(targetAgent);
+        Deal(target);
     }
 }
+
+template void Shoe::Deal<Agent>(Agent&); 
+template void Shoe::Deal<SimEngineBJ::simDealer>(SimEngineBJ::simDealer&); 
 
 void Shoe::Clear() {
     // simulates clearing the table of cards

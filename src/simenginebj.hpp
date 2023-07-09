@@ -22,9 +22,10 @@ public:
     ERR_CODE RunSimulation(unsigned long long nIters);
 
 private:
+    struct simDealer;
     Shoe simShoe;
     Agent simAgent; 
-
+    
 };
 
 

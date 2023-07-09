@@ -40,5 +40,4 @@ But in other cases, we need that last iteration for an appropriate partial shuff
 };
 
 /* **Explicit instantiation of the FisherYates shuffle for Cards, and a mersenne twister rng */
-template unsigned int FisherYatesShuffle<Card, std::mt19937_64>
-(Card* arrHead, unsigned int n, unsigned int nPartial, std::mt19937_64& mersenneTwister);
+template unsigned int FisherYatesShuffle<Card, std::mt19937_64>(Card*, unsigned int, unsigned int, std::mt19937_64&);

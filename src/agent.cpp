@@ -9,13 +9,12 @@ Agent::Agent() : stratInit(false) {} // flag that we do not have pointers to str
 Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) : 
 hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), cntVal(0), 
 hInfo({
-    0, // handVal
-    0, // nSoftAces
-    0, // N_CARDS
-    '0', // lastFace
-    false // holdingPair
-}) 
-{}
+    0,      //  handVal
+    0,      //  nSoftAces
+    0,      //  N_CARDS
+    '0',    //  lastFace
+    false   //  holdingPair
+}) {}
 
 // logic for recieving one card
 void Agent::DealHandler(Card dCard) {

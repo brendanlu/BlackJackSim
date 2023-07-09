@@ -35,7 +35,7 @@ public:
     bool needReshuffle; // flag that cut card has been drawn
 
     void EfficientShuffle(unsigned int from, unsigned int nPartial); 
-    void Deal(Agent targetAgent);
+    template<typename targetType> void Deal(targetType &target);
     void Clear(); 
     
     void Display();
