@@ -2,7 +2,14 @@
 #include "types.hpp"
 #include "strategyinput.hpp"
 
-Agent::Agent() : stratInit(false) {} // flag that we do not have pointers to strats yet
+Agent::Agent() : stratInit(false),
+hInfo({
+    0,      //  handVal
+    0,      //  nSoftAces
+    0,      //  N_CARDS
+    '0',    //  lastFace
+    false   //  holdingPair
+}) {} // flag that we do not have pointers to strats yet
 
 // init the Agent from pointers to the data read in from strategy files
 // these allow high level control of the strategy to be adjusted and passed in
