@@ -15,16 +15,6 @@ The logic in the handler methods are the best place to start, and only affect th
 
 constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
 
-// struct to hold relevent information of the hand
-// can adjust relatively easily, and change the relevant methods (& constructor)
-struct HandInfo {
-    unsigned int nHolding; // number of cards in hand
-    unsigned int handVal; // soft/hard value of the hand, depending on if we have aces
-    unsigned int nSoftAces; // number of aces that are (soft) counted as 11 in hand
-    char lastFace; // for triggering pair flag
-    bool holdingPair; // flag if we are holding a pair
-};
-
 class Agent 
 {
 public:
@@ -45,7 +35,17 @@ private:
     char* hrdPtr; char* sftPtr; char* spltPtr;  // pointer to strategy input files
     
     double cntVal; // card count as dictated by count input
-    HandInfo hInfo; 
+
+    // struct to hold relevent information of the hand
+    // can adjust relatively easily, and change the relevant methods (& constructor)
+    struct HandInfo {
+        unsigned int nHolding; // number of cards in hand
+        unsigned int handVal; // soft/hard value of the hand, depending on if we have aces
+        unsigned int nSoftAces; // number of aces that are (soft) counted as 11 in hand
+        
+        char lastFace; // for triggering pair flag
+        bool holdingPair; // flag if we are holding a pair
+    } hInfo;
 };
 
 #endif

@@ -91,12 +91,13 @@ template<typename targetType> void Shoe::Deal(targetType &target)
     }
 }
 
+// we deal to Agent classes, and the struct in the simengine representing a dealer
 template void Shoe::Deal<Agent>(Agent&); 
-template void Shoe::Deal<SimEngineBJ::simDealer>(SimEngineBJ::simDealer&); 
+template void Shoe::Deal<SimEngineBJ::Dealer>(SimEngineBJ::Dealer&); 
 
 void Shoe::Clear() {
     // simulates clearing the table of cards
-    nDiscarded = nDealt;
+    nDiscarded = nDealt; // bring count of discarded up to date with dealt
 }
 
 void Shoe::Display()

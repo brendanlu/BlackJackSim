@@ -3,6 +3,7 @@
 #include <iostream> // we need this to overload << for Card_t
 
 constexpr unsigned int BJVAL = 21; 
+constexpr unsigned int INIT_DEAL = 2;
 
 constexpr unsigned int VALS[10] = {2,3,4,5,6,7,8,9,10,11};
 constexpr int ASCII_2 = 50; // ascii value of 2 
@@ -32,8 +33,16 @@ inline bool operator== (Card c1, const Card c2) {return ((c1.face==c2.face) && (
 constexpr Card BLANK_CARD = {'0', '0'};
 
 enum class ERR_CODE : int {
-    NO_AGENT_STRAT = 1, 
-    SUCCESS = 100, 
+    SUCCESS = 0,
+    NO_AGENT_STRAT = 1 
+};
+
+enum class ACTION : int {
+    HIT = 1,
+    STAND, 
+    DOUBLE, 
+    SPLIT, 
+    SURRENDER
 };
 
 #endif
