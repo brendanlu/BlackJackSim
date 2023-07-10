@@ -13,7 +13,7 @@ int main()
     Shoe new_shoe(1, 0.25);
     new_shoe.Display();
     cout << "\n\n";
-    new_shoe.EfficientShuffle(2, 3);
+    new_shoe.FreshShuffleN(10);
     new_shoe.Display();
     cout << "\n\n";
 
@@ -29,7 +29,7 @@ int main()
     new_shoe.Deal(simAgent);
     new_shoe.Deal(simAgent);
 
-    cout << "Agent deal works \n\n";
+    cout << "Agent deal is not broken yet \n\n";
 
     
 

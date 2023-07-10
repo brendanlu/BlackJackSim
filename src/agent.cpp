@@ -26,7 +26,7 @@ hInfo({
 // logic for recieving one card
 void Agent::DealHandler(Card dCard) {
     // change internal running count
-    cntVal += cntFromPtr(cntPtr, dCard.val()); 
+    // cntVal += cntFromPtr(cntPtr, dCard.val()); 
 
     hInfo.nHolding += 1;
 

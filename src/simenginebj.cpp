@@ -28,11 +28,11 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
     // So at this point it will be populated and ready to go
     if (!simAgent.stratInit) {return ERR_CODE::NO_AGENT_STRAT;}
 
-    simShoe.EfficientShuffle(0, simShoe.N_CARDS); // do a full shuffle of the shoe
+    simShoe.FreshShuffleN(simShoe.N_CARDS); // do a full shuffle of the shoe
     for (unsigned long long i=0; i<nIters; ++i) { // each iteration is playing one shoe
         
         // reshuffle the shoe --------------------------------------------------------------------
-        simShoe.EfficientShuffle(0, simShoe.N_UNTIL_CUT); // partial fresh shuffle - see Shoe implementation
+        simShoe.FreshShuffleN(simShoe.N_UNTIL_CUT); // partial fresh shuffle - see Shoe implementation
         simAgent.ShuffleHandler(); 
 
         // play the shoe until reshuffle triggered by drawing cut card

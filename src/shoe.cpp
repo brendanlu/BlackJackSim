@@ -32,42 +32,31 @@ N_UNTIL_CUT(std::min((unsigned int)(N_CARDS*penentration+0.5), N_CARDS)), // cou
     for (; filledUpTo<MAX_DECKS*DECK_SIZE; ++filledUpTo) {cardStream[filledUpTo] = BLANK_CARD;}
 }
 
-void Shoe::EfficientShuffle(unsigned int from, unsigned int nPartial) 
-{
+void Shoe::FreshShuffleN(unsigned int nPartial) {
     /*
-    We shuffle the shoe a lot in simulations.
-    We can save some computation by not fully shuffling the shoe always, 
-    but only shuffling as we need. 
+    In practice, the blackjack shoe is very rarely fully dealt. 
 
-    We process the shuffle request to make an appropriate call to the FY shuffle algorithm.
-        Also update Shoe internal variables appropriately. 
-
-    This method is called by the simulation engine, but also the Shoe itself when 
-        it needs to deal fresh cards exceeding nValidShuffled.
+    We can save some computation in our simulation loop by only partially shuffling. 
+    In the case that we need more "freshly shuffled" cards, we can make use of incremental shuffling. 
     */
+    nValidShuffled = FisherYatesShuffle(&cardStream[0], N_CARDS, nPartial, mersenneTwister);
+    nDealt = 0;
+    nDiscarded = 0; 
+}
 
-    unsigned int nSuccessShuffled; // how many new shuffled cards successfuly generated
-
-    if (nPartial == 0) { // default is to shuffle up until cut card
-        nPartial == N_UNTIL_CUT; 
+void Shoe::PushBackShuffle()
+{
+    // We need more "simulated shuffled" cards to deal out, so we perform a one iteration FY incremental shuffle.
+    if (nValidShuffled + 1 <= N_CARDS) {
+        nValidShuffled += FisherYatesShuffle(&cardStream[nValidShuffled], N_CARDS - nValidShuffled, 1, mersenneTwister);
     }
-
-    if (from == 0) { // just a new partial "reset" shuffle of the shoe
-        nDealt = 0;
-        nValidShuffled = FisherYatesShuffle(&cardStream[0], N_CARDS, nPartial, mersenneTwister); 
-        nDiscarded = 0;
-    }
-    else { // in this case, we are asking for more shuffled cards; we are still playing the same shoe
-        nSuccessShuffled = FisherYatesShuffle(&cardStream[from], N_CARDS - from, nPartial, mersenneTwister);
-        nValidShuffled += nSuccessShuffled;
-
-        // this is the rare case where our shoe actually runs out
-        // in this case, we reshuffle the discarded cards already dealt out
-        // we then trigger a flag to reshuffle everything the next time we collect all the cards
-        if (nSuccessShuffled < nPartial) {
-            nDealt = 0;
-            nValidShuffled = FisherYatesShuffle(&cardStream[0], nDiscarded, nPartial - nSuccessShuffled, mersenneTwister);
-        }
+    else { 
+        // whilst possible, this case should be - in practice, near impossible in a well instantiated simulation game
+        //      it corresponds to dealing out the whole shoe midway through a table
+        // we basically reshuffle and deal out of the discarded tray, until we clear the table, and then reshuffle the shoe
+        needReshuffle = true;
+        nDealt = 0; 
+        nValidShuffled = FisherYatesShuffle(&cardStream[0], nDiscarded, 1, mersenneTwister);
     }
 }
 
@@ -83,10 +72,10 @@ template<typename targetType> void Shoe::Deal(targetType &target)
 
     if (nDealt + 1 <= nValidShuffled) { // we have "fresh" shuffled cards to deal
         target.DealHandler(cardStream[nDealt++]);
+        if (nDealt > N_UNTIL_CUT) {needReshuffle = true;}
     }
     else { // we can just get some more "fresh" shuffled cards in the cardstream
-        needReshuffle = true;
-        EfficientShuffle(nDealt, 1);
+        PushBackShuffle(); 
         Deal(target);
     }
 }
