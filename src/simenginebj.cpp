@@ -42,13 +42,17 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
         // play the shoe until reshuffle triggered by drawing cut card
         while (!simShoe.needReshuffle) 
         {
+        // each iteration is a hand  -----------------------------------------------------------------
+
             // initial deal out --------------------
-            simShoe.Deal(simDealer);
-            simShoe.Deal(simAgent);
-            simShoe.Deal(simAgent);
+            simDealer.DealHandler(simShoe.Deal());
+            simAgent.DealHandler(simShoe.Deal());
+            simAgent.DealHandler(simShoe.Deal());
+
 
             
             simShoe.Clear(); 
+            simAgent.ClearHandler();
         }
 
     }
@@ -82,12 +86,13 @@ void SimEngineBJ::Test() {
 
     cout << "Dealing to internals now \n\n"; 
     // simShoe.Deal(simDealer);
-    simShoe.Deal(simAgent);
-    simShoe.Deal(simAgent);
+    simAgent.DealHandler(simShoe.Deal());
+    simAgent.DealHandler(simShoe.Deal());
 
     cout << "Agent deal is not broken yet \n\n";
 
-    simShoe.Deal(simDealer); 
+    simDealer.DealHandler(simShoe.Deal());
+    
     cout << "Dealer deal is not broken yet \n\n"; 
 
 

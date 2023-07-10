@@ -60,7 +60,7 @@ void Shoe::PushBackShuffle()
     }
 }
 
-template<typename targetType> void Shoe::Deal(targetType &target) 
+Card Shoe::Deal() 
 {
     /*
     Simulates delaing a card to a player (Agent type).
@@ -71,18 +71,14 @@ template<typename targetType> void Shoe::Deal(targetType &target)
     */
 
     if (nDealt + 1 <= nValidShuffled) { // we have "fresh" shuffled cards to deal
-        target.DealHandler(cardStream[nDealt++]);
-        if (nDealt > N_UNTIL_CUT) {needReshuffle = true;}
+        if (nDealt + 1 > N_UNTIL_CUT) {needReshuffle = true;}
+        return cardStream[nDealt++];   
     }
-    else { // we can just get some more "fresh" shuffled cards in the cardstream
+    else { // we can just get one more "fresh" shuffled cards in the cardstream
         PushBackShuffle(); 
-        Deal(target);
+        return Deal();
     }
 }
-
-// we deal to Agent classes, and the struct in the simengine representing a dealer
-template void Shoe::Deal<Agent>(Agent&); 
-template void Shoe::Deal<SimEngineBJ::Dealer>(SimEngineBJ::Dealer&); 
 
 void Shoe::Clear() {
     // simulates clearing the table of cards

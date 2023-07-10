@@ -36,7 +36,7 @@ public:
 
     void FreshShuffleN(unsigned int nPartial);
     void PushBackShuffle();
-    template<typename targetType> void Deal(targetType &target);
+    Card Deal(); 
     void Clear(); 
     
     void Display();

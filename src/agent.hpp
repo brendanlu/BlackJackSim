@@ -26,6 +26,7 @@ public:
     // logic for recieving one card
     void DealHandler(Card dCard);
     void ShuffleHandler(); 
+    void ClearHandler();
 
     long long stackVal; // bankroll 
     bool stratInit; // keeps track of if the pointers below are actually pointing to strats

@@ -47,3 +47,7 @@ void Agent::DealHandler(Card dCard) {
 void Agent::ShuffleHandler() {
     cntVal = 0;
 }
+
+void Agent::ClearHandler () {
+    ;
+}
