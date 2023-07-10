@@ -48,7 +48,7 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
             simShoe.Deal(simAgent);
 
             
-
+            simShoe.Clear(); 
         }
 
     }
@@ -67,7 +67,7 @@ void SimEngineBJ::Test2() {
 
 void SimEngineBJ::Test() {
     cout << "Program start \n"; 
-    cout << "Playing with: " << simShoe.N_CARDS << "cards \n\n";
+    cout << "Playing with: " << simShoe.N_CARDS << " cards \n\n";
 
     simShoe.Display();
     cout << "\n\n";
@@ -75,8 +75,10 @@ void SimEngineBJ::Test() {
     simShoe.Display();
     cout << "\n\n";
 
+
+
     Card tryCard = {'J', 'H'};
-    cout << tryCard.val() << "\n\n";
+    cout << "Testing value of card J: " << tryCard.val() << "\n\n";
 
     cout << "Dealing to internals now \n\n"; 
     // simShoe.Deal(simDealer);
@@ -87,4 +89,6 @@ void SimEngineBJ::Test() {
 
     simShoe.Deal(simDealer); 
     cout << "Dealer deal is not broken yet \n\n"; 
+
+
 } 
