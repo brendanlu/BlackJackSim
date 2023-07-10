@@ -22,10 +22,13 @@ public:
 
         bool HITSOFT17; 
 
+        Card upCard; // dealer up-card
+
         unsigned int handVal; 
         unsigned int nSoftAces;
 
         void DealHandler(Card dCard);
+        void ClearHandler(); 
 
     } simDealer;
 

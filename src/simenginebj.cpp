@@ -3,7 +3,7 @@
 
 // the compiler needs to find a nullary constructor for the nested Dealer struct 
 //      otherwise the SimEngine constructor will not work 
-SimEngineBJ::Dealer::Dealer() : HITSOFT17(false), handVal(0), nSoftAces(0) {}
+SimEngineBJ::Dealer::Dealer() : HITSOFT17(false), handVal(0), nSoftAces(0), upCard(BLANK_CARD) {}
 
 SimEngineBJ::SimEngineBJ() {};
 
@@ -18,6 +18,12 @@ void SimEngineBJ::Dealer::DealHandler(Card dCard) {
     handVal -= 10; // adjust ace value to 1 
     nSoftAces -= 1; 
     }
+
+    if (upCard == BLANK_CARD) {upCard == dCard;}
+}
+
+void SimEngineBJ::Dealer::ClearHandler() {
+    upCard = BLANK_CARD; 
 }
 
 void SimEngineBJ::SetDealer17(bool b) {
@@ -28,7 +34,17 @@ void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
 {simAgent = Agent(hrd, sft, splt, cnt);}
 
 void SimEngineBJ::QueryAgent(Agent &targetAgent) {
-    targetAgent.YieldAction(simDealer);
+    ACTION queryResponse = targetAgent.YieldAction(simDealer); // give reference of Dealer state
+
+    if (queryResponse == ACTION::HIT) {
+        ;
+    }
+    else if (queryResponse == ACTION::STAND) {
+        ;
+    }
+    else if (queryResponse == ACTION::DOUBLE) {
+        ; 
+    }
 }
 
 ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
@@ -49,18 +65,18 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
         // each iteration is a hand  -----------------------------------------------------------------
 
             // initial deal out --------------------
-            simDealer.DealHandler(simShoe.Deal());
+            //      dealer up card
+            simDealer.DealHandler(simShoe.Deal()); 
+
+            //      player gets two cards
             simAgent.DealHandler(simShoe.Deal());
             simAgent.DealHandler(simShoe.Deal());
 
-            
-
-
-
-
+            QueryAgent(simAgent);
             
             simShoe.Clear(); 
             simAgent.ClearHandler();
+            simDealer.ClearHandler(); 
         }
 
     }

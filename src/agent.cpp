@@ -3,27 +3,17 @@
 #include "strategyinput.hpp"
 #include "simenginebj.hpp"
 
-Agent::Agent() : stratInit(false), // flag that we do not have pointers to strats yet
-hInfo({
-    0,      //  handVal
-    0,      //  nSoftAces
-    0,      //  N_CARDS
-    '0',    //  lastFace
-    false   //  holdingPair
-}) // nullary constructor for hInfo for ctesting, so we can still deal to it
+Agent::HandInfo::HandInfo() : nHolding(0), handVal(0), nSoftAces(0), lastFace('0'), holdingPair(false) 
+{}
+
+Agent::Agent() : stratInit(false) // flag that we do not have pointers to strats yet
 {} 
 
 // init the Agent from pointers to the data read in from strategy files
 // these allow high level control of the strategy to be adjusted and passed in
 Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) : 
-hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), cntVal(0), 
-hInfo({
-    0,      //  handVal
-    0,      //  nSoftAces
-    0,      //  N_CARDS
-    '0',    //  lastFace
-    false   //  holdingPair
-}) {}
+hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), cntVal(0) 
+{}
 
 // logic for recieving one card
 void Agent::DealHandler(Card dCard) {
@@ -54,5 +44,5 @@ ACTION Agent::YieldAction(const SimEngineBJ::Dealer& dealerRef) {
 }
 
 void Agent::ClearHandler () {
-    ;
+    hInfo = HandInfo(); // reset hand information
 }
