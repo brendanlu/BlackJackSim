@@ -2,9 +2,12 @@
 #define TYPES_H 
 #include <iostream> // we need this to overload << for Card_t
 
+
+// misc constants --------------------------------------------------------------------------------------
 constexpr unsigned int BJVAL = 21; 
 constexpr unsigned int INIT_DEAL = 2;
 
+// Stuff for our Card representation ---------------------------------------------------------------
 constexpr unsigned int VALS[10] = {2,3,4,5,6,7,8,9,10,11};
 constexpr int ASCII_2 = 50; // ascii value of 2 
 constexpr int ASCII_9 = 57;
@@ -32,11 +35,14 @@ inline bool operator== (Card c1, const Card c2) {return ((c1.face==c2.face) && (
 
 constexpr Card BLANK_CARD = {'0', '0'};
 
+// enumerations ------------------------------------------------------------------------------------
+// various error codes
 enum class ERR_CODE : int {
     SUCCESS = 0,
     NO_AGENT_STRAT = 1 
 };
 
+// player action codes
 enum class ACTION : int {
     HIT = 1,
     STAND, 
