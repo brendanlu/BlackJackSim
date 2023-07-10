@@ -20,12 +20,16 @@ void SimEngineBJ::Dealer::DealHandler(Card dCard) {
     }
 }
 
-void SimEngineBJ::setDealer17(bool b) {
+void SimEngineBJ::SetDealer17(bool b) {
     simDealer.HITSOFT17 = b;
 }
 
 void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
 {simAgent = Agent(hrd, sft, splt, cnt);}
+
+void SimEngineBJ::QueryAgent(Agent &targetAgent) {
+    targetAgent.YieldAction(simDealer);
+}
 
 ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
     // The Python constructor will appropriately construct the Shoe
@@ -37,7 +41,7 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
         
         // reshuffle the shoe --------------------------------------------------------------------
         simShoe.FreshShuffleN(simShoe.N_UNTIL_CUT); // partial fresh shuffle - see Shoe implementation
-        simAgent.ShuffleHandler(); 
+        simAgent.FreshShuffleHandler(); 
 
         // play the shoe until reshuffle triggered by drawing cut card
         while (!simShoe.needReshuffle) 
@@ -48,6 +52,10 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
             simDealer.DealHandler(simShoe.Deal());
             simAgent.DealHandler(simShoe.Deal());
             simAgent.DealHandler(simShoe.Deal());
+
+            
+
+
 
 
             

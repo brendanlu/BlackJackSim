@@ -47,12 +47,12 @@ enum class ERR_CODE : int {
 };
 
 // player action codes
-enum class ACTION : int {
-    HIT = 1,
-    STAND, 
-    DOUBLE, 
-    SPLIT, 
-    SURRENDER
+enum class ACTION : char {
+    HIT = 'H',
+    STAND = 'S', 
+    DOUBLE = 'D', 
+    SPLIT = 'P', 
+    SURRENDER = 'R'
 };
 
 #endif

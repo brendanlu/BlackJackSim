@@ -1,6 +1,7 @@
 #include "agent.hpp"
 #include "types.hpp"
 #include "strategyinput.hpp"
+#include "simenginebj.hpp"
 
 Agent::Agent() : stratInit(false), // flag that we do not have pointers to strats yet
 hInfo({
@@ -9,7 +10,7 @@ hInfo({
     0,      //  N_CARDS
     '0',    //  lastFace
     false   //  holdingPair
-}) // construct hInfo for ctesting, so we can still deal to it
+}) // nullary constructor for hInfo for ctesting, so we can still deal to it
 {} 
 
 // init the Agent from pointers to the data read in from strategy files
@@ -44,8 +45,12 @@ void Agent::DealHandler(Card dCard) {
     else if (hInfo.nHolding == 2 && hInfo.lastFace == dCard.face) {hInfo.holdingPair = true;}
 }
 
-void Agent::ShuffleHandler() {
+void Agent::FreshShuffleHandler() {
     cntVal = 0;
+}
+
+ACTION Agent::YieldAction(const SimEngineBJ::Dealer& dealerRef) {
+    ;
 }
 
 void Agent::ClearHandler () {

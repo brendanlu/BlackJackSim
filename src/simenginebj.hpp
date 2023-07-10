@@ -33,8 +33,9 @@ public:
     // ... but this second constructor wil always be called from the Python init method
     SimEngineBJ(unsigned int N_DECKS, double penen);
 
-    void setDealer17(bool b);
+    void SetDealer17(bool b);
     void SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt);
+    void QueryAgent(Agent &targetAgent); 
     
     ERR_CODE RunSimulation(unsigned long long nIters);
 
@@ -45,7 +46,6 @@ private:
     // simple nested struct to represent dealer logic
     // shares some resemblance with the Agent class 
     //      but is not designed to be customized
-
     Shoe simShoe;
     Agent simAgent; 
     
