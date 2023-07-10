@@ -3,6 +3,9 @@ from Cython.Build import cythonize
 
 import os
 
+os.environ["CC"] = "g++"
+os.environ["CXX"] = "g++"
+
 srcs = []
 for file in os.listdir("src/"): 
     if file.endswith(".cpp"): 
@@ -10,13 +13,19 @@ for file in os.listdir("src/"):
 srcs.append("cardstream/cardstream.pyx")
 
 extensions = [
-    Extension("cardstream", srcs)
+    Extension(
+        "cardstream", 
+        sources = srcs, 
+        language = "c++",
+        extra_compile_args=["-o3"]
+    )
 ]
 
 print(srcs)
 
 setup(
     ext_modules = cythonize(
-        extensions
+        extensions,
+        compiler_directives={'language_level' : "3"}
     )
 )

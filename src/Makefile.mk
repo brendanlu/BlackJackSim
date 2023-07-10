@@ -1,7 +1,6 @@
 CXX=g++
 OBJs = test.o \
 shoe.o \
-fisheryates.o \
 simenginebj.o \
 agent.o 
 
@@ -13,9 +12,6 @@ test.o : test.cpp shoe.hpp types.hpp
 
 shoe.o : shoe.cpp shoe.hpp fisheryates.hpp types.hpp 
 	$(CXX) -c shoe.cpp
-
-fisheryates.o : fisheryates.cpp fisheryates.hpp types.hpp
-	$(CXX) -c fisheryates.cpp
 
 simenginebj.o : simenginebj.cpp simenginebj.hpp shoe.hpp agent.hpp strategyinput.hpp types.hpp
 	$(CXX) -c simenginebj.cpp

@@ -1,5 +1,3 @@
-# distutils: language = c++
-
 import numpy as np
 from simengine cimport SimEngineBJ
 

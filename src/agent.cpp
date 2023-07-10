@@ -9,7 +9,7 @@ hInfo({
     0,      //  N_CARDS
     '0',    //  lastFace
     false   //  holdingPair
-}) // construct hInfo for ctesting 
+}) // construct hInfo for ctesting, so we can still deal to it
 {} 
 
 // init the Agent from pointers to the data read in from strategy files
