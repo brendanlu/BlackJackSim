@@ -2,14 +2,15 @@
 #include "types.hpp"
 #include "strategyinput.hpp"
 
-Agent::Agent() : stratInit(false),
+Agent::Agent() : stratInit(false), // flag that we do not have pointers to strats yet
 hInfo({
     0,      //  handVal
     0,      //  nSoftAces
     0,      //  N_CARDS
     '0',    //  lastFace
     false   //  holdingPair
-}) {} // flag that we do not have pointers to strats yet
+}) // construct hInfo for ctesting 
+{} 
 
 // init the Agent from pointers to the data read in from strategy files
 // these allow high level control of the strategy to be adjusted and passed in
@@ -26,7 +27,7 @@ hInfo({
 // logic for recieving one card
 void Agent::DealHandler(Card dCard) {
     // change internal running count
-    // cntVal += cntFromPtr(cntPtr, dCard.val()); 
+    cntVal += cntFromPtr(cntPtr, dCard.val()); 
 
     hInfo.nHolding += 1;
 

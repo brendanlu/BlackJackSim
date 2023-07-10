@@ -29,7 +29,7 @@ public:
 
     } simDealer;
 
-    SimEngineBJ() {}; // Cython needs nullary constructor to init to stack...
+    SimEngineBJ(); // Cython needs nullary constructor to init to stack...
     // ... but this second constructor wil always be called from the Python init method
     SimEngineBJ(unsigned int N_DECKS, double penen);
 
@@ -39,6 +39,7 @@ public:
     ERR_CODE RunSimulation(unsigned long long nIters);
 
     void Test(); 
+    void Test2(); 
 
 private:
     // simple nested struct to represent dealer logic

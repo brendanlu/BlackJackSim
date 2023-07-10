@@ -1,7 +1,11 @@
 #include "types.hpp"
 #include "simenginebj.hpp"
 
+// the compiler needs to find a nullary constructor for the nested Dealer struct 
+//      otherwise the SimEngine constructor will not work 
 SimEngineBJ::Dealer::Dealer() : HITSOFT17(false), handVal(0), nSoftAces(0) {}
+
+SimEngineBJ::SimEngineBJ() {};
 
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
     simShoe(N_DECKS, penen) {;}
@@ -39,7 +43,7 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
         while (!simShoe.needReshuffle) 
         {
             // initial deal out --------------------
-            // simShoe.Deal(simDealer);
+            simShoe.Deal(simDealer);
             simShoe.Deal(simAgent);
             simShoe.Deal(simAgent);
 
@@ -52,30 +56,35 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
     return ERR_CODE::SUCCESS;
 }
 
-
+// testing ---------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
 #include <iostream>
 using std::cout;
 
+void SimEngineBJ::Test2() {
+
+}
+
 void SimEngineBJ::Test() {
     cout << "Program start \n"; 
-    Shoe new_shoe(1, 0.25);
-    new_shoe.Display();
+    cout << "Playing with: " << simShoe.N_CARDS << "cards \n\n";
+
+    simShoe.Display();
     cout << "\n\n";
-    new_shoe.FreshShuffleN(10);
-    new_shoe.Display();
+    simShoe.FreshShuffleN(10);
+    simShoe.Display();
     cout << "\n\n";
 
-    Card tryCard = {'3', 'D'};
+    Card tryCard = {'J', 'H'};
     cout << tryCard.val() << "\n\n";
 
-    SimEngineBJ tryEngine(2, 0.25); 
-
-    Agent simAgent;
-
-    cout << "Init stuff works \n\n"; 
-    // new_shoe.Deal(simDealer);
-    new_shoe.Deal(simAgent);
-    new_shoe.Deal(simAgent);
+    cout << "Dealing to internals now \n\n"; 
+    // simShoe.Deal(simDealer);
+    simShoe.Deal(simAgent);
+    simShoe.Deal(simAgent);
 
     cout << "Agent deal is not broken yet \n\n";
+
+    simShoe.Deal(simDealer); 
+    cout << "Dealer deal is not broken yet \n\n"; 
 } 

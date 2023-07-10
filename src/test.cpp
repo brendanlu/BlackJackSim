@@ -9,9 +9,10 @@ using std::cout;
 int main() 
 {
     
-    SimEngineBJ tryEngine;
+    SimEngineBJ tryEngine(1, 0.5);
     tryEngine.Test();
-    cout << "\n\n -------------------------------------- \n\n TEST RAN SUCCESSFULLY IN MAIN"; 
+    cout << "\n\n -------------------------------------- \n\n TEST RAN SUCCESSFULLY IN MAIN\n\n"; 
+
 
     return 0;
 }

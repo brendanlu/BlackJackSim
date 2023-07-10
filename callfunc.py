@@ -23,7 +23,7 @@ splts = splits[1:,1:].astype('S1', order='C')
 count = pd.read_csv(r"Strategy Input\HiLoCount.csv", header=None)
 cnt = count.iloc[:,1].values.astype(float, order='C')
 
-tryme = cardstream.PySimEngineBJ(1, 1)
+tryme = cardstream.PySimEngineBJ(1, 0.2)
 print(tryme.pyTest(1000))
 tryme.pySetAgentStrat(hrd, sft, splts, cnt)
 print("Set agent strat works")
