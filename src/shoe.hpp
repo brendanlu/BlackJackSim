@@ -3,7 +3,6 @@
 
 #include <array>
 #include <random>
-#include "agent.hpp"
 #include "types.hpp"
 
 /*     

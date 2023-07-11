@@ -5,7 +5,6 @@
 #include "shoe.hpp"
 #include "types.hpp"
 #include "fisheryates.hpp"
-#include "simenginebj.hpp"
 
 // Cython needs a nullary constructor
 Shoe::Shoe() {};

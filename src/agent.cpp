@@ -1,7 +1,6 @@
 #include "agent.hpp"
 #include "types.hpp"
 #include "strategyinput.hpp"
-#include "simenginebj.hpp"
 
 Agent::HandInfo::HandInfo() : nHolding(0), handVal(0), nSoftAces(0), lastFace('0'), holdingPair(false) 
 {}
@@ -18,7 +17,7 @@ hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), cntVal(0)
 // logic for recieving one card
 void Agent::DealHandler(Card dCard) {
     // change internal running count
-    cntVal += cntFromPtr(cntPtr, dCard.val()); 
+    // cntVal += cntFromPtr(cntPtr, dCard.val()); 
 
     hInfo.nHolding += 1;
 
@@ -39,8 +38,8 @@ void Agent::FreshShuffleHandler() {
     cntVal = 0;
 }
 
-ACTION Agent::YieldAction(const SimEngineBJ::Dealer& dealerRef) {
-    ;
+ACTION Agent::YieldAction() {
+    return ACTION::STAND;
 }
 
 void Agent::ClearHandler () {

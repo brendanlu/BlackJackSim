@@ -1,14 +1,15 @@
 #include "types.hpp"
 #include "simenginebj.hpp"
+#include "shoe.hpp"
+#include "agent.hpp"
 
 // the compiler needs to find a nullary constructor for the nested Dealer struct 
 //      otherwise the SimEngine constructor will not work 
 SimEngineBJ::Dealer::Dealer() : HITSOFT17(false), handVal(0), nSoftAces(0), upCard(BLANK_CARD) {}
 
-SimEngineBJ::SimEngineBJ() {};
+SimEngineBJ::SimEngineBJ() {}
 
-SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
-    simShoe(N_DECKS, penen) {;}
+SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : simShoe(N_DECKS, penen) {}
 
 void SimEngineBJ::Dealer::DealHandler(Card dCard) {
     if (dCard.face == 'A') {nSoftAces += 1;}
@@ -23,7 +24,7 @@ void SimEngineBJ::Dealer::DealHandler(Card dCard) {
 }
 
 void SimEngineBJ::Dealer::ClearHandler() {
-    upCard = BLANK_CARD; 
+    upCard = BLANK_CARD;
 }
 
 void SimEngineBJ::SetDealer17(bool b) {
@@ -31,26 +32,38 @@ void SimEngineBJ::SetDealer17(bool b) {
 }
 
 void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
+// these are pointers which come in from the Python interface
+//      so we will have to do valid checks there
 {simAgent = Agent(hrd, sft, splt, cnt);}
 
-void SimEngineBJ::QueryAgent(Agent &targetAgent) {
-    ACTION queryResponse = targetAgent.YieldAction(simDealer); // give reference of Dealer state
+ERR_CODE SimEngineBJ::QueryAgent(Agent &targetAgent) {
+    ACTION queryResponse = targetAgent.YieldAction(); // give reference of Dealer state
 
     if (queryResponse == ACTION::HIT) {
-        ;
+        targetAgent.DealHandler(simShoe.Deal());
+        return ERR_CODE::SUCCESS; 
     }
     else if (queryResponse == ACTION::STAND) {
-        ;
+        return ERR_CODE::SUCCESS;
     }
     else if (queryResponse == ACTION::DOUBLE) {
-        ; 
+        return ERR_CODE::SUCCESS;
+    }
+    else if (queryResponse == ACTION::SPLIT) {
+        return ERR_CODE::SUCCESS;
+    }
+    else if (queryResponse == ACTION::SURRENDER) {
+        return ERR_CODE::SUCCESS;
+    }
+    else {
+        return ERR_CODE::INVALID_ACTION;
     }
 }
 
 ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
     // The Python constructor will appropriately construct the Shoe
     // So at this point it will be populated and ready to go
-    if (!simAgent.stratInit) {return ERR_CODE::NO_AGENT_STRAT;}
+    // if (!simAgent.stratInit) {return ERR_CODE::NO_AGENT_STRAT;}
 
     simShoe.FreshShuffleN(simShoe.N_CARDS); // do a full shuffle of the shoe
     for (unsigned long long i=0; i<nIters; ++i) { // each iteration is playing one shoe
@@ -64,16 +77,23 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
         {
         // each iteration is a hand  -----------------------------------------------------------------
 
-            // initial deal out --------------------
+            // places bets -----------------------------------------------------
+
+
+            // initial deal out ------------------------------------------------
             //      dealer up card
             simDealer.DealHandler(simShoe.Deal()); 
-
             //      player gets two cards
             simAgent.DealHandler(simShoe.Deal());
             simAgent.DealHandler(simShoe.Deal());
 
+            // agent action ----------------------------------------------------
             QueryAgent(simAgent);
             
+            // settle bets -----------------------------------------------------
+
+
+            // clear the table -------------------------------------------------
             simShoe.Clear(); 
             simAgent.ClearHandler();
             simDealer.ClearHandler(); 

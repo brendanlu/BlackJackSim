@@ -38,8 +38,8 @@ public:
 
     void SetDealer17(bool b);
     void SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt);
-    void QueryAgent(Agent &targetAgent); 
-    
+
+    ERR_CODE QueryAgent(Agent &targetAgent); 
     ERR_CODE RunSimulation(unsigned long long nIters);
 
     void Test(); 

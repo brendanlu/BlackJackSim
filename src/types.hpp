@@ -38,12 +38,13 @@ constexpr Card BLANK_CARD = {'0', '0'};
 // enumerations ------------------------------------------------------------------------------------
 // various error codes
 enum class ERR_CODE : int {
-    SUCCESS = 0,
-    // SimEngine related ---------------------------------
-    NO_AGENT_STRAT = 1 
+    SUCCESS = 0, // generic success code
 
-    // Shoe related --------------------------------------
-    
+    // Main simulation loop related ---------------------------------
+    NO_AGENT_STRAT = 100,
+
+    // Query agent related --------------------------------------
+    INVALID_ACTION = 200
 };
 
 // player action codes

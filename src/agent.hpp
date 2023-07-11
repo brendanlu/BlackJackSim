@@ -40,7 +40,7 @@ public:
     // logic for recieving one card
     void DealHandler(Card dCard);
     void FreshShuffleHandler();
-    ACTION YieldAction(const SimEngineBJ::Dealer& dealerRef); 
+    ACTION YieldAction(); 
     void ClearHandler();
 
     long long stackVal; // bankroll 
