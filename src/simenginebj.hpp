@@ -27,7 +27,9 @@ public:
 
     void SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt);
 
-    ERR_CODE QueryAgent(Agent &targetAgent); 
+    template<typename targetType> void EventDeal(targetType &target);
+
+    ERR_CODE EventQueryAgent(Agent &targetAgent); 
 
     ERR_CODE RunSimulation(unsigned long long nIters);
 
@@ -39,7 +41,7 @@ private:
     // shares some resemblance with the Agent class 
     //      but is not designed to be customized
     Shoe simShoe;
-    
+
     Agent simAgent; 
     
 };

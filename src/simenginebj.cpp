@@ -17,7 +17,17 @@ void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
 //      so we will have to do valid checks there
 {simAgent = Agent(hrd, sft, splt, cnt);}
 
-ERR_CODE SimEngineBJ::QueryAgent(Agent &targetAgent) {
+template<typename targetType> void SimEngineBJ::EventDeal(targetType &target) {
+    Card dCard = simShoe.deal();
+    target.DealTargetHandler(dCard);
+
+    // later we can loop over multiple agents here
+    simAgent.DealObserveHandler(dCard); 
+}
+template void SimEngineBJ::EventDeal<Agent>(Agent&); 
+template void SimEngineBJ::EventDeal<Dealer>(Dealer&); 
+
+ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
     ACTION queryResponse = targetAgent.YieldAction(); // give reference of Dealer state
 
     if (queryResponse == ACTION::HIT) {
@@ -63,14 +73,14 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
 
             // initial deal out ------------------------------------------------
             //      dealer up card
-            simDealer.DealTargetHandler(simShoe.Deal()); 
+            EventDeal(simDealer); 
 
             //      player gets two cards
-            simAgent.DealTargetHandler(simShoe.Deal());
-            simAgent.DealTargetHandler(simShoe.Deal());
+            EventDeal(simAgent); 
+            EventDeal(simAgent); 
 
             // agent action ----------------------------------------------------
-            QueryAgent(simAgent);
+            EventQueryAgent(simAgent);
             
             // settle bets -----------------------------------------------------
 
