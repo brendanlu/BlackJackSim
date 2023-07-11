@@ -17,7 +17,7 @@ struct Card {
     char suit;
     // quick, simple way to convert card face chars into ints; their numeric values
     // this operation happens often
-    inline unsigned int val() {
+    inline unsigned int val() const {
         // 2-9 chars 
         if ((int)face <= ASCII_9) {return VALS[(int)face - ASCII_2];}
         // A

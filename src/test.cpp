@@ -24,10 +24,10 @@ int main()
     cout << "We can make a dodgy engine \n\n"; 
 
     cout << "Testing event loops \n\n"; 
-    cout << "ENGINE 1\n\n"; 
+    cout << "ENGINE 1\n"; 
     cout << "Status: " << (int)tryEngine.RunSimulation(100) << "\n\n"; 
 
-    cout << "ENGINE 2\n\n"; 
+    cout << "ENGINE 2\n"; 
     cout << "Status: " << (int)tryEngine2.RunSimulation(100) << "\n\n"; 
 
     return 0;

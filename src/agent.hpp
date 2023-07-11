@@ -20,6 +20,7 @@ class Agent
 public:
     // struct to hold relevent information of the hand
     // can adjust relatively easily, and change the relevant methods (& constructor)
+    // this will reset via its nullary constructor every time the table is cleared
     struct HandInfo {
         HandInfo(); 
 
@@ -31,16 +32,20 @@ public:
         bool holdingPair; // flag if we are holding a pair
     } hInfo;
 
-
     // cython needs nullary constructor, and this is memeber class of simenginebj
     Agent(); 
     // construct an object by passing in pointers to the strategy template
     Agent(char* hrd, char* sft, char* splt, double* cnt); 
 
     // logic for recieving one card
-    void DealHandler(Card dCard);
+    void DealTargetHandler(const Card &dCard);
+
+    void DealObserveHandler(const Card &dCard); 
+
     void FreshShuffleHandler();
+
     ACTION YieldAction(); 
+
     void ClearHandler();
 
     long long stackVal; // bankroll 

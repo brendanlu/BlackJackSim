@@ -6,7 +6,7 @@
 #include "types.hpp"
 #include "fisheryates.hpp"
 
-// Cython needs a nullary constructor
+// Cython needs a nullary constructor, this will never be called from Python
 Shoe::Shoe() {};
 
 Shoe::Shoe(unsigned int NDECKS, double penentration) : 
@@ -30,6 +30,8 @@ N_UNTIL_CUT(std::min((unsigned int)(N_CARDS*penentration+0.5), N_CARDS)), // cou
     /* *** fill remaining stack array with BLANK_CARD */ 
     for (; filledUpTo<MAX_DECKS*DECK_SIZE; ++filledUpTo) {cardStream[filledUpTo] = BLANK_CARD;}
 }
+
+
 
 void Shoe::FreshShuffleN(unsigned int nPartial) {
     /*
@@ -64,7 +66,7 @@ Card Shoe::Deal()
     /*
     Simulates delaing a card to a player (Agent type).
     Does some simple housekeeping on the Shoe side to make sure deal is ok.
-    Then calls the DealHandler method of the target Agent object.
+    Then calls the DealTargetHandler method of the target Agent object.
 
     Returns the success status of this deal. 
     */

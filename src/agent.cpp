@@ -15,9 +15,7 @@ hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), cntVal(0)
 {}
 
 // logic for recieving one card
-void Agent::DealHandler(Card dCard) {
-    // change internal running count
-    // cntVal += cntFromPtr(cntPtr, dCard.val()); 
+void Agent::DealTargetHandler(const Card &dCard) {
 
     hInfo.nHolding += 1;
 
@@ -32,6 +30,13 @@ void Agent::DealHandler(Card dCard) {
     // track if we have pairs
     if (hInfo.nHolding == 1) {hInfo.lastFace = dCard.face;}
     else if (hInfo.nHolding == 2 && hInfo.lastFace == dCard.face) {hInfo.holdingPair = true;}
+    
+}
+
+// logic for observing any general card being dealt out 
+void Agent::DealObserveHandler(const Card &dCard) {
+    // change internal running count
+    cntVal += cntFromPtr(cntPtr, dCard.val()); 
 }
 
 void Agent::FreshShuffleHandler() {

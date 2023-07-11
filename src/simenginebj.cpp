@@ -2,30 +2,11 @@
 #include "simenginebj.hpp"
 #include "shoe.hpp"
 #include "agent.hpp"
-
-// the compiler needs to find a nullary constructor for the nested Dealer struct 
-//      otherwise the SimEngine constructor will not work 
-SimEngineBJ::Dealer::Dealer() : HITSOFT17(false), handVal(0), nSoftAces(0), upCard(BLANK_CARD) {}
+#include "dealer.hpp"
 
 SimEngineBJ::SimEngineBJ() {}
 
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : simShoe(N_DECKS, penen) {}
-
-void SimEngineBJ::Dealer::DealHandler(Card dCard) {
-    if (dCard.face == 'A') {nSoftAces += 1;}
-    handVal += dCard.val(); 
-  
-    if (handVal > BJVAL && nSoftAces > 0) { // revert soft count to hard count
-    handVal -= 10; // adjust ace value to 1 
-    nSoftAces -= 1; 
-    }
-
-    if (upCard == BLANK_CARD) {upCard == dCard;}
-}
-
-void SimEngineBJ::Dealer::ClearHandler() {
-    upCard = BLANK_CARD;
-}
 
 void SimEngineBJ::SetDealer17(bool b) {
     simDealer.HITSOFT17 = b;
@@ -40,7 +21,7 @@ ERR_CODE SimEngineBJ::QueryAgent(Agent &targetAgent) {
     ACTION queryResponse = targetAgent.YieldAction(); // give reference of Dealer state
 
     if (queryResponse == ACTION::HIT) {
-        targetAgent.DealHandler(simShoe.Deal());
+        targetAgent.DealTargetHandler(simShoe.Deal());
         return ERR_CODE::SUCCESS; 
     }
     else if (queryResponse == ACTION::STAND) {
@@ -82,10 +63,11 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
 
             // initial deal out ------------------------------------------------
             //      dealer up card
-            simDealer.DealHandler(simShoe.Deal()); 
+            simDealer.DealTargetHandler(simShoe.Deal()); 
+
             //      player gets two cards
-            simAgent.DealHandler(simShoe.Deal());
-            simAgent.DealHandler(simShoe.Deal());
+            simAgent.DealTargetHandler(simShoe.Deal());
+            simAgent.DealTargetHandler(simShoe.Deal());
 
             // agent action ----------------------------------------------------
             QueryAgent(simAgent);
@@ -130,12 +112,12 @@ void SimEngineBJ::Test() {
 
     cout << "Dealing to internals now \n\n"; 
     // simShoe.Deal(simDealer);
-    simAgent.DealHandler(simShoe.Deal());
-    simAgent.DealHandler(simShoe.Deal());
+    simAgent.DealTargetHandler(simShoe.Deal());
+    simAgent.DealTargetHandler(simShoe.Deal());
 
     cout << "Agent deal is not broken yet \n\n";
 
-    simDealer.DealHandler(simShoe.Deal());
+    simDealer.DealTargetHandler(simShoe.Deal());
     
     cout << "Dealer deal is not broken yet \n\n"; 
 
