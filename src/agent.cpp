@@ -36,7 +36,7 @@ void Agent::DealTargetHandler(const Card &dCard) {
 // logic for observing any general card being dealt out 
 void Agent::DealObserveHandler(const Card &dCard) {
     // change internal running count
-    cntVal += cntFromPtr(cntPtr, dCard.val()); 
+    // cntVal += cntFromPtr(cntPtr, dCard.val()); 
 }
 
 void Agent::FreshShuffleHandler() {

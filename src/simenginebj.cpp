@@ -18,7 +18,7 @@ void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
 {simAgent = Agent(hrd, sft, splt, cnt);}
 
 template<typename targetType> void SimEngineBJ::EventDeal(targetType &target) {
-    Card dCard = simShoe.deal();
+    Card dCard = simShoe.Deal();
     target.DealTargetHandler(dCard);
 
     // later we can loop over multiple agents here
