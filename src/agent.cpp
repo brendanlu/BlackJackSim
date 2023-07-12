@@ -11,8 +11,13 @@ Agent::Agent() : stratInit(false) // flag that we do not have pointers to strats
 // init the Agent from pointers to the data read in from strategy files
 // these allow high level control of the strategy to be adjusted and passed in
 Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) : 
-hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), cntVal(0) 
+hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), stackVal(0), cntVal(0) 
 {}
+
+double Agent::YieldWager() {
+
+    return 10; 
+}
 
 // logic for recieving one card
 void Agent::DealTargetHandler(const Card &dCard) {

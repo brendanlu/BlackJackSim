@@ -18,6 +18,8 @@ constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
 class Agent 
 {
 public:
+    long double stackVal; // bankroll
+
     // struct to hold relevent information of the hand
     // can adjust relatively easily, and change the relevant methods (& constructor)
     // this will reset via its nullary constructor every time the table is cleared
@@ -38,6 +40,8 @@ public:
     Agent(char* hrd, char* sft, char* splt, double* cnt); 
 
     // logic for recieving one card
+    double YieldWager(); 
+
     void DealTargetHandler(const Card &dCard);
 
     void DealObserveHandler(const Card &dCard); 
@@ -48,7 +52,6 @@ public:
 
     void ClearHandler();
 
-    long long stackVal; // bankroll 
     bool stratInit; // keeps track of if the pointers below are actually pointing to strats
 
 private:

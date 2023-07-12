@@ -27,6 +27,8 @@ template<typename targetType> void SimEngineBJ::EventDeal(targetType &target) {
 template void SimEngineBJ::EventDeal<Agent>(Agent&); 
 template void SimEngineBJ::EventDeal<Dealer>(Dealer&); 
 
+void SimEngineBJ::SetAgentStack(long double sv) {simAgent.stackVal = sv;}
+
 ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
     ACTION queryResponse = targetAgent.YieldAction(); // give reference of Dealer state
 

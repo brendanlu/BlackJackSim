@@ -27,6 +27,8 @@ public:
 
     void SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt);
 
+    void SetAgentStack(long double sv);  
+
     template<typename targetType> void EventDeal(targetType &target);
 
     ERR_CODE EventQueryAgent(Agent &targetAgent); 
