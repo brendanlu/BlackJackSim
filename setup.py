@@ -3,8 +3,8 @@ from Cython.Build import cythonize
 
 import os
 
-os.environ["CC"] = "g++"
-os.environ["CXX"] = "g++"
+os.environ['CC'] = 'g++'
+os.environ['CXX'] = 'g++'
 
 srcs = []
 for file in os.listdir("src/"): 

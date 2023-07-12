@@ -31,7 +31,7 @@ ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
     ACTION queryResponse = targetAgent.YieldAction(); // give reference of Dealer state
 
     if (queryResponse == ACTION::HIT) {
-        targetAgent.DealTargetHandler(simShoe.Deal());
+        EventDeal(targetAgent);
         return ERR_CODE::SUCCESS; 
     }
     else if (queryResponse == ACTION::STAND) {
@@ -51,10 +51,16 @@ ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
     }
 }
 
+void SimEngineBJ::EventClear() {
+    simShoe.Clear(); 
+    simAgent.ClearHandler();
+    simDealer.ClearHandler(); 
+}
+
 ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
     // The Python constructor will appropriately construct the Shoe
     // So at this point it will be populated and ready to go
-    // if (!simAgent.stratInit) {return ERR_CODE::NO_AGENT_STRAT;}
+    if (!simAgent.stratInit) {return ERR_CODE::NO_AGENT_STRAT;}
 
     simShoe.FreshShuffleN(simShoe.N_CARDS); // do a full shuffle of the shoe
     for (unsigned long long i=0; i<nIters; ++i) { // each iteration is playing one shoe
@@ -86,11 +92,8 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
 
 
             // clear the table -------------------------------------------------
-            simShoe.Clear(); 
-            simAgent.ClearHandler();
-            simDealer.ClearHandler(); 
+            EventClear();
         }
-
     }
 
     return ERR_CODE::SUCCESS;

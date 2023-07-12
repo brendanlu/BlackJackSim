@@ -31,6 +31,8 @@ public:
 
     ERR_CODE EventQueryAgent(Agent &targetAgent); 
 
+    void EventClear();
+
     ERR_CODE RunSimulation(unsigned long long nIters);
 
     void Test(); 

@@ -7,6 +7,15 @@ using std::cout;
 #include "simenginebj.hpp"
 #include "agent.hpp"
 
+void somefunc(int& x) {
+    x = 1; 
+}
+
+void outerfunc(int& x) {
+    cout << "In outer func\n";
+    somefunc(x);
+}
+
 int main() 
 {
     
@@ -29,6 +38,12 @@ int main()
 
     cout << "ENGINE 2\n"; 
     cout << "Status: " << (int)tryEngine2.RunSimulation(100) << "\n\n"; 
+
+    cout << "Testing this double ref thing \n\n"; 
+    int x = 5; 
+    outerfunc(x); cout << "The new val is: " << x << "\n\n";
+
+
 
     return 0;
 }

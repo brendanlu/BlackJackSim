@@ -31,8 +31,6 @@ N_UNTIL_CUT(std::min((unsigned int)(N_CARDS*penentration+0.5), N_CARDS)), // cou
     for (; filledUpTo<MAX_DECKS*DECK_SIZE; ++filledUpTo) {cardStream[filledUpTo] = BLANK_CARD;}
 }
 
-
-
 void Shoe::FreshShuffleN(unsigned int nPartial) {
     /*
     In practice, the blackjack shoe is very rarely fully dealt. 
