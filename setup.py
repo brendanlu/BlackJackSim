@@ -3,9 +3,6 @@ from Cython.Build import cythonize
 
 import os
 
-os.environ['CC'] = 'g++'
-os.environ['CXX'] = 'g++'
-
 srcs = []
 for file in os.listdir("src/"): 
     if file.endswith(".cpp"): 
@@ -17,7 +14,8 @@ extensions = [
         "cardstream", 
         sources = srcs, 
         language = "c++",
-        extra_compile_args=["-o3"]
+        # extra_compile_args=["-o3"] # this is for gcc compiler
+        # ms seems to default to the cl one...
     )
 ]
 
