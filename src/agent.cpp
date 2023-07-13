@@ -36,7 +36,6 @@ void Agent::DealTargetHandler(const Card &dCard) {
     // track if we have pairs
     if (hInfo.nHolding == 1) {hInfo.lastCard = dCard;}
     else if (hInfo.nHolding == 2 && hInfo.lastCard.face == dCard.face) {hInfo.holdingPair = true;}
-    
 }
 
 // logic for observing any general card being dealt out 
@@ -66,8 +65,6 @@ char Agent::YieldAction(const Dealer &dealerRef) {
     else {
         return hrdActionFromPtr(hrdPtr, hInfo.handVal, dealerRef.upCard.val()); 
     }
-
-    // return 'H'; 
 }
 
 void Agent::ClearHandler () {

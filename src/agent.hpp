@@ -42,9 +42,9 @@ public:
 
     bool stratInit; // keeps track of if the pointers below are actually pointing to strats
 
-    // logic for recieving one card
     double YieldWager(); 
 
+    // logic for recieving one card
     void DealTargetHandler(const Card &dCard);
 
     void DealObserveHandler(const Card &dCard); 
