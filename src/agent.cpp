@@ -45,9 +45,19 @@ void Agent::DealObserveHandler(const Card &dCard) {
     cntVal += cntFromPtr(cntPtr, dCard.val()); 
 }
 
+/*
+    HIT = 'H',
+    STAND = 'S', 
+    DOUBLE = 'D', 
+    SPLIT = 'P', 
+    SURRENDER = 'R'
+*/
 char Agent::YieldAction(const Dealer &dealerRef) {
-    /*
-    if (hInfo.holdingPair) {
+    
+    if (hInfo.handVal >= BJVAL) {
+        return 'S'; 
+    }
+    else if (hInfo.holdingPair) {
         return spltActionFromPtr(spltPtr, hInfo.lastCard.val(), dealerRef.upCard.val());
     }
     else if (hInfo.nSoftAces > 0) {
@@ -56,9 +66,8 @@ char Agent::YieldAction(const Dealer &dealerRef) {
     else {
         return hrdActionFromPtr(hrdPtr, hInfo.handVal, dealerRef.upCard.val()); 
     }
-    */
 
-    return 'H'; 
+    // return 'H'; 
 }
 
 void Agent::ClearHandler () {

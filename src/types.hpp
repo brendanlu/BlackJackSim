@@ -25,6 +25,9 @@ struct Card {
         // Must be T, J, Q, K
         else {return VALS[8];}
     }
+
+    // true if not blank
+    inline operator bool() {return face != '0';}
 };
 
 inline std::ostream& operator<< (std::ostream& os, const Card& c) {os<<c.face; os<<c.suit; return os;}

@@ -2,7 +2,7 @@
 
 // the compiler needs to find a nullary constructor for the nested Dealer struct 
 //      otherwise the SimEngine constructor will not work 
-Dealer::Dealer() : HITSOFT17(false), handVal(0), nSoftAces(0), upCard(BLANK_CARD) {}
+Dealer::Dealer() : HITSOFT17(false), upCard(BLANK_CARD), handVal(0), nSoftAces(0) {}
 
 void Dealer::DealTargetHandler(Card dCard) {
     if (dCard.face == 'A') {nSoftAces += 1;}
@@ -13,9 +13,12 @@ void Dealer::DealTargetHandler(Card dCard) {
     nSoftAces -= 1; 
     }
 
-    if (upCard == BLANK_CARD) {upCard == dCard;}
+    if (!upCard) {upCard = dCard;}
 }
 
 void Dealer::ClearHandler() {
     upCard = BLANK_CARD;
+
+    handVal = 0;
+    nSoftAces = 0;
 }

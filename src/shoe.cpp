@@ -87,7 +87,7 @@ void Shoe::Clear() {
 void Shoe::Display()
 {
     for (Card card: cardStream) {
-        if (card == BLANK_CARD) {break;}
+        if (!card) {break;}
         else {std::cout << card << " ";}
     }
     std::cout << "\n";
