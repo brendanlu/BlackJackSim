@@ -1,6 +1,7 @@
 #ifndef AGENT_H
 #define AGENT_H 
 
+#include "dealer.hpp"
 #include "types.hpp"
 
 /*
@@ -30,7 +31,7 @@ public:
         unsigned int handVal; // soft/hard value of the hand, depending on if we have aces
         unsigned int nSoftAces; // number of aces that are (soft) counted as 11 in hand
         
-        char lastFace; // for triggering pair flag
+        Card lastCard; // for triggering pair flag
         bool holdingPair; // flag if we are holding a pair
     } hInfo;
 
@@ -39,6 +40,8 @@ public:
     // construct an object by passing in pointers to the strategy template
     Agent(char* hrd, char* sft, char* splt, double* cnt); 
 
+    bool stratInit; // keeps track of if the pointers below are actually pointing to strats
+
     // logic for recieving one card
     double YieldWager(); 
 
@@ -46,13 +49,11 @@ public:
 
     void DealObserveHandler(const Card &dCard); 
 
-    void FreshShuffleHandler();
-
-    ACTION YieldAction(); 
+    char YieldAction(const Dealer &dealerRef); 
 
     void ClearHandler();
 
-    bool stratInit; // keeps track of if the pointers below are actually pointing to strats
+    void FreshShuffleHandler();
 
 private:
     double* cntPtr; // pointer to find count values of various cards 

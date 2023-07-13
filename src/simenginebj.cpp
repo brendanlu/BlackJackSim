@@ -1,21 +1,21 @@
-#include "types.hpp"
-#include "simenginebj.hpp"
-#include "shoe.hpp"
 #include "agent.hpp"
 #include "dealer.hpp"
+#include "shoe.hpp"
+#include "simenginebj.hpp"
+#include "types.hpp"
+
 
 SimEngineBJ::SimEngineBJ() {}
 
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : simShoe(N_DECKS, penen) {}
 
-void SimEngineBJ::SetDealer17(bool b) {
-    simDealer.HITSOFT17 = b;
-}
+void SimEngineBJ::SetDealer17(bool b) {simDealer.HITSOFT17 = b;}
 
-void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt)
 // these are pointers which come in from the Python interface
-//      so we will have to do valid checks there
-{simAgent = Agent(hrd, sft, splt, cnt);}
+//      so we will have to sure in the Python level they are valid
+void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt) {simAgent = Agent(hrd, sft, splt, cnt);}
+
+void SimEngineBJ::SetAgentStack(long double sv) {simAgent.stackVal = sv;}
 
 template<typename targetType> void SimEngineBJ::EventDeal(targetType &target) {
     Card dCard = simShoe.Deal();
@@ -27,25 +27,23 @@ template<typename targetType> void SimEngineBJ::EventDeal(targetType &target) {
 template void SimEngineBJ::EventDeal<Agent>(Agent&); 
 template void SimEngineBJ::EventDeal<Dealer>(Dealer&); 
 
-void SimEngineBJ::SetAgentStack(long double sv) {simAgent.stackVal = sv;}
-
 ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
-    ACTION queryResponse = targetAgent.YieldAction(); // give reference of Dealer state
+    char queryResponse = targetAgent.YieldAction(simDealer); // give reference of Dealer state
 
-    if (queryResponse == ACTION::HIT) {
+    if (queryResponse == static_cast<char>(ACTION::HIT)) {
         EventDeal(targetAgent);
         return ERR_CODE::SUCCESS; 
     }
-    else if (queryResponse == ACTION::STAND) {
+    else if (queryResponse == static_cast<char>(ACTION::STAND)) {
         return ERR_CODE::SUCCESS;
     }
-    else if (queryResponse == ACTION::DOUBLE) {
+    else if (queryResponse == static_cast<char>(ACTION::DOUBLE)) {
         return ERR_CODE::SUCCESS;
     }
-    else if (queryResponse == ACTION::SPLIT) {
+    else if (queryResponse == static_cast<char>(ACTION::SPLIT)) {
         return ERR_CODE::SUCCESS;
     }
-    else if (queryResponse == ACTION::SURRENDER) {
+    else if (queryResponse == static_cast<char>(ACTION::SURRENDER)) {
         return ERR_CODE::SUCCESS;
     }
     else {
@@ -82,7 +80,6 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
             // initial deal out ------------------------------------------------
             //      dealer up card
             EventDeal(simDealer); 
-
             //      player gets two cards
             EventDeal(simAgent); 
             EventDeal(simAgent); 

@@ -41,10 +41,10 @@ enum class ERR_CODE : int {
     SUCCESS = 0, // generic success code
 
     // Main simulation loop related ---------------------------------
-    NO_AGENT_STRAT = 100,
+    NO_AGENT_STRAT = 101,
 
     // Query agent related --------------------------------------
-    INVALID_ACTION = 200
+    INVALID_ACTION = 201
 };
 
 // player action codes

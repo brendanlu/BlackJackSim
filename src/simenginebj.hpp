@@ -1,10 +1,10 @@
 #ifndef SIMENGINE_H
 #define SIMENGINE_H 
 
-#include "types.hpp"
-#include "shoe.hpp"
 #include "agent.hpp"
 #include "dealer.hpp"
+#include "shoe.hpp"
+#include "types.hpp"
 
 /*
 This SimEngine uses the Shoe and Agent objects, which have been designed for Blackjack,

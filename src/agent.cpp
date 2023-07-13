@@ -1,8 +1,9 @@
 #include "agent.hpp"
-#include "types.hpp"
+#include "dealer.hpp"
 #include "strategyinput.hpp"
+#include "types.hpp"
 
-Agent::HandInfo::HandInfo() : nHolding(0), handVal(0), nSoftAces(0), lastFace('0'), holdingPair(false) 
+Agent::HandInfo::HandInfo() : nHolding(0), handVal(0), nSoftAces(0), lastCard(BLANK_CARD), holdingPair(false) 
 {}
 
 Agent::Agent() : stratInit(false) // flag that we do not have pointers to strats yet
@@ -33,8 +34,8 @@ void Agent::DealTargetHandler(const Card &dCard) {
     }
 
     // track if we have pairs
-    if (hInfo.nHolding == 1) {hInfo.lastFace = dCard.face;}
-    else if (hInfo.nHolding == 2 && hInfo.lastFace == dCard.face) {hInfo.holdingPair = true;}
+    if (hInfo.nHolding == 1) {hInfo.lastCard = dCard;}
+    else if (hInfo.nHolding == 2 && hInfo.lastCard.face == dCard.face) {hInfo.holdingPair = true;}
     
 }
 
@@ -44,14 +45,27 @@ void Agent::DealObserveHandler(const Card &dCard) {
     cntVal += cntFromPtr(cntPtr, dCard.val()); 
 }
 
-void Agent::FreshShuffleHandler() {
-    cntVal = 0;
-}
+char Agent::YieldAction(const Dealer &dealerRef) {
+    /*
+    if (hInfo.holdingPair) {
+        return spltActionFromPtr(spltPtr, hInfo.lastCard.val(), dealerRef.upCard.val());
+    }
+    else if (hInfo.nSoftAces > 0) {
+        return sftActionFromPtr(sftPtr, hInfo.handVal, dealerRef.upCard.val()); 
+    }
+    else {
+        return hrdActionFromPtr(hrdPtr, hInfo.handVal, dealerRef.upCard.val()); 
+    }
+    */
 
-ACTION Agent::YieldAction() {
-    return ACTION::HIT;
+    return 'H'; 
 }
 
 void Agent::ClearHandler () {
     hInfo = HandInfo(); // reset hand information
 }
+
+void Agent::FreshShuffleHandler() {
+    cntVal = 0;
+}
+
