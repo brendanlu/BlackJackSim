@@ -14,14 +14,12 @@ The logic in the handler methods are the best place to start, and only affect th
     behaviour of the Agent, and are not critical to the correct operation of the simulation. 
 */
 
-constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
-
 class Agent 
 {
 public:
     long double stackVal; // bankroll
 
-    // struct to hold relevent information of the hand
+    // struct to hold relevent information of a hand
     // can adjust relatively easily, and change the relevant methods (& constructor)
     // this will reset via its nullary constructor every time the table is cleared
     struct HandInfo {
@@ -33,7 +31,8 @@ public:
         
         Card lastCard; // for triggering pair flag
         bool holdingPair; // flag if we are holding a pair
-    } hInfo;
+        bool blackJack; 
+    };
 
     // cython needs nullary constructor, and this is memeber class of simenginebj
     Agent(); 
@@ -44,8 +43,7 @@ public:
 
     double YieldWager(); 
 
-    // logic for recieving one card
-    void DealTargetHandler(const Card &dCard);
+    void DealTargetHandler(const Card &dCard); // logic for recieving one card
 
     void DealObserveHandler(const Card &dCard); 
 
@@ -56,6 +54,12 @@ public:
     void FreshShuffleHandler();
 
 private:
+    static constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
+    static constexpr unsigned int MAX_N_SPLITS = 3; 
+
+    HandInfo hands[MAX_N_SPLITS + 1]; 
+    unsigned int activeHand;
+
     double* cntPtr; // pointer to find count values of various cards 
     char* hrdPtr; char* sftPtr; char* spltPtr;  // pointer to strategy input files
     

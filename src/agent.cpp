@@ -3,7 +3,7 @@
 #include "strategyinput.hpp"
 #include "types.hpp"
 
-Agent::HandInfo::HandInfo() : nHolding(0), handVal(0), nSoftAces(0), lastCard(BLANK_CARD), holdingPair(false) 
+Agent::HandInfo::HandInfo() : nHolding(0), handVal(0), nSoftAces(0), lastCard(BLANK_CARD), holdingPair(false), blackJack(false)
 {}
 
 Agent::Agent() : stratInit(false) // flag that we do not have pointers to strats yet
@@ -12,7 +12,7 @@ Agent::Agent() : stratInit(false) // flag that we do not have pointers to strats
 // init the Agent from pointers to the data read in from strategy files
 // these allow high level control of the strategy to be adjusted and passed in
 Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) : 
-hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), stackVal(0), cntVal(0) 
+hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), stackVal(0), cntVal(0), activeHand(0)
 {}
 
 double Agent::YieldWager() {
@@ -23,19 +23,19 @@ double Agent::YieldWager() {
 // logic for recieving one card
 void Agent::DealTargetHandler(const Card &dCard) {
 
-    hInfo.nHolding += 1;
+    hands[activeHand].nHolding += 1;
 
     // adjust hand value - with soft count logic
-    if (dCard.face == 'A') {hInfo.nSoftAces += 1;}
-    hInfo.handVal += dCard.val(); 
-    if (hInfo.handVal > BJVAL && hInfo.nSoftAces > 0) { // revert soft count to hard count
-        hInfo.handVal -= 10; // adjust ace value to 1 
-        hInfo.nSoftAces -= 1; 
+    if (dCard.face == 'A') {hands[activeHand].nSoftAces += 1;}
+    hands[activeHand].handVal += dCard.val(); 
+    if (hands[activeHand].handVal > BJVAL && hands[activeHand].nSoftAces > 0) { // revert soft count to hard count
+        hands[activeHand].handVal -= 10; // adjust ace value to 1 
+        hands[activeHand].nSoftAces -= 1; 
     }
 
     // track if we have pairs
-    if (hInfo.nHolding == 1) {hInfo.lastCard = dCard;}
-    else if (hInfo.nHolding == 2 && hInfo.lastCard.face == dCard.face) {hInfo.holdingPair = true;}
+    if (hands[activeHand].nHolding == 1) {hands[activeHand].lastCard = dCard;}
+    else if (hands[activeHand].nHolding == 2 && hands[activeHand].lastCard.face == dCard.face) {hands[activeHand].holdingPair = true;}
 
     // check for instant blackjack
     
@@ -56,23 +56,23 @@ void Agent::DealObserveHandler(const Card &dCard) {
 */
 char Agent::YieldAction(const Dealer &dealerRef) {
     
-    if (hInfo.handVal >= BJVAL) {
+    if (hands[activeHand].handVal >= BJVAL) {
         return 'S'; 
     }
-    else if (hInfo.holdingPair) {
-        return spltActionFromPtr(spltPtr, hInfo.lastCard.val(), dealerRef.upCard.val());
+    else if (hands[activeHand].holdingPair) {
+        return spltActionFromPtr(spltPtr, hands[activeHand].lastCard.val(), dealerRef.upCard.val());
     }
-    else if (hInfo.nSoftAces > 0) {
-        return sftActionFromPtr(sftPtr, hInfo.handVal, dealerRef.upCard.val()); 
+    else if (hands[activeHand].nSoftAces > 0) {
+        return sftActionFromPtr(sftPtr, hands[activeHand].handVal, dealerRef.upCard.val()); 
     }
     else {
-        return hrdActionFromPtr(hrdPtr, hInfo.handVal, dealerRef.upCard.val()); 
+        return hrdActionFromPtr(hrdPtr, hands[activeHand].handVal, dealerRef.upCard.val()); 
     }
 }
 
 void Agent::ClearHandler () {
 
-    hInfo = HandInfo(); // reset hand information
+    hands[activeHand] = HandInfo(); // reset hand information
 }
 
 void Agent::FreshShuffleHandler() {
