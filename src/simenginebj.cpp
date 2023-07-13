@@ -32,6 +32,7 @@ ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
 
     if (queryResponse == static_cast<char>(ACTION::HIT)) {
         EventDeal(targetAgent);
+        EventQueryAgent(targetAgent); 
         return ERR_CODE::SUCCESS; 
     }
     else if (queryResponse == static_cast<char>(ACTION::STAND)) {

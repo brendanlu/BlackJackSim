@@ -36,6 +36,9 @@ void Agent::DealTargetHandler(const Card &dCard) {
     // track if we have pairs
     if (hInfo.nHolding == 1) {hInfo.lastCard = dCard;}
     else if (hInfo.nHolding == 2 && hInfo.lastCard.face == dCard.face) {hInfo.holdingPair = true;}
+
+    // check for instant blackjack
+    
 }
 
 // logic for observing any general card being dealt out 
@@ -68,6 +71,7 @@ char Agent::YieldAction(const Dealer &dealerRef) {
 }
 
 void Agent::ClearHandler () {
+
     hInfo = HandInfo(); // reset hand information
 }
 
