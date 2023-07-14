@@ -31,7 +31,7 @@ public:
         
         Card firstCard; // for triggering pair flag
         bool holdingPair; // flag if we are holding a pair
-        bool blackJack; 
+        bool blackJack; // flag if we have natural blackjack
     };
 
     // cython needs nullary constructor, and this is memeber class of simenginebj

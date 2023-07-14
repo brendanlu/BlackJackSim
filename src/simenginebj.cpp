@@ -54,6 +54,7 @@ ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
         return ERR_CODE::SUCCESS;
     }
     else {
+        // will just return error code and do nothing (basically treats it as a 'stand' message)
         return ERR_CODE::INVALID_ACTION;
     }
 }

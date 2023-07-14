@@ -1,0 +1,9 @@
+A rough log of things we will need to look after on the Python wrapping side
+    - reading in strat templates appropriately, and providing support for people to customize this highly
+    - linking agents in, with their IDs - C++ IDs are sequential (basically the stack array index), 
+        but Pythons need not be, we could use a dict or something for housekeeping 
+        this stuff is not performance critical
+    - other simulation engine setter methods
+    - logging simulation information (in the tight event loop) into a stream or something
+        we will probably need to wrap the C++ stream in Cython
+        and decode logging information
