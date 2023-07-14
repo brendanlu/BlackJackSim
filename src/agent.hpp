@@ -56,8 +56,8 @@ private:
     static constexpr unsigned int MAX_N_SPLITS = 3; // so we can stack allocate memory for hand information
 
     HandInfo hands[MAX_N_SPLITS + 1]; 
-    unsigned int nActivehands;
-    unsigned int activeHand;
+    unsigned int nActiveHands;
+    unsigned int activeHandIdx;
 
     double* cntPtr; // pointer to find count values of various cards 
     char* hrdPtr; char* sftPtr; char* spltPtr;  // pointer to strategy input files

@@ -5,24 +5,39 @@
 #include "types.hpp"
 
 
-SimEngineBJ::SimEngineBJ() {}
+SimEngineBJ::SimEngineBJ() {} // this is just for Cython; the Python constructor will always call the one below
 
-SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : simShoe(N_DECKS, penen) {}
+SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : simShoe(N_DECKS, penen), activatedAgents(0) {
+    for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
+        agentsActivateStatus[i] = false; 
+    }
+}
 
 void SimEngineBJ::SetDealer17(bool b) {simDealer.HITSOFT17 = b;}
 
 // these are pointers which come in from the Python interface
 //      so we will have to sure in the Python level they are valid
-void SimEngineBJ::SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt) {simAgent = Agent(hrd, sft, splt, cnt);}
+void SimEngineBJ::SetAgentStrat(unsigned int agentID, char* hrd, char* sft, char* splt, double* cnt) {
+    agents[agentID] = Agent(hrd, sft, splt, cnt);
+    agentsActivateStatus[agentID] = true; 
 
-void SimEngineBJ::SetAgentStack(long double sv) {simAgent.stackVal = sv;}
+    activatedAgents = 0; 
+    for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
+        if (agentsActivateStatus[i]) {activatedAgents += 1;}
+    }
+}
+
+void SimEngineBJ::SetAgentStack(unsigned int agentID, long double sv) {
+    agents[agentID].stackVal = sv;
+}
 
 template<typename targetType> void SimEngineBJ::EventDeal(targetType &target) {
     Card dCard = simShoe.Deal();
     target.DealTargetHandler(dCard);
 
-    // later we can loop over multiple agents here
-    simAgent.DealObserveHandler(dCard); 
+    for (unsigned int i=0; i<activatedAgents; ++i) {
+        agents[i].DealObserveHandler(dCard); 
+    }
 }
 template void SimEngineBJ::EventDeal<Agent>(Agent&); 
 template void SimEngineBJ::EventDeal<Dealer>(Dealer&); 
@@ -45,21 +60,26 @@ ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
 
 void SimEngineBJ::EventClear() {
     simShoe.Clear(); 
-    simAgent.ClearHandler();
     simDealer.ClearHandler(); 
+
+    for (unsigned int i=0; i<activatedAgents; ++i) {
+        agents[i].ClearHandler();
+    }
 }
 
 ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
     // The Python constructor will appropriately construct the Shoe
     // So at this point it will be populated and ready to go
-    if (!simAgent.stratInit) {return ERR_CODE::NO_AGENT_STRAT;}
+    if (activatedAgents == 0) {return ERR_CODE::NO_AGENT_STRAT;}
 
     simShoe.FreshShuffleN(simShoe.N_CARDS); // do a full shuffle of the shoe
     for (unsigned long long i=0; i<nIters; ++i) { // each iteration is playing one shoe
         
         // reshuffle the shoe --------------------------------------------------------------------
         simShoe.FreshShuffleN(simShoe.N_UNTIL_CUT); // partial fresh shuffle - see Shoe implementation
-        simAgent.FreshShuffleHandler(); 
+        for (unsigned int i=0; i<activatedAgents; ++i) {
+            agents[i].FreshShuffleHandler(); 
+        }
 
         // play the shoe until reshuffle triggered by drawing cut card
         while (!simShoe.needReshuffle) 
@@ -72,12 +92,15 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
             //      dealer up card
             EventDeal(simDealer); 
             //      player gets two cards
-            EventDeal(simAgent); 
-            EventDeal(simAgent); 
-
+            for (unsigned int i=0; i<activatedAgents; ++i) {
+                EventDeal(agents[i]); 
+                EventDeal(agents[i]);
+            }
             // agent action ----------------------------------------------------
-            EventQueryAgent(simAgent);
-            
+            for (unsigned int i=0; i<activatedAgents; ++i) {
+                EventQueryAgent(agents[i]); 
+            }
+
             // settle bets -----------------------------------------------------
 
 
@@ -115,8 +138,8 @@ void SimEngineBJ::Test() {
 
     cout << "Dealing to internals now \n\n"; 
     // simShoe.Deal(simDealer);
-    simAgent.DealTargetHandler(simShoe.Deal());
-    simAgent.DealTargetHandler(simShoe.Deal());
+    agents[0].DealTargetHandler(simShoe.Deal());
+    agents[0].DealTargetHandler(simShoe.Deal());
 
     cout << "Agent deal is not broken yet \n\n";
 

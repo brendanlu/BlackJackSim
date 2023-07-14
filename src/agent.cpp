@@ -12,33 +12,37 @@ Agent::Agent() : stratInit(false) // flag that we do not have pointers to strats
 // init the Agent from pointers to the data read in from strategy files
 // these allow high level control of the strategy to be adjusted and passed in
 Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) : 
-hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), stackVal(0), cntVal(0), nActivehands(1), activeHand(0)
-{}
+hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), stackVal(0), cntVal(0), nActiveHands(1), activeHandIdx(0)
+{
+    for (unsigned int i=0; i<MAX_N_SPLITS + 1; ++i) {
+        hands[i] = HandInfo();
+    }
+}
 
 // logic for recieving one card into the active hand
 void Agent::DealTargetHandler(const Card &dCard) {
 
-    hands[activeHand].nHolding += 1;
+    hands[activeHandIdx].nHolding += 1;
 
     // adjust hand value - with soft count logic
-    if (dCard.face == 'A') {hands[activeHand].nSoftAces += 1;}
-    hands[activeHand].handVal += dCard.val(); 
-    if (hands[activeHand].handVal > BJVAL && hands[activeHand].nSoftAces > 0) { // revert soft count to hard count
-        hands[activeHand].handVal -= 10; // adjust ace value to 1 
-        hands[activeHand].nSoftAces -= 1; 
+    if (dCard.face == 'A') {hands[activeHandIdx].nSoftAces += 1;}
+    hands[activeHandIdx].handVal += dCard.val(); 
+    if (hands[activeHandIdx].handVal > BJVAL && hands[activeHandIdx].nSoftAces > 0) { // revert soft count to hard count
+        hands[activeHandIdx].handVal -= 10; // adjust ace value to 1 
+        hands[activeHandIdx].nSoftAces -= 1; 
     }
 
     // track if we have pairs
-    if (hands[activeHand].nHolding == 1) {hands[activeHand].firstCard = dCard;}
-    else if (hands[activeHand].nHolding == 2 && hands[activeHand].firstCard.face == dCard.face) {hands[activeHand].holdingPair = true;}
+    if (hands[activeHandIdx].nHolding == 1) {hands[activeHandIdx].firstCard = dCard;}
+    else if (hands[activeHandIdx].nHolding == 2 && hands[activeHandIdx].firstCard.face == dCard.face) {hands[activeHandIdx].holdingPair = true;}
 
     // check for instant blackjack
-    if (hands[activeHand].handVal == BJVAL && hands[activeHand].nHolding == 2) {
-        if (hands[activeHand].firstCard.face == 'A') {
-            hands[activeHand].blackJack = true; 
+    if (hands[activeHandIdx].handVal == BJVAL && hands[activeHandIdx].nHolding == 2) {
+        if (hands[activeHandIdx].firstCard.face == 'A') {
+            hands[activeHandIdx].blackJack = true; 
         }
-        else if (hands[activeHand].firstCard.val() == 10) {
-            hands[activeHand].blackJack = true;
+        else if (hands[activeHandIdx].firstCard.val() == 10) {
+            hands[activeHandIdx].blackJack = true;
         }
     }
 }
@@ -66,19 +70,19 @@ char Agent::YieldAction(const Dealer &dealerRef) {
     char internalAction; 
 
     // perform action lookup
-    if (hands[activeHand].handVal >= BJVAL) { 
+    if (hands[activeHandIdx].handVal >= BJVAL) { 
         // we do nothing if we bust; changing this will break game logic - so do with caution
         //      it will also break the lookup via the preconfigured templates, through misindexing problems
         return 'S'; 
     }
-    else if (hands[activeHand].holdingPair) {
-        internalAction = spltActionFromPtr(spltPtr, hands[activeHand].firstCard.val(), dealerRef.upCard.val());
+    else if (hands[activeHandIdx].holdingPair) {
+        internalAction = spltActionFromPtr(spltPtr, hands[activeHandIdx].firstCard.val(), dealerRef.upCard.val());
     }
-    else if (hands[activeHand].nSoftAces > 0) {
-        internalAction = sftActionFromPtr(sftPtr, hands[activeHand].handVal, dealerRef.upCard.val()); 
+    else if (hands[activeHandIdx].nSoftAces > 0) {
+        internalAction = sftActionFromPtr(sftPtr, hands[activeHandIdx].handVal, dealerRef.upCard.val()); 
     }
     else {
-        internalAction = hrdActionFromPtr(hrdPtr, hands[activeHand].handVal, dealerRef.upCard.val()); 
+        internalAction = hrdActionFromPtr(hrdPtr, hands[activeHandIdx].handVal, dealerRef.upCard.val()); 
     }
 
     if (internalAction == 'H' || internalAction == 'S') { // we immediately action these
@@ -101,11 +105,11 @@ char Agent::YieldAction(const Dealer &dealerRef) {
 }
 
 void Agent::ClearHandler () {
-    for (unsigned int i=0; i<nActivehands; ++i) {
+    for (unsigned int i=0; i<nActiveHands; ++i) {
         hands[i] = HandInfo(); // reset hand information
     }
-    nActivehands = 1; 
-    activeHand = 0; 
+    nActiveHands = 1; 
+    activeHandIdx = 0; 
 }
 
 void Agent::FreshShuffleHandler() {

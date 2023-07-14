@@ -25,9 +25,9 @@ public:
 
     void SetDealer17(bool b);
 
-    void SetAgentStrat(char* hrd, char* sft, char* splt, double* cnt);
+    void SetAgentStrat(unsigned int agentID, char* hrd, char* sft, char* splt, double* cnt);
 
-    void SetAgentStack(long double sv);  
+    void SetAgentStack(unsigned int agentID, long double sv);  
 
     template<typename targetType> void EventDeal(targetType &target);
 
@@ -41,12 +41,13 @@ public:
     void Test2(); 
 
 private:
-    // simple nested struct to represent dealer logic
-    // shares some resemblance with the Agent class 
-    //      but is not designed to be customized
+    static constexpr unsigned int MAX_N_AGENTS = 10; // stack allocated; maximum number of players in simulation
+
     Shoe simShoe;
 
-    Agent simAgent; 
+    Agent agents[MAX_N_AGENTS]; 
+    bool agentsActivateStatus[MAX_N_AGENTS]; 
+    unsigned int activatedAgents;
     
 };
 
