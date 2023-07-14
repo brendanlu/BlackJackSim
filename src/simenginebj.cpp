@@ -38,15 +38,6 @@ ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
     else if (queryResponse == static_cast<char>(ACTION::STAND)) {
         return ERR_CODE::SUCCESS;
     }
-    else if (queryResponse == static_cast<char>(ACTION::DOUBLE)) {
-        return ERR_CODE::SUCCESS;
-    }
-    else if (queryResponse == static_cast<char>(ACTION::SPLIT)) {
-        return ERR_CODE::SUCCESS;
-    }
-    else if (queryResponse == static_cast<char>(ACTION::SURRENDER)) {
-        return ERR_CODE::SUCCESS;
-    }
     else {
         return ERR_CODE::INVALID_ACTION;
     }
@@ -76,7 +67,6 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
         // each iteration is a hand  -----------------------------------------------------------------
 
             // places bets -----------------------------------------------------
-
 
             // initial deal out ------------------------------------------------
             //      dealer up card

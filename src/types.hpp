@@ -50,13 +50,13 @@ enum class ERR_CODE : int {
     INVALID_ACTION = 201
 };
 
-// player action codes
+// player action codes that the simulation engine will process
 enum class ACTION : char {
     HIT = 'H',
     STAND = 'S', 
-    DOUBLE = 'D', 
-    SPLIT = 'P', 
-    SURRENDER = 'R'
+    // DOUBLE = 'D', 
+    // SPLIT = 'P', 
+    // SURRENDER = 'R'
 };
 
 #endif

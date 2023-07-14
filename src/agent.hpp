@@ -29,7 +29,7 @@ public:
         unsigned int handVal; // soft/hard value of the hand, depending on if we have aces
         unsigned int nSoftAces; // number of aces that are (soft) counted as 11 in hand
         
-        Card lastCard; // for triggering pair flag
+        Card firstCard; // for triggering pair flag
         bool holdingPair; // flag if we are holding a pair
         bool blackJack; 
     };
@@ -40,8 +40,6 @@ public:
     Agent(char* hrd, char* sft, char* splt, double* cnt); 
 
     bool stratInit; // keeps track of if the pointers below are actually pointing to strats
-
-    double YieldWager(); 
 
     void DealTargetHandler(const Card &dCard); // logic for recieving one card
 
@@ -55,9 +53,10 @@ public:
 
 private:
     static constexpr unsigned int MAX_HSIZE = 21; // maximum hand size - 21 soft aces
-    static constexpr unsigned int MAX_N_SPLITS = 3; 
+    static constexpr unsigned int MAX_N_SPLITS = 3; // so we can stack allocate memory for hand information
 
     HandInfo hands[MAX_N_SPLITS + 1]; 
+    unsigned int nActivehands;
     unsigned int activeHand;
 
     double* cntPtr; // pointer to find count values of various cards 
