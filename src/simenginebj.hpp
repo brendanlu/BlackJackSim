@@ -32,6 +32,8 @@ public:
     template<typename targetType> void EventDeal(targetType &target);
 
     ERR_CODE EventQueryAgent(Agent &targetAgent); 
+ 
+    void EventQueryDealer(); 
 
     void EventClear();
 

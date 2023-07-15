@@ -19,6 +19,9 @@ struct Dealer
     unsigned int nSoftAces;
 
     void DealTargetHandler(Card dCard);
+
+    ACTION YieldAction();
+    
     void ClearHandler(); 
 
 };

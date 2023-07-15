@@ -59,6 +59,13 @@ ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
     }
 }
 
+void SimEngineBJ::EventQueryDealer() {
+    if (simDealer.YieldAction() == ACTION::HIT) {
+        EventDeal(simDealer); 
+        EventQueryDealer(); 
+    }
+}
+
 void SimEngineBJ::EventClear() {
     simShoe.Clear(); 
     simDealer.ClearHandler(); 

@@ -1,4 +1,5 @@
 #include "dealer.hpp"
+#include "types.hpp"
 
 // the compiler needs to find a nullary constructor for the nested Dealer struct 
 //      otherwise the SimEngine constructor will not work 
@@ -14,6 +15,18 @@ void Dealer::DealTargetHandler(Card dCard) {
     }
 
     if (!upCard) {upCard = dCard;}
+}
+
+ACTION Dealer::YieldAction() {
+    if (handVal < 17) {
+        return ACTION::HIT; 
+    }
+    else {
+        if (HITSOFT17 && nSoftAces > 0) {
+            return ACTION::HIT; 
+        }
+        return ACTION::STAND; 
+    }
 }
 
 void Dealer::ClearHandler() {
