@@ -104,12 +104,12 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
                 EventDeal(agents[i]); 
                 EventDeal(agents[i]);
             }
-            // agent action ----------------------------------------------------
+            // action -----------------------------------------------------------
+            //      player actions
             for (unsigned int i=0; i<activatedAgents; ++i) {
                 EventQueryAgent(agents[i]); 
             }
-
-            // dealer hits -----------------------------------------------------
+            //      dealer takes cards 
             EventQueryDealer(); 
 
             // clear the table -------------------------------------------------
