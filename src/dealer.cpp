@@ -22,7 +22,7 @@ ACTION Dealer::YieldAction() {
         return ACTION::HIT; 
     }
     else {
-        if (HITSOFT17 && nSoftAces > 0) {
+        if (HITSOFT17 && nSoftAces > 0 && handVal == 17) {
             return ACTION::HIT; 
         }
         return ACTION::STAND; 

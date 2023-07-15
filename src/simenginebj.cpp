@@ -109,8 +109,8 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
                 EventQueryAgent(agents[i]); 
             }
 
-            // settle bets -----------------------------------------------------
-
+            // dealer hits -----------------------------------------------------
+            EventQueryDealer(); 
 
             // clear the table -------------------------------------------------
             EventClear();
