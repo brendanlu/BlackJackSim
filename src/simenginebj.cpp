@@ -112,7 +112,7 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
             //      dealer takes cards 
             EventQueryDealer(); 
 
-            // clear the table -------------------------------------------------
+            // clear the table --------------------------------------------------
             EventClear();
         }
     }

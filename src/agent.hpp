@@ -29,9 +29,11 @@ public:
         unsigned int handVal; // soft/hard value of the hand, depending on if we have aces
         unsigned int nSoftAces; // number of aces that are (soft) counted as 11 in hand
         
+        bool natBlackJack; // flag if we have natural blackjack
+
         Card firstCard; // for triggering pair flag
         bool holdingPair; // flag if we are holding a pair
-        bool blackJack; // flag if we have natural blackjack
+        
     };
 
     // cython needs nullary constructor, and this is memeber class of simenginebj

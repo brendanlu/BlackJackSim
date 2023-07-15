@@ -3,7 +3,8 @@
 #include "strategyinput.hpp"
 #include "types.hpp"
 
-Agent::HandInfo::HandInfo() : nHolding(0), handVal(0), nSoftAces(0), firstCard(BLANK_CARD), holdingPair(false), blackJack(false)
+// nullary, 'reset' constructor of the hand information struct
+Agent::HandInfo::HandInfo() : nHolding(0), handVal(0), nSoftAces(0), firstCard(BLANK_CARD), holdingPair(false), natBlackJack(false)
 {}
 
 Agent::Agent() : stratInit(false) // flag that we do not have pointers to strats yet
@@ -39,10 +40,10 @@ void Agent::DealTargetHandler(const Card &dCard) {
     // check for instant blackjack
     if (hands[activeHandIdx].handVal == BJVAL && hands[activeHandIdx].nHolding == 2) {
         if (hands[activeHandIdx].firstCard.face == 'A') {
-            hands[activeHandIdx].blackJack = true; 
+            hands[activeHandIdx].natBlackJack = true; 
         }
         else if (hands[activeHandIdx].firstCard.val() == 10) {
-            hands[activeHandIdx].blackJack = true;
+            hands[activeHandIdx].natBlackJack = true;
         }
     }
 }
@@ -76,13 +77,13 @@ char Agent::YieldAction(const Dealer &dealerRef) {
         return 'S'; 
     }
     else if (hands[activeHandIdx].holdingPair) {
-        internalAction = spltActionFromPtr(spltPtr, hands[activeHandIdx].firstCard.val(), dealerRef.upCard.val());
+        internalAction = spltActionFromPtr(spltPtr, hands[activeHandIdx].firstCard.val(), dealerRef.hInfo.upCard.val());
     }
     else if (hands[activeHandIdx].nSoftAces > 0) {
-        internalAction = sftActionFromPtr(sftPtr, hands[activeHandIdx].handVal, dealerRef.upCard.val()); 
+        internalAction = sftActionFromPtr(sftPtr, hands[activeHandIdx].handVal, dealerRef.hInfo.upCard.val()); 
     }
     else {
-        internalAction = hrdActionFromPtr(hrdPtr, hands[activeHandIdx].handVal, dealerRef.upCard.val()); 
+        internalAction = hrdActionFromPtr(hrdPtr, hands[activeHandIdx].handVal, dealerRef.hInfo.upCard.val()); 
     }
 
     if (internalAction == 'H' || internalAction == 'S') { // we immediately action these
