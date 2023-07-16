@@ -1,6 +1,8 @@
 #ifndef SIMENGINE_H
 #define SIMENGINE_H 
 
+#include <random>
+
 #include "agent.hpp"
 #include "dealer.hpp"
 #include "shoe.hpp"
@@ -45,13 +47,12 @@ public:
 private:
     static constexpr unsigned int MAX_N_AGENTS = 10; // stack allocated; maximum number of players in simulation
 
-    Shoe simShoe;
+    Shoe<std::mt19937_64> simShoe;
 
     Agent agents[MAX_N_AGENTS]; 
     bool agentsActivateStatus[MAX_N_AGENTS]; 
     unsigned int activatedAgents;
     
 };
-
 
 #endif

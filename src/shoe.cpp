@@ -7,10 +7,12 @@
 #include "fisheryates.hpp"
 
 // Cython needs a nullary constructor, this will never be called from Python
-Shoe::Shoe() {};
+template <typename RNG>
+Shoe<RNG>::Shoe() {};
 
-Shoe::Shoe(unsigned int NDECKS, double penentration) : 
-                                 mersenneTwister(std::random_device()()), // seed our rng here, when class constructor called
+template <typename RNG>
+Shoe<RNG>::Shoe(unsigned int NDECKS, double penentration) : 
+                                             rng(std::random_device()()), // seed our rng here, when class constructor called
                                                          N_DECKS(NDECKS),
                                               N_CARDS(N_DECKS*DECK_SIZE),
 N_UNTIL_CUT(std::min((unsigned int)(N_CARDS*penentration+0.5), N_CARDS)), // could use std::round()
@@ -31,23 +33,25 @@ N_UNTIL_CUT(std::min((unsigned int)(N_CARDS*penentration+0.5), N_CARDS)), // cou
     for (; filledUpTo<MAX_DECKS*DECK_SIZE; ++filledUpTo) {cardStream[filledUpTo] = BLANK_CARD;}
 }
 
-void Shoe::FreshShuffleN(unsigned int nPartial) {
+template <typename RNG>
+void Shoe<RNG>::FreshShuffleN(unsigned int nPartial) {
     /*
     In practice, the blackjack shoe is very rarely fully dealt. 
 
     We can save some computation in our simulation loop by only partially shuffling. 
     In the case that we need more "freshly shuffled" cards, we can make use of incremental shuffling. 
     */
-    nValidShuffled = FisherYatesShuffle(&cardStream[0], N_CARDS, nPartial, mersenneTwister);
+    nValidShuffled = FisherYatesShuffle(&cardStream[0], N_CARDS, nPartial, rng);
     nDealt = 0;
     nDiscarded = 0; 
 }
 
-void Shoe::PushBackShuffle()
+template <typename RNG>
+void Shoe<RNG>::PushBackShuffle()
 {
     // We need more "simulated shuffled" cards to deal out, so we perform a one iteration FY incremental shuffle.
     if (nValidShuffled + 1 <= N_CARDS) {
-        nValidShuffled += FisherYatesShuffle(&cardStream[nValidShuffled], N_CARDS - nValidShuffled, 1, mersenneTwister);
+        nValidShuffled += FisherYatesShuffle(&cardStream[nValidShuffled], N_CARDS - nValidShuffled, 1, rng);
     }
     else { 
         // whilst possible, this case should be - in practice, near impossible in a well instantiated simulation game
@@ -55,11 +59,12 @@ void Shoe::PushBackShuffle()
         // we basically reshuffle and deal out of the discarded tray, until we clear the table, and then reshuffle the shoe
         needReshuffle = true;
         nDealt = 0; 
-        nValidShuffled = FisherYatesShuffle(&cardStream[0], nDiscarded, 1, mersenneTwister);
+        nValidShuffled = FisherYatesShuffle(&cardStream[0], nDiscarded, 1, rng);
     }
 }
 
-Card Shoe::Deal() 
+template <typename RNG>
+Card Shoe<RNG>::Deal() 
 {
     /*
     Simulates delaing a card to a player (Agent type).
@@ -79,12 +84,14 @@ Card Shoe::Deal()
     }
 }
 
-void Shoe::Clear() {
+template <typename RNG>
+void Shoe<RNG>::Clear() {
     // simulates clearing the table of cards
     nDiscarded = nDealt; // bring count of discarded up to date with dealt
 }
 
-void Shoe::Display()
+template <typename RNG>
+void Shoe<RNG>::Display()
 {
     for (Card card: cardStream) {
         if (!card) {break;}
@@ -93,3 +100,5 @@ void Shoe::Display()
     std::cout << "\n";
 }
 
+template unsigned int FisherYatesShuffle<Card, std::mt19937_64>(Card*, unsigned int, unsigned int, std::mt19937_64&);
+template class Shoe<std::mt19937_64>; 

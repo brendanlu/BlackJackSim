@@ -25,7 +25,7 @@ int main()
 
     cout << "Trying pushback deal \n\n";
 
-    Shoe tryShoe(1, 1); 
+    Shoe<std::mt19937_64> tryShoe(1, 1); 
     cout << "We can make a dodgy Shoe \n\n"; 
 
 

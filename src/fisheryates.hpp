@@ -42,7 +42,4 @@ But in other cases, we need that last iteration for an appropriate partial shuff
     return nEffective; // return the number of elements shuffled 
 };
 
-/* **Explicit instantiation of the FisherYates shuffle for Cards, and a mersenne twister rng */
-template unsigned int FisherYatesShuffle<Card, std::mt19937_64>(Card*, unsigned int, unsigned int, std::mt19937_64&);
-
 #endif
