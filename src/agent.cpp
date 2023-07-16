@@ -16,7 +16,7 @@ Agent::HandInfo::HandInfo() :
 
 Agent::Agent() : 
         stratInit(false) // flag that we do not have pointers to strats yet
-{} 
+{}
 
 // init the Agent from pointers to the data read in from strategy files
 // these allow high level control of the strategy to be adjusted and passed in
@@ -89,13 +89,16 @@ char Agent::YieldAction(const Dealer &dealerRef) {
     The SimEngine will only process 'H' and 'S' codes; the rest of these actions
         one must implement the logic themselves in this agent class here. 
     */
+
+    // note that an internal stand is a stand on the current hand
+    // an external stand means the player is done on all hands
     char internalAction; 
 
     // perform action lookup
     if (hands[activeHandIdx].handVal >= BJVAL) { 
         // we do nothing if we bust; changing this will break game logic - so do with caution
         //      it will also break the lookup via the preconfigured templates, through misindexing problems
-        return 'S'; 
+        internalAction = 'S'; 
     }
     else if (hands[activeHandIdx].holdingPair) {
         internalAction = spltActionFromPtr(spltPtr, hands[activeHandIdx].firstCard.val(), dealerRef.hInfo.upCard.val());
@@ -107,8 +110,8 @@ char Agent::YieldAction(const Dealer &dealerRef) {
         internalAction = hrdActionFromPtr(hrdPtr, hands[activeHandIdx].handVal, dealerRef.hInfo.upCard.val()); 
     }
 
-    if (internalAction == 'H' || internalAction == 'S') { // we immediately action these
-        return internalAction;
+    if (internalAction == 'H') { // we can immediately action a hit command
+        return 'H';
     }
     // following actions require some processing on the Agent side before we send a message to the simulation engine
     else if (internalAction == 'D') {
@@ -116,15 +119,22 @@ char Agent::YieldAction(const Dealer &dealerRef) {
         return 'H';
     }
     else if (internalAction == 'P') {
-        // this will be fairly complex to implement
-        return 'S'; 
+        internalAction = 'S'; 
     }
     else if (internalAction == 'R') {
-        return 'S';
+        hands[activeHandIdx].wager /= 2; 
+        hands[activeHandIdx].natBlackJack = false; 
+        hands[activeHandIdx].handVal = BJVAL + 1; // make hand bust
+        internalAction = 'S';
     }
     else {
-        return 'S'; 
+        // we can do some flagging here if we have found some other codes
+        // otherwise treat all other codes like a stand
+        internalAction = 'S'; 
     }
+
+    // internalAction == 'S'
+    
 }
 
 void Agent::ClearHandler (const Dealer &dealerRef) {

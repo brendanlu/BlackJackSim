@@ -23,7 +23,7 @@ public:
     // can adjust relatively easily, and change the relevant methods (& constructor)
     // this will reset via its nullary constructor every time the table is cleared
     struct HandInfo {
-        HandInfo(); 
+        HandInfo();
 
         double wager; 
 
