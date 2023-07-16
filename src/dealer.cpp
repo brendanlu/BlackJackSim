@@ -1,11 +1,20 @@
 #include "dealer.hpp"
 #include "types.hpp"
 
-Dealer::HandInfo::HandInfo() : handVal(0), nSoftAces(0), checkBJ(false), natBlackJack(false), upCard(BLANK_CARD) {}
+Dealer::HandInfo::HandInfo() : 
+        handVal(0), 
+        nSoftAces(0), 
+        checkBJ(false), 
+        natBlackJack(false), 
+        upCard(BLANK_CARD) 
+{}
 
 // the compiler needs to find a nullary constructor for the nested Dealer struct 
 //      otherwise the SimEngine constructor will not work 
-Dealer::Dealer() : HITSOFT17(false), hInfo(HandInfo()) {}
+Dealer::Dealer() : 
+        HITSOFT17(false), 
+        hInfo(HandInfo()) 
+{}
 
 void Dealer::DealTargetHandler(Card dCard) {
     if (dCard.face == 'A') {hInfo.nSoftAces += 1;}

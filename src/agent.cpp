@@ -4,16 +4,32 @@
 #include "types.hpp"
 
 // nullary, 'reset' constructor of the hand information struct
-Agent::HandInfo::HandInfo() : nHolding(0), handVal(0), nSoftAces(0), firstCard(BLANK_CARD), holdingPair(false), natBlackJack(false)
+Agent::HandInfo::HandInfo() : 
+        wager(0), 
+        nHolding(0), 
+        handVal(0), 
+        nSoftAces(0), 
+        firstCard(BLANK_CARD), 
+        holdingPair(false), 
+        natBlackJack(false)
 {}
 
-Agent::Agent() : stratInit(false) // flag that we do not have pointers to strats yet
+Agent::Agent() : 
+        stratInit(false) // flag that we do not have pointers to strats yet
 {} 
 
 // init the Agent from pointers to the data read in from strategy files
 // these allow high level control of the strategy to be adjusted and passed in
 Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) : 
-hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), stratInit(true), stackVal(0), cntVal(0), nActiveHands(1), activeHandIdx(0)
+        hrdPtr(hrd), 
+        sftPtr(sft), 
+        spltPtr(splt), 
+        cntPtr(cnt), 
+        stratInit(true), 
+        stackVal(0), 
+        cntVal(0), 
+        nActiveHands(1), 
+        activeHandIdx(0)
 {
     for (unsigned int i=0; i<MAX_N_SPLITS + 1; ++i) {
         hands[i] = HandInfo();

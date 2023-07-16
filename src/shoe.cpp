@@ -100,5 +100,8 @@ void Shoe<RNG>::Display()
     std::cout << "\n";
 }
 
+
+// explicit instantiations ------------------------------------------------------------------------
+//      just using a 64-bit mersenne twister for now
 template unsigned int FisherYatesShuffle<Card, std::mt19937_64>(Card*, unsigned int, unsigned int, std::mt19937_64&);
 template class Shoe<std::mt19937_64>; 

@@ -25,6 +25,8 @@ public:
     struct HandInfo {
         HandInfo(); 
 
+        double wager; 
+
         unsigned int nHolding; // number of cards in hand
         unsigned int handVal; // soft/hard value of the hand, depending on if we have aces
         unsigned int nSoftAces; // number of aces that are (soft) counted as 11 in hand
