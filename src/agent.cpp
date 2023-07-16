@@ -105,7 +105,7 @@ char Agent::YieldAction(const Dealer &dealerRef) {
     }
 }
 
-void Agent::ClearHandler () {
+void Agent::ClearHandler (const Dealer &dealerRef) {
     for (unsigned int i=0; i<nActiveHands; ++i) {
         hands[i] = HandInfo(); // reset hand information
     }

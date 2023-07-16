@@ -49,7 +49,7 @@ public:
 
     char YieldAction(const Dealer &dealerRef); 
 
-    void ClearHandler();
+    void ClearHandler(const Dealer &dealerRef);
 
     void FreshShuffleHandler();
 
@@ -65,6 +65,9 @@ private:
     char* hrdPtr; char* sftPtr; char* spltPtr;  // pointer to strategy input files
     
     double cntVal; // card count as dictated by count input
+
+    // utils ---------------------------------------------------------------------
+    
 };
 
 #endif

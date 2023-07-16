@@ -71,7 +71,7 @@ void SimEngineBJ::EventClear() {
     simDealer.ClearHandler(); 
 
     for (unsigned int i=0; i<activatedAgents; ++i) {
-        agents[i].ClearHandler();
+        agents[i].ClearHandler(simDealer);
     }
 }
 
@@ -94,7 +94,8 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
         {
         // each iteration is a hand  -----------------------------------------------------------------
 
-            // places bets -----------------------------------------------------
+            // clear out table and settle bets ---------------------------------
+            EventClear(); 
 
             // initial deal out ------------------------------------------------
             //      dealer up card
@@ -104,16 +105,13 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
                 EventDeal(agents[i]); 
                 EventDeal(agents[i]);
             }
-            // action -----------------------------------------------------------
+            // action ----------------------------------------------------------
             //      player actions
             for (unsigned int i=0; i<activatedAgents; ++i) {
                 EventQueryAgent(agents[i]); 
             }
             //      dealer takes cards 
             EventQueryDealer(); 
-
-            // clear the table --------------------------------------------------
-            EventClear();
         }
     }
 
