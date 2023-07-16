@@ -29,11 +29,16 @@ Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) :
         stackVal(0), 
         cntVal(0), 
         nActiveHands(1), 
-        activeHandIdx(0)
+        activeHandIdx(0),
+        BJ_PAYOUT(1.5)
 {
     for (unsigned int i=0; i<MAX_N_SPLITS + 1; ++i) {
         hands[i] = HandInfo();
     }
+}
+
+void Agent::SetBJPayout(double d) {
+    BJ_PAYOUT = d;
 }
 
 // logic for recieving one card into the active hand
@@ -107,6 +112,7 @@ char Agent::YieldAction(const Dealer &dealerRef) {
     }
     // following actions require some processing on the Agent side before we send a message to the simulation engine
     else if (internalAction == 'D') {
+        hands[activeHandIdx].wager *= 2; 
         return 'H';
     }
     else if (internalAction == 'P') {
@@ -123,8 +129,29 @@ char Agent::YieldAction(const Dealer &dealerRef) {
 
 void Agent::ClearHandler (const Dealer &dealerRef) {
     for (unsigned int i=0; i<nActiveHands; ++i) {
+        if (hands[i].handVal > BJVAL) {
+            stackVal -= hands[i].wager;
+        }
+        else if (hands[i].natBlackJack && !dealerRef.hInfo.natBlackJack) {
+            stackVal += BJ_PAYOUT * hands[i].wager;
+        }
+        else if (!hands[i].natBlackJack && dealerRef.hInfo.natBlackJack) {
+            stackVal -= hands[i].wager; 
+        }
+        else if (hands[i].handVal > dealerRef.hInfo.handVal) {
+            stackVal += hands[i].wager; 
+        }
+        else if (hands[i].handVal < dealerRef.hInfo.handVal) {
+            stackVal -= hands[i].wager;
+        }
+        else {
+            ;
+        }
+
         hands[i] = HandInfo(); // reset hand information
     }
+
+
     nActiveHands = 1; 
     activeHandIdx = 0; 
 }

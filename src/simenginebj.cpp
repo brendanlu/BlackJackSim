@@ -30,6 +30,12 @@ void SimEngineBJ::SetAgentStrat(unsigned int agentID, char* hrd, char* sft, char
     }
 }
 
+void SimEngineBJ::SetBJPayout(double d) {
+    for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
+        agents[i].SetBJPayout(d);
+    }
+}
+
 void SimEngineBJ::SetAgentStack(unsigned int agentID, long double sv) {
     agents[agentID].stackVal = sv;
 }

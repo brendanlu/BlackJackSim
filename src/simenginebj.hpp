@@ -27,6 +27,8 @@ public:
 
     void SetDealer17(bool b);
 
+    void SetBJPayout(double d); 
+
     void SetAgentStrat(unsigned int agentID, char* hrd, char* sft, char* splt, double* cnt);
 
     void SetAgentStack(unsigned int agentID, long double sv);  

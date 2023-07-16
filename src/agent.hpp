@@ -45,6 +45,8 @@ public:
 
     bool stratInit; // keeps track of if the pointers below are actually pointing to strats
 
+    void SetBJPayout(double d);
+
     void DealTargetHandler(const Card &dCard); // logic for recieving one card
 
     void DealObserveHandler(const Card &dCard); 
@@ -67,6 +69,10 @@ private:
     char* hrdPtr; char* sftPtr; char* spltPtr;  // pointer to strategy input files
     
     double cntVal; // card count as dictated by count input
+
+    // ------------------------------
+    double BJ_PAYOUT; 
+
 
     // utils ---------------------------------------------------------------------
     
