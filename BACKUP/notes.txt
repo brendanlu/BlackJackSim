@@ -55,3 +55,11 @@ Later, we can add count-deviated strategies as multiple strategy files.
 
 Use gperf (GNU) to generate a perfect hashtable, we want to be able 
 to convert card faces into their numeric values wickedly fast. 
+
+
+Some stuff using mingw compilation on windows -------------------------------------------------
+https://cython.readthedocs.io/en/latest/src/quickstart/install.html
+
+https://cython.readthedocs.io/en/latest/src/tutorial/appendix.html
+
+https://cython.readthedocs.io/en/latest/src/tutorial/appendix.html#wininst
