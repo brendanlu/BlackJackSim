@@ -110,6 +110,8 @@ char Agent::YieldAction(const Dealer &dealerRef) {
         internalAction = hrdActionFromPtr(hrdPtr, hands[activeHandIdx].handVal, dealerRef.hInfo.upCard.val()); 
     }
 
+    // --------------------------------------------------------------------------
+    // let us process internal actions
     if (internalAction == 'H') { // we can immediately action a hit command
         return 'H';
     }
@@ -118,7 +120,9 @@ char Agent::YieldAction(const Dealer &dealerRef) {
         hands[activeHandIdx].wager *= 2; 
         return 'H';
     }
+
     else if (internalAction == 'P') {
+        
         internalAction = 'S'; 
     }
     else if (internalAction == 'R') {
@@ -130,7 +134,16 @@ char Agent::YieldAction(const Dealer &dealerRef) {
     else {
         // we can do some flagging here if we have found some other codes
         // otherwise treat all other codes like a stand
-        internalAction = 'S'; 
+        // internalAction = 'S'; 
+
+        // if we have multiple hands, we continue
+        if (activeHandIdx - 1 == nActiveHands) {
+            return 'S'; 
+        }
+        else {
+            activeHandIdx += 1;
+            return YieldAction(dealerRef); 
+        }
     }
 
     // internalAction == 'S'
