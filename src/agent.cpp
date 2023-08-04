@@ -137,7 +137,7 @@ char Agent::YieldAction(const Dealer &dealerRef) {
         // internalAction = 'S'; 
 
         // if we have multiple hands, we continue
-        if (activeHandIdx - 1 == nActiveHands) {
+        if (activeHandIdx + 1 == nActiveHands) {
             return 'S'; 
         }
         else {
