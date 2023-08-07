@@ -5,6 +5,9 @@
 #include "types.hpp"
 
 
+template class Shoe<std::mt19937_64>; 
+
+
 SimEngineBJ::SimEngineBJ() {} // this is just for Cython; the Python constructor will always call the one below
 
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 

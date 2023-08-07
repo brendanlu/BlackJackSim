@@ -10,7 +10,7 @@ template<typename targetType> void Shoe::Deal(targetType &target)
     Returns the success status of this deal. 
     */
 
-    if (nDealt + 1 <= nValidShuffled) { // we have "fresh" shuffled cards to deal
+    if (nDealt + 1 <= nShuffled) { // we have "fresh" shuffled cards to deal
         target.DealTargetHandler(cardStream[nDealt++]);
         if (nDealt > N_UNTIL_CUT) {needReshuffle = true;}
     }

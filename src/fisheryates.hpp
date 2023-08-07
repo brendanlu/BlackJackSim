@@ -12,23 +12,36 @@ https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
 using unifIntBounds_t = std::uniform_int_distribution<unsigned int>::param_type;
 
-template <typename T, typename randomNumGenerator>
-unsigned int FisherYatesShuffle(T* arrHead, unsigned int n, unsigned int nPartial, randomNumGenerator& rng)
 /*
 FisherYates algorithm to shuffle a contiguous slice of array elements in place. 
-nPartial controls partial and incremental shuffle. 
-    nPartial corresponds to how many elements we will partially shuffle
-    so the first nPartial elements of the array will be new shuffles
-    it can take nPartial > n, where it will then default to n 
 
-We take in a reference to our rng, which is external from this, so it preserves its random state. 
-The function returns the effective number of items it ends up shuffling. 
+This is the 'forward' version, whereby we place our newly shuffled items at the
+front of the array. 
 
-When nPartial in {n, n-1}, I think the last iteration of the loop is redundant. 
-But in other cases, we need that last iteration for an appropriate partial shuffle. 
+For now, the function returns successful number of items shuffled. 
+
+PARAMS -------------------------------------------------------------------------
+    :n: gives the max length of the contiguous array
+    :nPartial: how many elements we want to shuffle
+    :rng: reference to a random number generator
+--------------------------------------------------------------------------------
+
+NOTE ---------------------------------------------------------------------------
+    When nPartial in {n, n-1}, the last iteration of the loop should be 
+    redundant. But in other cases, the last iteration should be needed for an 
+    appropriate partial shuffle. 
+--------------------------------------------------------------------------------
 */
+template <typename T, typename randomNumGenerator>
+unsigned int FYShuffle(
+    T* arrHead, 
+    unsigned int n, 
+    unsigned int nPartial, 
+    randomNumGenerator& rng) 
 {
-    unsigned int nEffective = std::min(nPartial, n);
+    // first take the minimum of the partial n request and the max n
+    // this may change
+    unsigned int nEffective = std::min(nPartial, n); 
     
     unsigned int j;
     std::uniform_int_distribution<unsigned int> unifInt(0, n-1);
@@ -39,7 +52,7 @@ But in other cases, we need that last iteration for an appropriate partial shuff
         std::swap(*(arrHead+i), *(arrHead+j));
     }
 
-    return nEffective; // return the number of elements shuffled 
+    return nEffective; 
 };
 
 #endif

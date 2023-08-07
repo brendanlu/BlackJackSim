@@ -6,90 +6,136 @@
 #include "types.hpp"
 #include "fisheryates.hpp"
 
-// Cython needs a nullary constructor, this will never be called from Python
+/*
+Explicit instation of Fisher Yates shuffling algorithm for the custom Card
+type and a 64 bit Mersenne Twister. 
+*/
+template unsigned int FYShuffle<Card, std::mt19937_64>(
+    Card*, 
+    unsigned int, 
+    unsigned int, 
+    std::mt19937_64&);
+
+
+/*
+Cython needs a nullary constructor, this will never be called from Python.
+*/
 template <typename RNG>
 Shoe<RNG>::Shoe() {};
 
+
+/*
+We seed our random number generator in the constructor.
+*/
 template <typename RNG>
 Shoe<RNG>::Shoe(unsigned int NDECKS, double penentration) : 
-                                             rng(std::random_device()()), // seed our rng here, when class constructor called
-                                                         N_DECKS(NDECKS),
-                                              N_CARDS(N_DECKS*DECK_SIZE),
-N_UNTIL_CUT(std::min((unsigned int)(N_CARDS*penentration+0.5), N_CARDS)), // could use std::round()
-                                                       nValidShuffled(0),
-                                                               nDealt(0),
-                                                           nDiscarded(0),
-                                                    needReshuffle(false)
+rng(std::random_device()()), 
+N_DECKS(NDECKS),
+N_CARDS(N_DECKS*DECK_SIZE),
+N_UNTIL_CUT(std::min(std::round(N_CARDS*penentration), N_CARDS)),
+nShuffled(0),
+nDealt(0),
+nDiscarded(0),
+needReshuffle(false)
 {
-    /* *** fill cardStream for N_DECKS */
+    // fill cardStream for N_DECKS 
     unsigned int filledUpTo = 0;
 
     for (const char &f: FACE_VALS) {
-    for (const char &s: SUIT_VALS) {
-        for (unsigned int i=0; i<N_DECKS; ++i) {cardStream[filledUpTo++] = {f, s};}
-    }}
+        for (const char &s: SUIT_VALS) {
+            for (unsigned int i=0; i<N_DECKS; ++i) {
+                cardStream[filledUpTo++] = {f, s};
+            }
+        }
+    }
 
-    /* *** fill remaining stack array with BLANK_CARD */ 
-    for (; filledUpTo<MAX_DECKS*DECK_SIZE; ++filledUpTo) {cardStream[filledUpTo] = BLANK_CARD;}
+    // fill remaining stack array with BLANK_CARD  
+    for (; filledUpTo<MAX_DECKS*DECK_SIZE; ++filledUpTo) {
+        cardStream[filledUpTo] = BLANK_CARD;
+    }
 }
 
-template <typename RNG>
-void Shoe<RNG>::FreshShuffleN(unsigned int nPartial) {
-    /*
-    In practice, the blackjack shoe is very rarely fully dealt. 
 
-    We can save some computation in our simulation loop by only partially shuffling. 
-    In the case that we need more "freshly shuffled" cards, we can make use of incremental shuffling. 
-    */
-    nValidShuffled = FisherYatesShuffle(&cardStream[0], N_CARDS, nPartial, rng);
+/*
+This will conduct a 'fresh' shuffle of the shoe.
+
+In practice, we never use the whole entire shoe, so the method lets one pass in 
+the number of cards they want to shuffle, to save computation time. 
+
+We can ask for further simulated shuffled cards using the 'push-back' shuffle
+method of this class. 
+*/
+template <typename RNG>
+void Shoe<RNG>::FreshShuffleN(unsigned int nPartial) 
+{
+    nShuffled = FYShuffle(&cardStream[0], N_CARDS, nPartial, rng);
     nDealt = 0;
     nDiscarded = 0; 
 }
 
+
+/*
+We append one more new randomly sampled cards to the current nDealt of the 
+cardstream. 
+*/
 template <typename RNG>
 void Shoe<RNG>::PushBackShuffle()
 {
-    // We need more "simulated shuffled" cards to deal out, so we perform a one iteration FY incremental shuffle.
-    if (nValidShuffled + 1 <= N_CARDS) {
-        nValidShuffled += FisherYatesShuffle(&cardStream[nValidShuffled], N_CARDS - nValidShuffled, 1, rng);
+    // shuffle one more card to the current nDealt position
+    if (nShuffled + 1 <= N_CARDS) {
+        FYShuffle(&cardStream[nShuffled], N_CARDS - nShuffled, 1, rng);
+        nShuffled += 1;
     }
+    // accomodate for the case where the whole cardstream has already been used
+    // the simulation can still proceed by getting 'fresh' shuffled cards
+    // from those which are not in use
+    //
+    // in a well instatiated simulation - this should never happen 
     else { 
-        // whilst possible, this case should be - in practice, near impossible in a well instantiated simulation game
-        //      it corresponds to dealing out the whole shoe midway through a table
-        // we basically reshuffle and deal out of the discarded tray, until we clear the table, and then reshuffle the shoe
         needReshuffle = true;
         nDealt = 0; 
-        nValidShuffled = FisherYatesShuffle(&cardStream[0], nDiscarded, 1, rng);
+        nShuffled = FYShuffle(&cardStream[0], nDiscarded, 1, rng);
     }
 }
 
+
+/*
+Yields the next card in the cardstream, and does some housekeeping. 
+
+Check to make sure that this is a new 'random' card, resulting from random
+sampling into its array position. 
+
+If not, get a new fresh card somehow, and recursively call itself again. 
+*/
 template <typename RNG>
 Card Shoe<RNG>::Deal() 
 {
-    /*
-    Simulates delaing a card to a player (Agent type).
-    Does some simple housekeeping on the Shoe side to make sure deal is ok.
-    Then calls the DealTargetHandler method of the target Agent object.
-
-    Returns the success status of this deal. 
-    */
-
-    if (nDealt + 1 <= nValidShuffled) { // we have "fresh" shuffled cards to deal
-        if (nDealt + 1 > N_UNTIL_CUT) {needReshuffle = true;}
+    if (nDealt + 1 <= nShuffled) { 
+        if (nDealt + 1 > N_UNTIL_CUT) {
+            needReshuffle = true;
+        }
         return cardStream[nDealt++];   
     }
-    else { // we can just get one more "fresh" shuffled cards in the cardstream
+    else { 
         PushBackShuffle(); 
         return Deal();
     }
 }
 
+
+/*
+
+*/
 template <typename RNG>
 void Shoe<RNG>::Clear() {
-    // simulates clearing the table of cards
-    nDiscarded = nDealt; // bring count of discarded up to date with dealt
+    // bring count of discarded to that of what has exited the shoe
+    nDiscarded = nDealt; 
 }
 
+
+/*
+
+*/
 template <typename RNG>
 void Shoe<RNG>::Display()
 {
@@ -99,9 +145,3 @@ void Shoe<RNG>::Display()
     }
     std::cout << "\n";
 }
-
-
-// explicit instantiations ------------------------------------------------------------------------
-//      just using a 64-bit mersenne twister for now
-template unsigned int FisherYatesShuffle<Card, std::mt19937_64>(Card*, unsigned int, unsigned int, std::mt19937_64&);
-template class Shoe<std::mt19937_64>; 

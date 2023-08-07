@@ -10,7 +10,7 @@ https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 using unifIntBounds_t = std::uniform_int_distribution<unsigned int>::param_type;
 
 template <typename T, typename randomNumGenerator>
-unsigned int FisherYatesShuffle(T* arrHead, unsigned int n, unsigned int nPartial, randomNumGenerator& rng)
+unsigned int FYShuffle(T* arrHead, unsigned int n, unsigned int nPartial, randomNumGenerator& rng)
 /*
 FisherYates algorithm to shuffle a contiguous slice of array elements in place. 
 nPartial controls partial and incremental shuffle. 
@@ -40,4 +40,4 @@ But in other cases, we need that last iteration for an appropriate partial shuff
 };
 
 /* **Explicit instantiation of the FisherYates shuffle for Cards, and a mersenne twister rng */
-template unsigned int FisherYatesShuffle<Card, std::mt19937_64>(Card*, unsigned int, unsigned int, std::mt19937_64&);
+template unsigned int FYShuffle<Card, std::mt19937_64>(Card*, unsigned int, unsigned int, std::mt19937_64&);
