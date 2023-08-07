@@ -1,19 +1,15 @@
 #ifndef FISHERYATES_H
 #define FISHERYATES_H
 
-/* 
-Fisher Yates shuffling algorithm, with partial shuffle
-https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-*/
-
-// #include <immintrin.h> // AVX2 intrinsics header file
 #include <random>
 #include "types.hpp"
 
 using unifIntBounds_t = std::uniform_int_distribution<unsigned int>::param_type;
 
+
 /*
 FisherYates algorithm to shuffle a contiguous slice of array elements in place. 
+https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
 This is the 'forward' version, whereby we place our newly shuffled items at the
 front of the array. 
