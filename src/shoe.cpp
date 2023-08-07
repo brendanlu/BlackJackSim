@@ -1,20 +1,11 @@
-
+#include <algorithm>
+#include <cmath>
 #include <random>
 #include <iostream>
 
+#include "fisheryates.hpp"
 #include "shoe.hpp"
 #include "types.hpp"
-#include "fisheryates.hpp"
-
-/*
-Explicit instation of Fisher Yates shuffling algorithm for the custom Card
-type and a 64 bit Mersenne Twister. 
-*/
-template unsigned int FYShuffle<Card, std::mt19937_64>(
-    Card*, 
-    unsigned int, 
-    unsigned int, 
-    std::mt19937_64&);
 
 
 /*
@@ -28,19 +19,23 @@ Shoe<RNG>::Shoe() {};
 We seed our random number generator in the constructor.
 */
 template <typename RNG>
-Shoe<RNG>::Shoe(unsigned int NDECKS, double penentration) : 
+Shoe<RNG>::Shoe(unsigned int nd, double p) : 
 rng(std::random_device()()), 
-N_DECKS(NDECKS),
+N_DECKS(nd),
 N_CARDS(N_DECKS*DECK_SIZE),
-N_UNTIL_CUT(std::min(std::round(N_CARDS*penentration), N_CARDS)),
+N_UNTIL_CUT(std::min((unsigned int)std::round(N_CARDS*p), N_CARDS)),
 nShuffled(0),
 nDealt(0),
 nDiscarded(0),
 needReshuffle(false)
 {
+    // prevent memory unsafe behaviour resulting from a dodgy input
+    if (N_DECKS > MAX_DECKS) {
+        N_DECKS = MAX_DECKS; 
+    }
+    
     // fill cardStream for N_DECKS 
     unsigned int filledUpTo = 0;
-
     for (const char &f: FACE_VALS) {
         for (const char &s: SUIT_VALS) {
             for (unsigned int i=0; i<N_DECKS; ++i) {
@@ -145,3 +140,16 @@ void Shoe<RNG>::Display()
     }
     std::cout << "\n";
 }
+
+
+/*
+Explicit instation of Fisher Yates shuffling algorithm for the custom Card
+type and a 64 bit Mersenne Twister. 
+*/
+template unsigned int FYShuffle<Card, std::mt19937_64>(
+    Card*, 
+    unsigned int, 
+    unsigned int, 
+    std::mt19937_64&);
+
+template class Shoe<std::mt19937_64>; 

@@ -12,21 +12,20 @@ FisherYates algorithm to shuffle a contiguous slice of array elements in place.
 https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 
 This is the 'forward' version, whereby we place our newly shuffled items at the
-front of the array. 
+front of the array, sampling from the end. 
 
 For now, the function returns successful number of items shuffled. 
 
-PARAMS -------------------------------------------------------------------------
-    :n: gives the max length of the contiguous array
+PARAMS:
+    :arrHead: pointer to the start of the array
+    :n: the size of the array following arrHead, which we can sample from
     :nPartial: how many elements we want to shuffle
     :rng: reference to a random number generator
---------------------------------------------------------------------------------
 
-NOTE ---------------------------------------------------------------------------
+NOTE: 
     When nPartial in {n, n-1}, the last iteration of the loop should be 
     redundant. But in other cases, the last iteration should be needed for an 
     appropriate partial shuffle. 
---------------------------------------------------------------------------------
 */
 template <typename T, typename randomNumGenerator>
 unsigned int FYShuffle(
