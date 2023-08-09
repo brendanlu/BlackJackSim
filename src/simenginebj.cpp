@@ -4,12 +4,11 @@
 #include "simenginebj.hpp"
 #include "types.hpp"
 
-
 SimEngineBJ::SimEngineBJ() {} // this is just for Cython; the Python constructor will always call the one below
 
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
-        simShoe(N_DECKS, penen), 
-        activatedAgents(0) 
+    simShoe(N_DECKS, penen), 
+    activatedAgents(0) 
 {
     for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
         agentsActivateStatus[i] = false; 

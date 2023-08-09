@@ -9,7 +9,8 @@
 
 
 /*
-Cython needs a nullary constructor, this will never be called from Python.
+All member classes of the simulation engine have explicit nullary constructors 
+provided. This is a design decision to minimise issues with the Cython wrappers.
 */
 template <typename RNG>
 Shoe<RNG>::Shoe() {};
@@ -20,14 +21,14 @@ We seed our random number generator in the constructor.
 */
 template <typename RNG>
 Shoe<RNG>::Shoe(unsigned int nd, double p) : 
-rng(std::random_device()()), 
-N_DECKS(nd),
-N_CARDS(N_DECKS*DECK_SIZE),
-N_UNTIL_CUT(std::min((unsigned int)std::round(N_CARDS*p), N_CARDS)),
-nShuffled(0),
-nDealt(0),
-nDiscarded(0),
-needReshuffle(false)
+    rng(std::random_device()()), 
+    N_DECKS(nd),
+    N_CARDS(N_DECKS*DECK_SIZE),
+    N_UNTIL_CUT(std::min((unsigned int)std::round(N_CARDS*p), N_CARDS)),
+    nShuffled(0),
+    nDealt(0),
+    nDiscarded(0),
+    needReshuffle(false)
 {
     // prevent memory unsafe behaviour resulting from a dodgy input
     if (N_DECKS > MAX_DECKS) {
@@ -143,13 +144,13 @@ void Shoe<RNG>::Display()
 
 
 /*
-Explicit instation of Fisher Yates shuffling algorithm for the custom Card
-type and a 64 bit Mersenne Twister. 
+Explicit instation of Fisher Yates shuffling algorithm for the custom Card type 
+and a 64 bit Mersenne Twister. 
 */
 template unsigned int FYShuffle<Card, std::mt19937_64>(
-    Card*, 
-    unsigned int, 
-    unsigned int, 
-    std::mt19937_64&);
+    Card* arrHead, 
+    unsigned int n, 
+    unsigned int nPartial, 
+    std::mt19937_64 &rng);
 
 template class Shoe<std::mt19937_64>; 

@@ -19,8 +19,8 @@ For now, the function returns successful number of items shuffled.
 PARAMS:
     :arrHead: pointer to the start of the array
     :n: the size of the array following arrHead, which we can sample from
-    :nPartial: how many elements we want to shuffle
-    :rng: reference to a random number generator
+    :nPartial: how many newly shuffled elements to be sampled to the front
+    :rng: reference to a random number generator adhering to C++11 <random> API
 
 NOTE: 
     When nPartial in {n, n-1}, the last iteration of the loop should be 
@@ -32,7 +32,7 @@ unsigned int FYShuffle(
     T* arrHead, 
     unsigned int n, 
     unsigned int nPartial, 
-    randomNumGenerator& rng) 
+    randomNumGenerator &rng) 
 {
     // first take the minimum of the partial n request and the max n
     // this may change

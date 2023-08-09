@@ -5,7 +5,7 @@ import sys
 if "-d" in sys.argv:
     print("Removing old build files")
     os.system("python clean.py")
-else: 
+else:
     print("Removing files and rebuilding")
     os.system("python clean.py")
     os.system("python setup.py build_ext --inplace")

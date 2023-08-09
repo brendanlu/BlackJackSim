@@ -1,12 +1,12 @@
 #ifndef DEALER_H
 #define DEALER_H
 
+#include "types.hpp"
+
+
 /*
 A simple struct to encapsulate the information and logic of a simulation dealer. 
 */
-
-#include "types.hpp"
-
 struct Dealer
 {
     struct HandInfo {
@@ -16,16 +16,19 @@ struct Dealer
         unsigned int handVal; 
         unsigned int nSoftAces;
 
-        bool checkBJ; // switch on when recieving second card
-        bool natBlackJack; // check for 2 card natural blackjack
+        // check for natural blackjack
+        // :checkBJ: flag second card - and eligible for natural BJ
+        // :natBlacJack: flag Dealer has natural BJ
+        bool checkBJ; 
+        bool natBlackJack; 
 
-        Card upCard; // dealer up-card
+        Card upCard;
 
     } hInfo;
 
     Dealer();
 
-    bool HITSOFT17;     
+    bool HITSOFT17;
 
     void DealTargetHandler(Card dCard);
 

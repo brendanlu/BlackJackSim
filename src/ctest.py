@@ -6,8 +6,8 @@ import os
 import sys
 import time
 
-for file in os.listdir(): 
-    if file.endswith(".o") or file.endswith(".exe"): 
+for file in os.listdir():
+    if file.endswith(".o") or file.endswith(".exe"):
         os.remove(file)
         print("Removed", file)
 
@@ -20,5 +20,5 @@ if "-d" not in sys.argv:
     if "test.exe" in os.listdir():
         print("Found file; output-------------------------------------------")
         os.system("test.exe")
-    else: 
+    else:
         print("WAS UNABLE TO FIND EXE FILE IN TIME")
