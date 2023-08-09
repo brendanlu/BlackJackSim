@@ -27,13 +27,13 @@ public:
 
         double wager; 
 
-        unsigned int nHolding; // number of cards in hand
+        unsigned int nCards; // number of cards in hand
         unsigned int handVal; // soft/hard value of the hand, depending on if we have aces
         unsigned int nSoftAces; // number of aces that are (soft) counted as 11 in hand
         
         bool natBlackJack; // flag if we have natural blackjack
 
-        Card firstCard; // for triggering pair flag
+        Card first; // for triggering pair flag
         bool holdingPair; // flag if we are holding a pair
         
     };
@@ -51,7 +51,7 @@ public:
 
     void DealObserveHandler(const Card &dCard); 
 
-    char YieldAction(const Dealer &dealerRef); 
+    ACTION YieldAction(const Dealer &dealerRef); 
 
     void ClearHandler(const Dealer &dealerRef);
 
@@ -63,7 +63,7 @@ private:
 
     HandInfo hands[MAX_N_SPLITS + 1]; 
     unsigned int nActiveHands;
-    unsigned int activeHandIdx;
+    unsigned int hIdx; // idx of the active hand
 
     double* cntPtr; // pointer to find count values of various cards 
     char* hrdPtr; char* sftPtr; char* spltPtr;  // pointer to strategy input files

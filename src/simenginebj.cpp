@@ -51,14 +51,14 @@ template void SimEngineBJ::EventDeal<Agent>(Agent&);
 template void SimEngineBJ::EventDeal<Dealer>(Dealer&); 
 
 ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
-    char queryResponse = targetAgent.YieldAction(simDealer); // give reference of Dealer state
+    ACTION queryResponse = targetAgent.YieldAction(simDealer); // give reference of Dealer state
 
-    if (queryResponse == static_cast<char>(ACTION::HIT)) {
+    if (queryResponse == ACTION::HIT) {
         EventDeal(targetAgent);
         EventQueryAgent(targetAgent); 
         return ERR_CODE::SUCCESS; 
     }
-    else if (queryResponse == static_cast<char>(ACTION::STAND)) {
+    else if (queryResponse == ACTION::STAND) {
         return ERR_CODE::SUCCESS;
     }
     else {
