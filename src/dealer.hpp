@@ -17,8 +17,8 @@ struct Dealer
         unsigned int nSoftAces;
 
         // check for natural blackjack
-        // :checkBJ: flag second card - and eligible for natural BJ
-        // :natBlacJack: flag Dealer has natural BJ
+        // :checkBJ: will be true ONLY when recieving second card
+        // :natBlacJack: flag Dealer has natural BJ 
         bool checkBJ; 
         bool natBlackJack; 
 
@@ -35,7 +35,6 @@ struct Dealer
     ACTION YieldAction();
     
     void ClearHandler(); 
-
 };
 
 #endif

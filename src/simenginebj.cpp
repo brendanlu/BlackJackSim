@@ -4,8 +4,19 @@
 #include "simenginebj.hpp"
 #include "types.hpp"
 
-SimEngineBJ::SimEngineBJ() {} // this is just for Cython; the Python constructor will always call the one below
 
+/*
+Nullary constructor, to minimise issues when wrapping with Cython. 
+From the Python API end, this will never be called, as the .__init__ method of 
+the Python class will always call the one below. 
+*/
+SimEngineBJ::SimEngineBJ() {}
+
+
+/*
+Constructor which appropriately seeds the simShoe member object.
+This will seed the pseudo random number generator, just this once. 
+*/
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
     simShoe(N_DECKS, penen), 
     activatedAgents(0) 
@@ -15,31 +26,63 @@ SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) :
     }
 }
 
-void SimEngineBJ::SetDealer17(bool b) {simDealer.HITSOFT17 = b;}
 
-// these are pointers which come in from the Python interface
-//      so we will have to sure in the Python level they are valid
-void SimEngineBJ::SetAgentStrat(unsigned int agentID, char* hrd, char* sft, char* splt, double* cnt) {
-    agents[agentID] = Agent(hrd, sft, splt, cnt);
-    agentsActivateStatus[agentID] = true; 
+/*
+Set dealer hit / stand on soft17. Default is false, see Dealer implementation.
+*/
+void SimEngineBJ::SetDealer17(bool b) 
+{
+    simDealer.HITSOFT17 = b;
+}
+
+
+/*
+
+*/
+void SimEngineBJ::SetAgent(
+    unsigned int idx, 
+    char* hrd, 
+    char* sft, 
+    char* splt, 
+    double* cnt) 
+{
+    agents[idx] = Agent(hrd, sft, splt, cnt);
+    agentsActivateStatus[idx] = true; 
 
     activatedAgents = 0; 
     for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
-        if (agentsActivateStatus[i]) {activatedAgents += 1;}
+        if (agentsActivateStatus[i]) {
+            activatedAgents += 1;
+        }
     }
 }
 
-void SimEngineBJ::SetBJPayout(double d) {
+
+/*
+
+*/
+void SimEngineBJ::SetBJPayout(double d) 
+{
     for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
         agents[i].SetBJPayout(d);
     }
 }
 
-void SimEngineBJ::SetAgentStack(unsigned int agentID, long double sv) {
-    agents[agentID].stackVal = sv;
+
+/*
+
+*/
+void SimEngineBJ::SetAgentStack(unsigned int idx, long double sv) 
+{
+    agents[idx].pnl = sv;
 }
 
-template<typename targetType> void SimEngineBJ::EventDeal(targetType &target) {
+
+/*
+
+*/
+template<typename targetType> void SimEngineBJ::EventDeal(targetType &target) 
+{
     Card dCard = simShoe.Deal();
     target.DealTargetHandler(dCard);
 
@@ -47,34 +90,52 @@ template<typename targetType> void SimEngineBJ::EventDeal(targetType &target) {
         agents[i].DealObserveHandler(dCard); 
     }
 }
+
+// explicit instantiations
 template void SimEngineBJ::EventDeal<Agent>(Agent&); 
 template void SimEngineBJ::EventDeal<Dealer>(Dealer&); 
 
-ERR_CODE SimEngineBJ::EventQueryAgent(Agent &targetAgent) {
-    ACTION queryResponse = targetAgent.YieldAction(simDealer); // give reference of Dealer state
+
+/*
+
+*/
+void SimEngineBJ::EventQueryAgent(Agent &targetAgent) 
+{
+    // give agent reference of the Dealer state
+    ACTION queryResponse = targetAgent.YieldAction(simDealer); 
 
     if (queryResponse == ACTION::HIT) {
         EventDeal(targetAgent);
         EventQueryAgent(targetAgent); 
-        return ERR_CODE::SUCCESS; 
+        return;
     }
-    else if (queryResponse == ACTION::STAND) {
-        return ERR_CODE::SUCCESS;
-    }
-    else {
-        // will just return error code and do nothing (basically treats it as a 'stand' message)
-        return ERR_CODE::INVALID_ACTION;
+    else /* queryResponse == ACTION::STAND */ {
+        return;
     }
 }
 
-void SimEngineBJ::EventQueryDealer() {
+
+/*
+
+*/
+void SimEngineBJ::EventQueryDealer() 
+{
     if (simDealer.YieldAction() == ACTION::HIT) {
         EventDeal(simDealer); 
         EventQueryDealer(); 
+        return;
+    }
+    else /* queryResponse == ACTION::STAND */ {
+        return; 
     }
 }
 
-void SimEngineBJ::EventClear() {
+
+/*
+
+*/
+void SimEngineBJ::EventClear() 
+{
     simShoe.Clear(); 
     simDealer.ClearHandler(); 
 
@@ -83,83 +144,53 @@ void SimEngineBJ::EventClear() {
     }
 }
 
-ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) {
-    // The Python constructor will appropriately construct the Shoe
-    // So at this point it will be populated and ready to go
-    if (activatedAgents == 0) {return ERR_CODE::NO_AGENT_STRAT;}
 
-    simShoe.FreshShuffleN(simShoe.N_CARDS); // do a full shuffle of the shoe
-    for (unsigned long long i=0; i<nIters; ++i) { // each iteration is playing one shoe
-        
-        // reshuffle the shoe --------------------------------------------------------------------
-        simShoe.FreshShuffleN(simShoe.N_UNTIL_CUT); // partial fresh shuffle - see Shoe implementation
+/*
+
+*/
+ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) 
+{
+    if (activatedAgents == 0) {
+        return ERR_CODE::NO_AGENT_STRAT;
+    }
+    
+    // do a full shuffle of the shoe
+    simShoe.FreshShuffleN(simShoe.N_CARDS); 
+
+    // each iteration is playing one shoe
+    for (unsigned long long i=0; i<nIters; ++i) { 
+
+        // partial fresh shuffle - see Shoe implementation
+        simShoe.FreshShuffleN(simShoe.N_UNTIL_CUT); 
+
         for (unsigned int i=0; i<activatedAgents; ++i) {
             agents[i].FreshShuffleHandler(); 
         }
 
-        // play the shoe until reshuffle triggered by drawing cut card
-        while (!simShoe.needReshuffle) 
-        {
-        // each iteration is a hand  -----------------------------------------------------------------
+        // simulate until reshuffle condition is met - see Shoe implementation
+        //
+        // this is currently defined when a certain proportion of the Shoe has 
+        // been expended, as per standard table rules
+        //
+        // each iteration represents 'one hand'
+        while (!simShoe.needReshuffle) {
 
-            // clear out table and settle bets ---------------------------------
             EventClear(); 
 
-            // initial deal out ------------------------------------------------
-            //      dealer up card
             EventDeal(simDealer); 
-            //      player gets two cards
+
             for (unsigned int i=0; i<activatedAgents; ++i) {
                 EventDeal(agents[i]); 
                 EventDeal(agents[i]);
             }
-            // action ----------------------------------------------------------
-            //      player actions
+
             for (unsigned int i=0; i<activatedAgents; ++i) {
                 EventQueryAgent(agents[i]); 
             }
-            //      dealer takes cards 
+
             EventQueryDealer(); 
         }
     }
 
     return ERR_CODE::SUCCESS;
 }
-
-// testing ---------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------
-#include <iostream>
-using std::cout;
-
-void SimEngineBJ::Test2() {
-
-}
-
-void SimEngineBJ::Test() {
-    cout << "Program start \n"; 
-    cout << "Playing with: " << simShoe.N_CARDS << " cards \n\n";
-
-    simShoe.Display();
-    cout << "\n\n";
-    simShoe.FreshShuffleN(10);
-    simShoe.Display();
-    cout << "\n\n";
-
-
-
-    Card tryCard = {'J', 'H'};
-    cout << "Testing value of card J: " << tryCard.val() << "\n\n";
-
-    cout << "Dealing to internals now \n\n"; 
-    // simShoe.Deal(simDealer);
-    agents[0].DealTargetHandler(simShoe.Deal());
-    agents[0].DealTargetHandler(simShoe.Deal());
-
-    cout << "Agent deal is not broken yet \n\n";
-
-    simDealer.DealTargetHandler(simShoe.Deal());
-    
-    cout << "Dealer deal is not broken yet \n\n"; 
-
-
-} 

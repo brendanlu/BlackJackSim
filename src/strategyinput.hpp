@@ -2,35 +2,40 @@
 #define STRATIN_H 
 
 /*   
-Our contiguous C array from Numpy memoryviews will rely on this file to be
-        accessed at the C++ level correctly.
+Functions to retrieve the appropriate actions from the templated strategy input
+files. 
 
-We use this to perform correct pointer arithmetic on both 1D and 2D C arrays
-        using the head of the array passed in at Cython level. 
+THESE ARE NOT MEMORY SAFE, AND CARE MUST BE TAKEN IN THE CALLING STATE TO AVOID 
+MISINDEXING. 
 
-We use templated strategy input files, so we can hardcode this logic into inline functions.
-        This is directly based off the templated csv files. 
+Our contiguous C array from Numpy memoryviews will rely on this file to be 
+accessed at the C++ level correctly.
+
+We use this to perform correct pointer arithmetic on both 1D and 2D C arrays, 
+starting from the head of the array passed in at Cython level. 
 */
 
-// d is dealer upcard value
-inline char hrdActionFromPtr(char* head, unsigned int p, unsigned int d) 
-{ // there are multiple ways to get the same hard tally p 
-        return *(head + (p-4)*10 + (d-2));
+// :p: player value
+// :d: dealer value
+
+inline char hrdActionFromPtr(char* stratHead, unsigned int p, unsigned int d) 
+{
+        return *(stratHead + (p-4)*10 + (d-2));
 }
 
-inline char sftActionFromPtr(char* head, unsigned int p, unsigned int d)
-{ // there are multiple ways to get the same soft tally p
-        return *(head + (p-13)*10 + (d-2));
+inline char sftActionFromPtr(char* stratHead, unsigned int p, unsigned int d)
+{
+        return *(stratHead + (p-13)*10 + (d-2));
 }
 
-inline char spltActionFromPtr(char* head, unsigned int p, unsigned int d) 
-{ // p is the value the player has double of
-        return *(head + (p-2)*10 + (d-2));
+inline char spltActionFromPtr(char* stratHead, unsigned int p, unsigned int d) 
+{
+        return *(stratHead + (p-2)*10 + (d-2));
 }
 
-inline double cntFromPtr(double* head, unsigned int val)
-{ // val is nominal value of the card 
-        return *(head + (val-2));
+inline double cntFromPtr(double* countHead, unsigned int val)
+{
+        return *(countHead + (val-2));
 }
 
 #endif
