@@ -19,6 +19,47 @@ Agent::HandInfo::HandInfo() :
 
 
 /*
+Logic for recieving a card into a hand 
+*/
+void Agent::HandInfo::Recieve(const Card &dCard)
+{
+    nCards += 1;
+    handVal += dCard.val(); 
+
+    // adjust hand value - with soft count logic
+    if (dCard.face == 'A') {
+        nSoftAces += 1;
+    }
+    
+    // revert soft to hard values if needed
+    // CURRENTLY ASSUMES YOU CAN HAVE A MIX OF HARD AND SOFT ACES IN ONE HAND
+    if (handVal > BJVAL && nSoftAces > 0) { 
+        handVal -= 10;
+        nSoftAces -= 1; 
+    }
+
+    // pair tracking via toggling flags
+    if (nCards == 1) {
+        first = dCard;
+    }
+    else if (nCards == 2 && first.face == dCard.face) {
+        holdingPair = true;
+        second = dCard;
+    }
+
+    // natural blackjack checks
+    if (handVal == BJVAL && nCards == 2) {
+        if (first.face == 'A') {
+            natBlackJack = true; 
+        }
+        else if (first.val() == 10) {
+            natBlackJack = true;
+        }
+    }
+}
+
+
+/*
 
 */
 Agent::Agent() : 
@@ -53,44 +94,12 @@ void Agent::SetBJPayout(double d)
 
 
 /*
-This is called when a card has been specifically dealt to the agent. 
+Called when agent specifically recieves a card
 */
 void Agent::DealTargetHandler(const Card &dCard) 
 {
-    hands[hIdx].nCards += 1;
-    hands[hIdx].handVal += dCard.val(); 
-
-    // adjust hand value - with soft count logic
-    if (dCard.face == 'A') {
-        hands[hIdx].nSoftAces += 1;
-    }
-    
-    // revert soft to hard values if needed
-    // CURRENTLY ASSUMES YOU CAN HAVE A MIX OF HARD AND SOFT ACES IN ONE HAND
-    if (hands[hIdx].handVal > BJVAL && hands[hIdx].nSoftAces > 0) { 
-        hands[hIdx].handVal -= 10;
-        hands[hIdx].nSoftAces -= 1; 
-    }
-
-    // pair tracking via toggling flags
-    if (hands[hIdx].nCards == 1) {
-        hands[hIdx].first = dCard;
-    }
-    else if (hands[hIdx].nCards == 2 && hands[hIdx].first.face == dCard.face) {
-        hands[hIdx].holdingPair = true;
-    }
-
-    // natural blackjack checks
-    if (hands[hIdx].handVal == BJVAL && hands[hIdx].nCards == 2) {
-        if (hands[hIdx].first.face == 'A') {
-            hands[hIdx].natBlackJack = true; 
-        }
-        else if (hands[hIdx].first.val() == 10) {
-            hands[hIdx].natBlackJack = true;
-        }
-    }
+    hands[hIdx].Recieve(dCard); 
 }
-
 
 
 /*
@@ -120,6 +129,7 @@ but must implement explicit logic to handle them in this method.
 ACTION Agent::YieldAction(const Dealer &dealerRef) 
 {
     char internalAction; 
+    Card temp;
 
     // perform action lookups via the configured strategy templates and the 
     // inline lookup functions
@@ -164,8 +174,20 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
         return ACTION::HIT;
     }
     else if (internalAction == 'P') {
+        // spawn two hands in place of one
+        if (hIdx + 1 <= MAX_N_SPLITS) {
+            // instantiate blank hands and artificially assign one card to each
+            temp = hands[hIdx].second;
+            hands[hIdx + 1] = HandInfo(); 
+            hands[hIdx + 1].Recieve(temp); 
+            
+            temp = hands[hIdx].first; 
+            hands[hIdx] = HandInfo(); 
+            hands[hIdx].Recieve(temp); 
+
+            nActiveHands += 1; 
+        }
         internalAction = 'S'; 
-        
     }
     else if (internalAction == 'R') {
         // half the wager, and make the hand go bust manually

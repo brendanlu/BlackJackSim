@@ -8,8 +8,9 @@
 
 using std::cout;
 
-
 int main() 
 {
+    Agent testAgent(); 
+
     return 0;
 }

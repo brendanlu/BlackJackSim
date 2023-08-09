@@ -159,7 +159,6 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters)
 
     // each iteration is playing one shoe
     for (unsigned long long i=0; i<nIters; ++i) { 
-
         // partial fresh shuffle - see Shoe implementation
         simShoe.FreshShuffleN(simShoe.N_UNTIL_CUT); 
 
@@ -174,9 +173,7 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters)
         //
         // each iteration represents 'one hand'
         while (!simShoe.needReshuffle) {
-
             EventClear(); 
-
             EventDeal(simDealer); 
 
             for (unsigned int i=0; i<activatedAgents; ++i) {

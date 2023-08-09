@@ -27,6 +27,8 @@ public:
     struct HandInfo {
         HandInfo();
 
+        void Recieve(const Card &dCard);
+
         double wager; 
 
         unsigned int nCards;
@@ -34,9 +36,9 @@ public:
         unsigned int nSoftAces;
         
         Card first;
+        Card second;
         bool natBlackJack;
         bool holdingPair;
-        
     };
 
     Agent(); 
