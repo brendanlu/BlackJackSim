@@ -150,6 +150,8 @@ void SimEngineBJ::EventClear()
 */
 ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) 
 {
+    nPlayed = 0; 
+
     if (activatedAgents == 0) {
         return ERR_CODE::NO_AGENT_STRAT;
     }
@@ -173,6 +175,7 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters)
         //
         // each iteration represents 'one hand'
         while (!simShoe.needReshuffle) {
+            nPlayed += 1; 
             EventClear(); 
             EventDeal(simDealer); 
 

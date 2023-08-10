@@ -12,9 +12,10 @@ Agent::HandInfo::HandInfo() :
     nCards(0), 
     handVal(0), 
     nSoftAces(0), 
-    first(BLANK_CARD), 
-    holdingPair(false), 
-    natBlackJack(false)
+    first(BLANK_CARD),
+    second(BLANK_CARD),
+    natBlackJack(false),
+    holdingPair(false)
 {}
 
 
@@ -64,21 +65,25 @@ void Agent::HandInfo::Recieve(const Card &dCard)
 */
 Agent::Agent() : 
     // explicitly flag that we do not have pointers to strats yet
-    stratInit(false) 
+    STRAT_INIT(false) 
 {}
 
 
 /*
 Initialize an Agent from pointers to the data read in from strategy files.
 This allows for high level control of the strategy to be adjusted and passed in.
+
+We initialize the agent to not have any 'active' hands. The stack array will be 
+explicitly populated with 'reset'-ed hInfo structs.
 */
 Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) : 
+    pnl(0),
+    STRAT_INIT(true), BJ_INSTANT(false), BJ_PAYOUT(1.5),
+    nActiveHands(0), hIdx(0),
     hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), 
-    stratInit(true), pnl(0), cntVal(0), 
-    nActiveHands(1), hIdx(0),
-    BJ_PAYOUT(1.5)
+    cntVal(0)
 {
-    for (unsigned int i=0; i<MAX_N_SPLITS + 1; ++i) {
+    for (unsigned int i=0; i<MAX_HANDS; ++i) {
         hands[i] = HandInfo();
     }
 }
@@ -117,25 +122,35 @@ void Agent::DealObserveHandler(const Card &dCard)
 
 /*
 Called when the agent must make a decision on what to do; it is given a 
-const reference to the dealer, which it can query for any necessary 
+const reference of the dealer (all public), which it can query for any necessary 
 information to implement game logic.
 
-At the end, it must result in either a ACTION::HIT or ACTION::STAND being 
+At the end, it MUST result in either a ACTION::HIT or ACTION::STAND being 
 returned to the calling state in the simulation engine. 
 
 The Agent can read a much broader range of actions from strategy template files, 
-but must implement explicit logic to handle them in this method. 
+but must implement explicit logic to handle them in this method, and eventually
+returning the ACTION enumeration. 
+
+    Currently, internal actions are: 
+        'S' : stand
+        'H' : hit
+        'D' : double
+        'P' : split
+        'R' : surrender
 */
 ACTION Agent::YieldAction(const Dealer &dealerRef) 
 {
-    char internalAction; 
+    // use for copy overs
     Card temp;
+
+    char internalAction; 
 
     // perform action lookups via the configured strategy templates and the 
     // inline lookup functions
     //
     // additional to implementing correct game logic, the first 'if' condition 
-    // here is crucial for the memory-safeness the lookup functions
+    // here is crucial for the memory-safeness of the lookup functions
     if (hands[hIdx].handVal >= BJVAL) { 
         internalAction = 'S'; 
     }
@@ -173,22 +188,29 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
         hands[hIdx].wager *= 2; 
         return ACTION::HIT;
     }
+    /*
     else if (internalAction == 'P') {
         // spawn two hands in place of one
-        if (hIdx + 1 <= MAX_N_SPLITS) {
-            // instantiate blank hands and artificially assign one card to each
-            temp = hands[hIdx].second;
+        if (nActiveHands + 1 <= MAX_HANDS) {
+            // construct new hand with correct wager, and one of the pair cards
             hands[hIdx + 1] = HandInfo(); 
-            hands[hIdx + 1].Recieve(temp); 
+            hands[hIdx + 1].wager = hands[hIdx].wager;
+            hands[hIdx + 1].Recieve(hands[hIdx].second); 
             
-            temp = hands[hIdx].first; 
+            // overwrite the stack space of the pre-split hand with the second
+            // split hand
+            //
+            // keep the same wager, and take the other pair card
+            temp = hands[hIdx].first;
             hands[hIdx] = HandInfo(); 
+            hands[hIdx].wager = hands[hIdx + 1].wager; 
             hands[hIdx].Recieve(temp); 
 
             nActiveHands += 1; 
         }
         internalAction = 'S'; 
     }
+    */
     else if (internalAction == 'R') {
         // half the wager, and make the hand go bust manually
         hands[hIdx].wager /= 2; 
@@ -205,6 +227,9 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
     }
 
     // if we have multiple hands, we continue
+    //
+    // we have to be very careful with our nActivehands variable, as it plays
+    // a crucial role in memory safety 
     if (hIdx + 1 == nActiveHands) {
         return ACTION::STAND; 
     }
@@ -216,36 +241,73 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
 
 
 /*
+This is called at the end of every round of the hand, to BOTH 1) settle wagers 
+from the previous round, abd 2) place wagers for the next round. 
 
+If there is no 'previous' round to be settled (i.e. at the start of a simulation 
+run), the hInfo nested structs of both the Dealer (const reference) and the 
+agent (*this) should both be at their initial values, which means that none of 
+the if, else-if condtions in the first control sequence will be satisfied. 
 */
 void Agent::ClearHandler (const Dealer &dealerRef) 
 {
+    // iterate over each hand, and settle relevant wagers
+    // then reset the hand
     for (unsigned int i=0; i<nActiveHands; ++i) {
+        // bust
         if (hands[i].handVal > BJVAL) {
             pnl -= hands[i].wager;
         }
-        else if (hands[i].natBlackJack && !dealerRef.hInfo.natBlackJack) {
-            pnl += BJ_PAYOUT * hands[i].wager;
+        // natural blackjack payout
+        //
+        // currently logic requires the dealer to also NOT have a natural BJ,
+        // or the BJ_INSTANT boolean flag to be set to true
+        else if (hands[i].natBlackJack) {
+            if (BJ_INSTANT || !dealerRef.hInfo.natBlackJack) {
+                pnl += BJ_PAYOUT * hands[i].wager;
+            }
         }
+        // dealer has natural blackjack, and player does not
+        //
+        // note - results in loss, even if player has 21 in some other fashion
         else if (!hands[i].natBlackJack && dealerRef.hInfo.natBlackJack) {
             pnl -= hands[i].wager; 
         }
+        // provided player has less than BJVAL, we now perform a direct 
+        // comparison of value
+        //
+        // player hand value is higher, and not bust
         else if (hands[i].handVal > dealerRef.hInfo.handVal) {
             pnl += hands[i].wager; 
         }
+        // player hand value is lower, despite not busting
         else if (hands[i].handVal < dealerRef.hInfo.handVal) {
-            pnl -= hands[i].wager;
+            // check if dealer has bust
+            if (dealerRef.hInfo.handVal > BJVAL) {
+                pnl += hands[i].wager;
+            }
+            else {
+                pnl -= hands[i].wager;
+            }
         }
+        // everything else not explicitly caught above results in push behaviour
         else {
             ;
         }
 
-        // reset hand information
+        // reset current hand before iterating onwards to any subseqeunt hands
         hands[i] = HandInfo(); 
     }
 
+    // logic for placing new wagers
+    // hands[0].wager = 1.0; 
+
+    // reset agent tracking of hands
+    //
+    // in the first iteration of the simulation, this will also prepare the 
+    // Agent appropriately for the first deal-out
     nActiveHands = 1; 
-    hIdx = 0; 
+    hIdx = 0;
 }
 
 

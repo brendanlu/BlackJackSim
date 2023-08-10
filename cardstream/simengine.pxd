@@ -18,3 +18,5 @@ cdef extern from "../src/simenginebj.hpp":
         # SimEngineBJ(unsigned int, double, char*, char*, char*, double*) except + 
         void SetAgent(unsigned int, char*, char*, char*, double*)
         int RunSimulation(unsigned long long)
+
+        long long nPlayed

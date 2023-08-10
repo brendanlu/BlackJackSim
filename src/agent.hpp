@@ -37,6 +37,7 @@ public:
         
         Card first;
         Card second;
+
         bool natBlackJack;
         bool holdingPair;
     };
@@ -44,10 +45,6 @@ public:
     Agent(); 
 
     Agent(char* hrd, char* sft, char* splt, double* cnt); 
-
-    // explicit flag to indicate whether or not pointers have been configured
-    // to a strategy template
-    bool stratInit;
 
     void SetBJPayout(double d);
 
@@ -62,12 +59,14 @@ public:
     void FreshShuffleHandler();
 
 private:
-    // maximum hand size - 21 soft aces
-    static constexpr unsigned int MAX_HSIZE = 21; 
     // so we can stack allocate memory for hand information
-    static constexpr unsigned int MAX_N_SPLITS = 3; 
+    static constexpr unsigned int MAX_HANDS = 4; 
 
-    HandInfo hands[MAX_N_SPLITS + 1]; 
+    bool STRAT_INIT;
+    bool BJ_INSTANT;
+    double BJ_PAYOUT; 
+
+    HandInfo hands[MAX_HANDS]; 
     unsigned int nActiveHands;
     unsigned int hIdx; 
 
@@ -77,8 +76,6 @@ private:
     char* spltPtr;
     
     double cntVal;
-
-    double BJ_PAYOUT; 
 };
 
 #endif

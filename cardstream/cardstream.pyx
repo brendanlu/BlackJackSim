@@ -17,6 +17,9 @@ cdef class PySimEngineBJ:
     def pyTest(self, unsigned int nIters): 
         return <int>self.cppSimEngine.RunSimulation(nIters)
 
+    def returnCount(self):
+        return <int>self.cppSimEngine.nPlayed
+
 
 
 """
