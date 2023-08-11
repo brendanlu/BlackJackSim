@@ -18,7 +18,8 @@ cdef class PySimEngineBJ:
         return <int>self.cppSimEngine.RunSimulation(nIters)
 
     def returnCount(self):
-        return <int>self.cppSimEngine.nPlayed
+        return (self.cppSimEngine.nPlayed,
+                self.cppSimEngine.shoeRounds)
 
 
 

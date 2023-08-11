@@ -41,7 +41,8 @@ public:
 
     ERR_CODE RunSimulation(unsigned long long nIters);
 
-    long long nPlayed; 
+    long nPlayed; 
+    long shoeRounds; 
 
 private:
     static constexpr unsigned int MAX_N_AGENTS = 10; 

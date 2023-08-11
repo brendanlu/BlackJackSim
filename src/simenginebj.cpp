@@ -151,6 +151,9 @@ void SimEngineBJ::EventClear()
 ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) 
 {
     nPlayed = 0; 
+    shoeRounds = 0; 
+
+    long curr; 
 
     if (activatedAgents == 0) {
         return ERR_CODE::NO_AGENT_STRAT;
@@ -168,6 +171,9 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters)
             agents[i].FreshShuffleHandler(); 
         }
 
+        shoeRounds += 1; 
+        curr = 0;
+
         // simulate until reshuffle condition is met - see Shoe implementation
         //
         // this is currently defined when a certain proportion of the Shoe has 
@@ -175,7 +181,6 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters)
         //
         // each iteration represents 'one hand'
         while (!simShoe.needReshuffle) {
-            nPlayed += 1; 
             EventClear(); 
             EventDeal(simDealer); 
 
@@ -189,7 +194,11 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters)
             }
 
             EventQueryDealer(); 
+
+            curr += 1; 
         }
+
+        if (curr > nPlayed) {nPlayed = curr;}
     }
 
     return ERR_CODE::SUCCESS;
