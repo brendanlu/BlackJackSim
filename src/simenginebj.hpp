@@ -43,6 +43,7 @@ public:
 
     long nPlayed; 
     long shoeRounds; 
+    long total;
 
 private:
     static constexpr unsigned int MAX_N_AGENTS = 10; 

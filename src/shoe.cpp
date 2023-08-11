@@ -67,6 +67,7 @@ void Shoe<RNG>::FreshShuffleN(unsigned int nPartial)
     nShuffled = FYShuffle(&cardStream[0], N_CARDS, nPartial, rng);
     nDealt = 0;
     nDiscarded = 0; 
+    needReshuffle = false; 
 }
 
 

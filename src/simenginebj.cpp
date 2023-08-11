@@ -152,6 +152,7 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters)
 {
     nPlayed = 0; 
     shoeRounds = 0; 
+    total = 0; 
 
     long curr; 
 
@@ -196,6 +197,7 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters)
             EventQueryDealer(); 
 
             curr += 1; 
+            total += 1; 
         }
 
         if (curr > nPlayed) {nPlayed = curr;}

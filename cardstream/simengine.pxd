@@ -12,3 +12,4 @@ cdef extern from "../src/simenginebj.hpp":
 
         int nPlayed
         int shoeRounds
+        int total
