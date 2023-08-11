@@ -1,18 +1,24 @@
-import numpy as np
 from simengine cimport SimEngineBJ
 
-# Wrapper class that can be used in Python
-# contains the c object as a member, which has its methods called in the Python wrapper methods
+"""
+Wrapper class that can be used in Python which contains an instsance of the cpp 
+class object as a member. 
+"""
 cdef class PySimEngineBJ: 
     cdef SimEngineBJ cppSimEngine
 
     def __init__(self, unsigned int nd, double p): 
-        # we read in memviews of our numpy arrays - THESE MUST BE C CONTIGUOUS BYTE ARRAYS
         self.cppSimEngine = SimEngineBJ(nd, p)
 
-    def pySetAgentStrat(self, unsigned int agentID, char[:,:] hrd, char[:,:] sft, char[:,:] splt, double[:] cnt):
-        # we then pass in the pointer to the first element to our cpp level BJ Agent
-        self.cppSimEngine.SetAgent(agentID, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0])
+    def pySetAgentStrat(self, agentIdx, 
+    char[:,:] hrd, char[:,:] sft, char[:,:] splt, double[:] cnt):
+        self.cppSimEngine.SetAgent(
+            agentIdx, 
+            &hrd[0][0], 
+            &sft[0][0], 
+            &splt[0][0], 
+            &cnt[0]
+        )
 
     def pyTest(self, unsigned int nIters): 
         return <int>self.cppSimEngine.RunSimulation(nIters)
@@ -23,7 +29,7 @@ cdef class PySimEngineBJ:
                 self.cppSimEngine.total)
 
 
-
 """
-Low priority: Write some Python errors to hand the ERR_CODES and give information back out here.
+Low priority: Write some Python errors to hand the ERR_CODES and give 
+information back out here.
 """

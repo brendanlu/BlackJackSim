@@ -24,7 +24,6 @@ public:
     void SetBJPayout(double d); 
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
                                 char* splt, double* cnt);
-    void SetAgentStack(unsigned int idx, long double sv);  
 
     void EventClear();
     template<typename targetType> void EventDeal(targetType &target);

@@ -66,14 +66,6 @@ void SimEngineBJ::SetBJPayout(double d)
 /*
 
 */
-void SimEngineBJ::SetAgentStack(unsigned int idx, long double sv) 
-{
-    agents[idx].pnl = sv;
-}
-
-/*
-
-*/
 void SimEngineBJ::EventClear() 
 {
     simShoe.Clear(); 
