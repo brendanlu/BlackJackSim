@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-
 /*
 misc. constants
 */
@@ -13,7 +12,6 @@ constexpr unsigned int VALS[10] = {2,3,4,5,6,7,8,9,10,11};
 constexpr int ASCII_2 = 50; // ascii value of 2 
 constexpr int ASCII_9 = 57;
 constexpr int ASCII_A = 65; 
-
 
 /*
 A simple struct to represent a card with minimal memory overhead and efficient
@@ -68,7 +66,6 @@ inline bool operator== (const Card &c1, const Card& c2)
     return ((c1.face==c2.face) && (c1.suit==c2.suit));
 }
 
-
 /*
 Various error codes
 */
@@ -81,7 +78,6 @@ enum class ERR_CODE : int
     // main sim loop related
     NO_AGENT_STRAT = 101,
 };
-
 
 /*
 The valid actions the simulation engine can process

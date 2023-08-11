@@ -7,14 +7,12 @@
 #include "shoe.hpp"
 #include "types.hpp"
 
-
 /*
 All member classes of the simulation engine have explicit nullary constructors 
 provided. This is a design decision to minimise issues with the Cython wrappers.
 */
 template <typename RNG>
 Shoe<RNG>::Shoe() {};
-
 
 /*
 We seed our random number generator in the constructor.
@@ -51,7 +49,6 @@ Shoe<RNG>::Shoe(unsigned int nd, double p) :
     }
 }
 
-
 /*
 This will conduct a 'fresh' shuffle of the shoe.
 
@@ -70,9 +67,8 @@ void Shoe<RNG>::FreshShuffleN(unsigned int nPartial)
     needReshuffle = false; 
 }
 
-
 /*
-We append one more new randomly sampled cards to the current nDealt of the 
+Append one more new randomly sampled cards to the current nDealt of the 
 cardstream. 
 */
 template <typename RNG>
@@ -94,7 +90,6 @@ void Shoe<RNG>::PushBackShuffle()
         nShuffled = FYShuffle(&cardStream[0], nDiscarded, 1, rng);
     }
 }
-
 
 /*
 Yields the next card in the cardstream, and does some housekeeping. 
@@ -119,7 +114,6 @@ Card Shoe<RNG>::Deal()
     }
 }
 
-
 /*
 
 */
@@ -128,7 +122,6 @@ void Shoe<RNG>::Clear() {
     // bring count of discarded to that of what has exited the shoe
     nDiscarded = nDealt; 
 }
-
 
 /*
 
@@ -142,7 +135,6 @@ void Shoe<RNG>::Display()
     }
     std::cout << "\n";
 }
-
 
 /*
 Explicit instation of Fisher Yates shuffling algorithm for the custom Card type 

@@ -4,14 +4,12 @@
 #include "simenginebj.hpp"
 #include "types.hpp"
 
-
 /*
 Nullary constructor, to minimise issues when wrapping with Cython. 
 From the Python API end, this will never be called, as the .__init__ method of 
 the Python class will always call the one below. 
 */
 SimEngineBJ::SimEngineBJ() {}
-
 
 /*
 Constructor which appropriately seeds the simShoe member object.
@@ -26,7 +24,6 @@ SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) :
     }
 }
 
-
 /*
 Set dealer hit / stand on soft17. Default is false, see Dealer implementation.
 */
@@ -34,7 +31,6 @@ void SimEngineBJ::SetDealer17(bool b)
 {
     simDealer.HITSOFT17 = b;
 }
-
 
 /*
 
@@ -57,7 +53,6 @@ void SimEngineBJ::SetAgent(
     }
 }
 
-
 /*
 
 */
@@ -68,7 +63,6 @@ void SimEngineBJ::SetBJPayout(double d)
     }
 }
 
-
 /*
 
 */
@@ -77,6 +71,18 @@ void SimEngineBJ::SetAgentStack(unsigned int idx, long double sv)
     agents[idx].pnl = sv;
 }
 
+/*
+
+*/
+void SimEngineBJ::EventClear() 
+{
+    simShoe.Clear(); 
+    simDealer.ClearHandler(); 
+
+    for (unsigned int i=0; i<activatedAgents; ++i) {
+        agents[i].ClearHandler(simDealer);
+    }
+}
 
 /*
 
@@ -94,7 +100,6 @@ template<typename targetType> void SimEngineBJ::EventDeal(targetType &target)
 // explicit instantiations
 template void SimEngineBJ::EventDeal<Agent>(Agent&); 
 template void SimEngineBJ::EventDeal<Dealer>(Dealer&); 
-
 
 /*
 
@@ -114,7 +119,6 @@ void SimEngineBJ::EventQueryAgent(Agent &targetAgent)
     }
 }
 
-
 /*
 
 */
@@ -129,21 +133,6 @@ void SimEngineBJ::EventQueryDealer()
         return; 
     }
 }
-
-
-/*
-
-*/
-void SimEngineBJ::EventClear() 
-{
-    simShoe.Clear(); 
-    simDealer.ClearHandler(); 
-
-    for (unsigned int i=0; i<activatedAgents; ++i) {
-        agents[i].ClearHandler(simDealer);
-    }
-}
-
 
 /*
 

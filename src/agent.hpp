@@ -4,7 +4,6 @@
 #include "dealer.hpp"
 #include "types.hpp"
 
-
 /*
 The simulation engine is actually designed to enforce a minimal set of 
 arbitrary game mechanics. Most of the logic relating to valid player actions, 
@@ -48,13 +47,13 @@ public:
 
     void SetBJPayout(double d);
 
+    void ClearHandler(const Dealer &dealerRef);
+
     void DealTargetHandler(const Card &dCard); 
 
     void DealObserveHandler(const Card &dCard); 
 
     ACTION YieldAction(const Dealer &dealerRef); 
-
-    void ClearHandler(const Dealer &dealerRef);
 
     void FreshShuffleHandler();
 
@@ -67,8 +66,8 @@ private:
     double BJ_PAYOUT; 
 
     HandInfo hands[MAX_HANDS]; 
-    unsigned int nActiveHands;
-    unsigned int hIdx; 
+    unsigned int newIdx;
+    unsigned int currIdx; 
 
     double* cntPtr; 
     char* hrdPtr; 

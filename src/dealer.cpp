@@ -1,7 +1,6 @@
 #include "dealer.hpp"
 #include "types.hpp"
 
-
 /*
 Nullary constructor, which also serves as a 'reset' method
 */
@@ -13,7 +12,6 @@ Dealer::HandInfo::HandInfo() :
     upCard(BLANK_CARD) 
 {}
 
-
 /*
 All member classes of the simulation engine have explicit nullary constructors 
 provided. This is a design decision to minimise issues with the Cython wrappers.
@@ -22,7 +20,6 @@ Dealer::Dealer() :
     HITSOFT17(false), 
     hInfo(HandInfo()) 
 {}
-
 
 /*
 
@@ -56,7 +53,6 @@ void Dealer::DealTargetHandler(Card dCard)
     }
 }
 
-
 /*
 Simple dealer logic, with additional Boolean condition dictating whether or not
 to hit soft 17's. 
@@ -74,7 +70,6 @@ ACTION Dealer::YieldAction()
         return ACTION::STAND; 
     }
 }
-
 
 /*
 

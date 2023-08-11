@@ -3,7 +3,6 @@
 
 #include "types.hpp"
 
-
 /*
 A simple struct to encapsulate the information and logic of a simulation dealer. 
 */

@@ -6,7 +6,6 @@
 
 using unifIntBounds_t = std::uniform_int_distribution<unsigned int>::param_type;
 
-
 /*
 FisherYates algorithm to shuffle a contiguous slice of array elements in place. 
 https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
@@ -29,9 +28,7 @@ NOTE:
 */
 template <typename T, typename randomNumGenerator>
 unsigned int FYShuffle(
-    T* arrHead, 
-    unsigned int n, 
-    unsigned int nPartial, 
+    T* arrHead, unsigned int n, unsigned int nPartial, 
     randomNumGenerator &rng) 
 {
     // first take the minimum of the partial n request and the max n
