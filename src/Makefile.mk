@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-O3 -march=native -Wall -Wextra
+CXXFLAGS=-O3 -march=native -Wall -Wextra -flto -fprefetch-loop-arrays
 
 OBJs = test.o \
 shoe.o \
