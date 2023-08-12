@@ -14,8 +14,6 @@ extensions = [
         "cardstream",
         sources=srcs,
         language="c++",
-        # extra_compile_args=["-o3"] # this is for gcc compiler
-        # ms seems to default to the cl one...
     )
 ]
 
