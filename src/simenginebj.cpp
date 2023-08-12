@@ -16,8 +16,8 @@ Constructor which appropriately seeds the simShoe member object.
 This will seed the pseudo random number generator, just this once. 
 */
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
-    simShoe(N_DECKS, penen), 
-    activatedAgents(0) 
+    activatedAgents(0),
+    simShoe(N_DECKS, penen) 
 {
     for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
         agentsActivateStatus[i] = false; 

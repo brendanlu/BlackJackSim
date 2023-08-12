@@ -19,14 +19,14 @@ We seed our random number generator in the constructor.
 */
 template <typename RNG>
 Shoe<RNG>::Shoe(unsigned int nd, double p) : 
-    rng(std::random_device()()), 
     N_DECKS(nd),
     N_CARDS(N_DECKS*DECK_SIZE),
     N_UNTIL_CUT(std::min((unsigned int)std::round(N_CARDS*p), N_CARDS)),
     nShuffled(0),
     nDealt(0),
     nDiscarded(0),
-    needReshuffle(false)
+    needReshuffle(false),
+    rng(std::random_device()())
 {
     // prevent memory unsafe behaviour resulting from a dodgy input
     if (N_DECKS > MAX_DECKS) {

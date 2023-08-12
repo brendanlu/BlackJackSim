@@ -69,10 +69,10 @@ private:
     unsigned int newIdx;
     unsigned int currIdx; 
 
-    double* cntPtr; 
     char* hrdPtr; 
     char* sftPtr; 
     char* spltPtr;
+    double* cntPtr; 
     
     double cntVal;
 };

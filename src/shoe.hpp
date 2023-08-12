@@ -47,6 +47,8 @@ public:
     void Display();
     
 private:
+    RNG rng;
+
     static constexpr unsigned int MAX_DECKS = 8;
     static constexpr unsigned int DECK_SIZE = 52;
     static constexpr unsigned int N_CARD_FACE_VALS = 13;
@@ -57,8 +59,6 @@ private:
 
     static constexpr std::array<char, N_CARD_SUIT_VALS> 
     SUIT_VALS = {'D', 'S', 'C', 'H'};
-
-    RNG rng;
 
     std::array<Card, MAX_DECKS*DECK_SIZE> cardStream; 
 };
