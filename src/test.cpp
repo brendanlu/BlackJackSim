@@ -58,12 +58,12 @@ int main()
     double cnt[10] = {1,1,1,1,1,0,0,0,-1,-1}; 
 
     cout << "Creating cpp test simengine\n\n"; 
-    SimEngineBJ testEngine(6, 0.2);
+    SimEngineBJ testEngine(6, 0.5);
 
     cout << "Setting agent strat pointers\n\n"; 
     testEngine.SetAgent(0, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]);
 
-    unsigned long long NITERS = 5000000;
+    unsigned long long NITERS = 1000000;
     cout << "Running simulation of " << NITERS << " iterations\n";
     auto start = std::chrono::system_clock::now();
     testEngine.RunSimulation(NITERS);  

@@ -68,12 +68,13 @@ void SimEngineBJ::SetBJPayout(double d)
 */
 void SimEngineBJ::EventClear() 
 {
-    simShoe.Clear(); 
-    simDealer.ClearHandler(); 
-
+    // let agents implement wager-settling logic before clearing other objects
     for (unsigned int i=0; i<activatedAgents; ++i) {
         agents[i].ClearHandler(simDealer);
     }
+    
+    simShoe.Clear(); 
+    simDealer.ClearHandler(); 
 }
 
 /*
@@ -98,10 +99,8 @@ template void SimEngineBJ::EventDeal<Dealer>(Dealer&);
 */
 void SimEngineBJ::EventQueryAgent(Agent &targetAgent) 
 {
-    // give agent reference of the Dealer state
-    ACTION queryResponse = targetAgent.YieldAction(simDealer); 
-
-    if (queryResponse == ACTION::HIT) {
+    // passes reference of the simulation dealer state
+    if (targetAgent.YieldAction(simDealer) == ACTION::HIT) {
         EventDeal(targetAgent);
         EventQueryAgent(targetAgent); 
         return;
