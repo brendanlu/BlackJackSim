@@ -85,14 +85,6 @@ Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) :
 }
 
 /*
-
-*/
-void Agent::SetBJPayout(double d) 
-{
-    BJ_PAYOUT = d;
-}
-
-/*
 This is called at the end of every round of the hand, to BOTH 1) settle wagers 
 from the previous round, abd 2) place wagers for the next round. 
 

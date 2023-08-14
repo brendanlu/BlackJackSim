@@ -45,12 +45,9 @@ public:
 
     Agent(char* hrd, char* sft, char* splt, double* cnt); 
 
-    void SetBJPayout(double d);
-
     void ClearHandler(const Dealer &dealerRef);
 
     void DealTargetHandler(const Card &dCard); 
-
     void DealObserveHandler(const Card &dCard); 
 
     ACTION YieldAction(const Dealer &dealerRef); 

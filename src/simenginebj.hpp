@@ -21,7 +21,6 @@ public:
     SimEngineBJ(unsigned int N_DECKS, double penen);
 
     void SetDealer17(bool b);
-    void SetBJPayout(double d); 
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
                                 char* splt, double* cnt);
 

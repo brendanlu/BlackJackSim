@@ -56,16 +56,6 @@ void SimEngineBJ::SetAgent(
 /*
 
 */
-void SimEngineBJ::SetBJPayout(double d) 
-{
-    for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
-        agents[i].SetBJPayout(d);
-    }
-}
-
-/*
-
-*/
 void SimEngineBJ::EventClear() 
 {
     // let agents implement wager-settling logic before clearing other objects
