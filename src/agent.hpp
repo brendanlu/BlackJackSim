@@ -1,6 +1,7 @@
 #ifndef AGENT_H
 #define AGENT_H 
 
+#include "communication.hpp"
 #include "dealer.hpp"
 #include "types.hpp"
 

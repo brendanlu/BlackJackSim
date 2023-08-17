@@ -1,4 +1,7 @@
+#include <iostream>
+
 #include "agent.hpp"
+#include "communication.hpp"
 #include "dealer.hpp"
 #include "shoe.hpp"
 #include "simenginebj.hpp"
@@ -118,17 +121,13 @@ void SimEngineBJ::EventQueryDealer()
 /*
 
 */
-ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters) 
+void SimEngineBJ::RunSimulation(unsigned long long nIters) 
 {
     nPlayed = 0; 
     shoeRounds = 0; 
     total = 0; 
 
     long curr; 
-
-    if (activatedAgents == 0) {
-        return ERR_CODE::NO_AGENT_STRAT;
-    }
     
     // do a full shuffle of the shoe
     simShoe.FreshShuffleN(simShoe.N_CARDS); 
@@ -173,5 +172,5 @@ ERR_CODE SimEngineBJ::RunSimulation(unsigned long long nIters)
         if (curr > nPlayed) {nPlayed = curr;}
     }
 
-    return ERR_CODE::SUCCESS;
+    return;
 }

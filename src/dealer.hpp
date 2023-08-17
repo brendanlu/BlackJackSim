@@ -1,6 +1,7 @@
 #ifndef DEALER_H
 #define DEALER_H
 
+#include "communication.hpp"
 #include "types.hpp"
 
 /*

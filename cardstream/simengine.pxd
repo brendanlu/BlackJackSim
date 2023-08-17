@@ -8,7 +8,7 @@ cdef extern from "../src/simenginebj.hpp":
         SimEngineBJ() except + 
         SimEngineBJ(unsigned int, double) except +
         void SetAgent(unsigned int, char*, char*, char*, double*)
-        int RunSimulation(unsigned long long)
+        void RunSimulation(unsigned long long)
 
         int nPlayed
         int shoeRounds

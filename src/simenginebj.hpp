@@ -1,9 +1,11 @@
 #ifndef SIMENGINE_H
 #define SIMENGINE_H 
 
+#include <iostream>
 #include <random>
 
 #include "agent.hpp"
+#include "communication.hpp"
 #include "dealer.hpp"
 #include "shoe.hpp"
 #include "types.hpp"
@@ -29,7 +31,7 @@ public:
     void EventQueryAgent(Agent &targetAgent); 
     void EventQueryDealer(); 
 
-    ERR_CODE RunSimulation(unsigned long long nIters);
+    void RunSimulation(unsigned long long nIters);
 
     long nPlayed; 
     long shoeRounds; 

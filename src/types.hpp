@@ -7,19 +7,19 @@
 /*
 misc. constants
 */
-constexpr unsigned int BJVAL = 21; 
-constexpr unsigned int INIT_DEAL = 2;
-constexpr int ASCII_2 = 50; // ascii value of 2 
-constexpr int ASCII_9 = 57;
-constexpr int ASCII_A = 65; 
+constexpr unsigned int BJVAL                = 21; 
+constexpr unsigned int INIT_DEAL            =  2;
+constexpr int ASCII_2                       = 50; // ascii value of 2 
+constexpr int ASCII_9                       = 57;
+constexpr int ASCII_A                       = 65; 
 
 /*
 A simple struct to represent a card with minimal memory overhead and efficient
 value retrieval, whilst maintaining full face and suit information. 
 */
-constexpr unsigned int N_CARD_FACE_VALS = 13;
-constexpr unsigned int N_DISTINCT_NUMERIC = 10;
-constexpr unsigned int N_CARD_SUIT_VALS = 4;
+constexpr unsigned int N_CARD_FACE_VALS     = 13;
+constexpr unsigned int N_DISTINCT_NUMERIC   = 10;
+constexpr unsigned int N_CARD_SUIT_VALS     =  4;
 
 constexpr std::array<char, N_CARD_FACE_VALS> 
 FACE_VALS = {'2','3','4','5','6','7','8','9','T','J','Q','K','A'};
@@ -78,27 +78,5 @@ inline bool operator== (const Card &c1, const Card& c2)
 {
     return ((c1.face==c2.face) && (c1.suit==c2.suit));
 }
-
-/*
-Various error codes
-*/
-enum class ERR_CODE : int 
-{
-    // generic success code
-    SUCCESS = 0, 
-
-    // codes prefixed with 1
-    // main sim loop related
-    NO_AGENT_STRAT = 101,
-};
-
-/*
-The valid actions the simulation engine can process
-*/
-enum class ACTION : char 
-{
-    HIT = 'H',
-    STAND = 'S', 
-};
 
 #endif

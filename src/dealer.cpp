@@ -1,4 +1,6 @@
+#include "communication.hpp"
 #include "dealer.hpp"
+#include "simenginebj.hpp"
 #include "types.hpp"
 
 /*
