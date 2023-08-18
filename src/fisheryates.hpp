@@ -2,7 +2,6 @@
 #define FISHERYATES_H
 
 #include <random>
-#include "types.hpp"
 
 using unifIntBounds_t = std::uniform_int_distribution<unsigned int>::param_type;
 

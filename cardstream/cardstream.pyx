@@ -1,8 +1,7 @@
 from simengine cimport SimEngineBJ
 
 """
-Wrapper class that can be used in Python which contains an instsance of the cpp 
-class object as a member. 
+Python interface to the simengine
 """
 cdef class PySimEngineBJ: 
     cdef SimEngineBJ cppSimEngine
@@ -24,13 +23,8 @@ cdef class PySimEngineBJ:
         self.cppSimEngine.RunSimulation(nIters)
         return 
 
+    # debug for now ------------------------
     def returnCount(self):
         return (self.cppSimEngine.nPlayed,
                 self.cppSimEngine.shoeRounds,
                 self.cppSimEngine.total)
-
-
-"""
-Low priority: Write some Python errors to hand the ERR_CODES and give 
-information back out here.
-"""
