@@ -19,7 +19,7 @@ cdef extern from "../src/simenginebj.hpp":
         char* hrd 
         char* sft
         char* splt
-        double * cnt
+        double* cnt
 
     cdef cppclass InitPackage:
         unsigned int nDecks 

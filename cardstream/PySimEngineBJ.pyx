@@ -1,7 +1,7 @@
 from engine_interface cimport AgentStratPackage, InitPackage, SimEngineBJ
 
 """
-Python interface to the simengine
+Python class for running simulations and benchmarking
 """
 cdef class PySimEngineBJ: 
     cdef SimEngineBJ cppSimEngine
