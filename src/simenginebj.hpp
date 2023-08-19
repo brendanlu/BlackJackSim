@@ -10,9 +10,26 @@
 #include "shoe.hpp"
 #include "types.hpp"
 
+static constexpr unsigned int MAX_N_AGENTS = 10; 
+
+/*
+
+*/
+struct AgentStratPackage
+{char* hrd; char* sft; char* splt; double* cnt;};
+
+/*
+
+*/
 struct InitPackage
 {
-    
+    unsigned int nDecks;
+    double shoePenentration;
+
+    bool dealer17;
+
+    unsigned int nAgents; 
+    AgentStratPackage strats[MAX_N_AGENTS]; 
 };
 
 /*
@@ -24,6 +41,7 @@ class SimEngineBJ
 public: 
     SimEngineBJ();
     SimEngineBJ(unsigned int N_DECKS, double penen);
+    SimEngineBJ(InitPackage init);
 
     void SetDealer17(bool b);
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
@@ -45,14 +63,11 @@ public:
     long total;
 
 private:
-    static constexpr unsigned int MAX_N_AGENTS = 10; 
-
-    Agent agents[MAX_N_AGENTS]; 
-    bool agentsActivateStatus[MAX_N_AGENTS]; 
-    unsigned int nAgents;
-
     Shoe<std::mt19937_64> simShoe;
     Dealer simDealer;
+
+    unsigned int nAgents;
+    Agent agents[MAX_N_AGENTS]; 
 };
 
 #endif

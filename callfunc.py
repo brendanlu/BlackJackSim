@@ -8,7 +8,8 @@ strat = pd.read_csv(
 )
 
 """
-Read in the individual strategy tables. Cast into byte chars and C contiguous arrays. 
+Read in the individual strategy tables. Cast into byte chars and C contiguous 
+arrays. 
 """
 hard = strat.iloc[0:18, :].copy().reset_index(drop=True)
 hard = hard.values.astype(str)

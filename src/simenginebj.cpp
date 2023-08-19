@@ -19,11 +19,30 @@ Constructor which appropriately seeds the simShoe member object.
 This will seed the pseudo random number generator, just this once. 
 */
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
-    nAgents(0),
-    simShoe(N_DECKS, penen) 
+    simShoe(N_DECKS, penen),
+    nAgents(0)
+{}
+
+/*
+Constructor which appropriately constructs all of the simulation objects and 
+the game state. 
+*/
+SimEngineBJ::SimEngineBJ(InitPackage init) :
+    simShoe(init.nDecks, init.shoePenentration),
+    simDealer(init.dealer17),
+    nAgents(init.nAgents)
 {
+    if (nAgents > MAX_N_AGENTS) {
+        nAgents = MAX_N_AGENTS; 
+    }
+
     for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
-        agentsActivateStatus[i] = false; 
+        agents[i] = Agent(
+            init.strats[i].hrd, 
+            init.strats[i].sft, 
+            init.strats[i].splt,
+            init.strats[i].cnt
+        );
     }
 }
 
@@ -46,14 +65,6 @@ void SimEngineBJ::SetAgent(
     double* cnt) 
 {
     agents[idx] = Agent(hrd, sft, splt, cnt);
-    agentsActivateStatus[idx] = true; 
-
-    nAgents = 0; 
-    for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
-        if (agentsActivateStatus[i]) {
-            nAgents += 1;
-        }
-    }
 }
 
 /*

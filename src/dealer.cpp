@@ -18,9 +18,14 @@ Dealer::HandInfo::HandInfo() :
 All member classes of the simulation engine have explicit nullary constructors 
 provided. This is a design decision to minimise issues with the Cython wrappers.
 */
-Dealer::Dealer() : 
-    hInfo(HandInfo()),
-    HITSOFT17(false)
+Dealer::Dealer() {}
+
+/*
+This will actually be called when the simulation engine is constructed
+*/
+Dealer::Dealer(bool H17) : 
+    hInfo(HandInfo()),  
+    HITSOFT17(H17)
 {}
 
 /*

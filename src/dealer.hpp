@@ -27,6 +27,7 @@ struct Dealer
     } hInfo;
 
     Dealer();
+    Dealer(bool h17);
 
     bool HITSOFT17;
 
