@@ -8,15 +8,10 @@
 #include "communication.hpp"
 #include "dealer.hpp"
 #include "shoe.hpp"
+#include "strategyinput.hpp"
 #include "types.hpp"
 
 static constexpr unsigned int MAX_N_AGENTS = 10; 
-
-/*
-
-*/
-struct AgentStratPackage
-{char* hrd; char* sft; char* splt; double* cnt;};
 
 /*
 
@@ -29,7 +24,7 @@ struct InitPackage
     bool dealer17;
 
     unsigned int nAgents; 
-    AgentStratPackage strats[MAX_N_AGENTS]; 
+    StratPackage strats[MAX_N_AGENTS]; 
 };
 
 /*

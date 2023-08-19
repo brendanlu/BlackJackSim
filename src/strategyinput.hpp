@@ -1,6 +1,17 @@
 #ifndef STRATIN_H
 #define STRATIN_H 
 
+/*
+
+*/
+struct StratPackage
+{
+        char* hrd; 
+        char* sft; 
+        char* splt; 
+        double* cnt;
+};
+
 /*   
 Functions to retrieve the appropriate actions from the templated strategy input
 files. 

@@ -11,22 +11,22 @@ cdef extern from "<iostream>" namespace "std":
     cdef cppclass ostream: 
         ostream& write(const char*, int) except + 
 
-
-cdef extern from "../src/simenginebj.hpp":
-    cdef unsigned int MAX_N_AGENTS
-
-    cdef cppclass AgentStratPackage:
+cdef extern from "../src/strategyinput.hpp":
+    cdef cppclass StratPackage:
         char* hrd 
         char* sft
         char* splt
         double* cnt
+
+cdef extern from "../src/simenginebj.hpp":
+    cdef unsigned int MAX_N_AGENTS
 
     cdef cppclass InitPackage:
         unsigned int nDecks 
         double shoePenentration
         bool dealer17
         unsigned int nAgents
-        AgentStratPackage strats[]
+        StratPackage strats[]
 
     cdef cppclass SimEngineBJ: 
         SimEngineBJ() except + 

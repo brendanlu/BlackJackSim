@@ -5,6 +5,7 @@
 #include "dealer.hpp"
 #include "shoe.hpp"
 #include "simenginebj.hpp"
+#include "strategyinput.hpp"
 #include "types.hpp"
 
 /*
