@@ -1,4 +1,4 @@
-from simengine cimport AgentStratPackage, InitPackage, SimEngineBJ
+from engine_interface cimport AgentStratPackage, InitPackage, SimEngineBJ
 
 """
 Python interface to the simengine

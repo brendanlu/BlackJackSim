@@ -7,11 +7,11 @@ srcs = []
 for file in os.listdir("src/"):
     if file.endswith(".cpp"):
         srcs.append("src/" + file)
-srcs.append("cardstream/cardstream.pyx")
+srcs.append("cardstream/PySimEngineBJ.pyx")
 
 extensions = [
     Extension(
-        "cardstream",
+        "PySimEngineBJ",
         sources=srcs,
         language="c++",
     )
