@@ -19,7 +19,7 @@ Constructor which appropriately seeds the simShoe member object.
 This will seed the pseudo random number generator, just this once. 
 */
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
-    activatedAgents(0),
+    nAgents(0),
     simShoe(N_DECKS, penen) 
 {
     for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
@@ -48,10 +48,10 @@ void SimEngineBJ::SetAgent(
     agents[idx] = Agent(hrd, sft, splt, cnt);
     agentsActivateStatus[idx] = true; 
 
-    activatedAgents = 0; 
+    nAgents = 0; 
     for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
         if (agentsActivateStatus[i]) {
-            activatedAgents += 1;
+            nAgents += 1;
         }
     }
 }
@@ -62,7 +62,7 @@ void SimEngineBJ::SetAgent(
 void SimEngineBJ::EventClear() 
 {
     // let agents implement wager-settling logic before clearing other objects
-    for (unsigned int i=0; i<activatedAgents; ++i) {
+    for (unsigned int i=0; i<nAgents; ++i) {
         agents[i].ClearHandler(simDealer);
     }
     
@@ -78,7 +78,7 @@ template<typename targetType> void SimEngineBJ::EventDeal(targetType &target)
     Card dCard = simShoe.Deal();
     target.DealTargetHandler(dCard);
 
-    for (unsigned int i=0; i<activatedAgents; ++i) {
+    for (unsigned int i=0; i<nAgents; ++i) {
         agents[i].DealObserveHandler(dCard); 
     }
 }
@@ -137,7 +137,7 @@ void SimEngineBJ::RunSimulation(unsigned long long nIters)
         // partial fresh shuffle - see Shoe implementation
         simShoe.FreshShuffleN(simShoe.N_UNTIL_CUT); 
 
-        for (unsigned int i=0; i<activatedAgents; ++i) {
+        for (unsigned int i=0; i<nAgents; ++i) {
             agents[i].FreshShuffleHandler(); 
         }
 
@@ -154,12 +154,12 @@ void SimEngineBJ::RunSimulation(unsigned long long nIters)
             EventClear(); 
             EventDeal(simDealer); 
 
-            for (unsigned int i=0; i<activatedAgents; ++i) {
+            for (unsigned int i=0; i<nAgents; ++i) {
                 EventDeal(agents[i]); 
                 EventDeal(agents[i]);
             }
 
-            for (unsigned int i=0; i<activatedAgents; ++i) {
+            for (unsigned int i=0; i<nAgents; ++i) {
                 EventQueryAgent(agents[i]); 
             }
 

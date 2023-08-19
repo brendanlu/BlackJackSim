@@ -10,6 +10,11 @@
 #include "shoe.hpp"
 #include "types.hpp"
 
+struct InitPackage
+{
+    
+};
+
 /*
 A class which ochestrates the method calls of the simulation objects to 
 implement correct game logic. 
@@ -44,7 +49,7 @@ private:
 
     Agent agents[MAX_N_AGENTS]; 
     bool agentsActivateStatus[MAX_N_AGENTS]; 
-    unsigned int activatedAgents;
+    unsigned int nAgents;
 
     Shoe<std::mt19937_64> simShoe;
     Dealer simDealer;

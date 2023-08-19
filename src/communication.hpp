@@ -2,7 +2,8 @@
 #define COMM_H
 
 
-class Context {
+class Context 
+{
 
 };
 
