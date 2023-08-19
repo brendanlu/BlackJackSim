@@ -17,18 +17,20 @@ constexpr int ASCII_A                       = 65;
 A simple struct to represent a card with minimal memory overhead and efficient
 value retrieval, whilst maintaining full face and suit information. 
 */
-constexpr unsigned int N_CARD_FACE_VALS     = 13;
-constexpr unsigned int N_DISTINCT_NUMERIC   = 10;
-constexpr unsigned int N_CARD_SUIT_VALS     =  4;
+constexpr char BLANK_CHAR                   = '0';
+
+constexpr unsigned int N_CARD_FACE_VALS     =  13;
+constexpr unsigned int N_DISTINCT_NUMERIC   =  10;
+constexpr unsigned int N_CARD_SUIT_VALS     =   4;
 
 constexpr std::array<char, N_CARD_FACE_VALS> 
-FACE_VALS = {'2','3','4','5','6','7','8','9','T','J','Q','K','A'};
+FACE_VALS     = {'2','3','4','5','6','7','8','9','T','J','Q','K','A'};
 
 constexpr std::array<unsigned int, N_DISTINCT_NUMERIC>
-NUMERIC_VALS = {2,3,4,5,6,7,8,9,10,11};
+NUMERIC_VALS  = {2,3,4,5,6,7,8,9,10,11};
 
 constexpr std::array<char, N_CARD_SUIT_VALS> 
-SUIT_VALS = {'D','S','C','H'};
+SUIT_VALS     = {'D','S','C','H'};
 
 struct Card {
     char face; 
@@ -59,11 +61,11 @@ struct Card {
     */
     inline operator bool() const
     {
-        return face != '0';
+        return face != BLANK_CHAR;
     }
 };
 
-constexpr Card BLANK_CARD = {'0', '0'};
+constexpr Card BLANK_CARD = {BLANK_CHAR, BLANK_CHAR};
 
 // overload <<, inline the definition so it is not redefined each #include
 inline std::ostream& operator<< (std::ostream& os, const Card& c) 

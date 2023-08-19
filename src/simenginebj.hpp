@@ -17,8 +17,6 @@ implement correct game logic.
 class SimEngineBJ
 {
 public: 
-    Dealer simDealer;
-
     SimEngineBJ();
     SimEngineBJ(unsigned int N_DECKS, double penen);
 
@@ -27,8 +25,12 @@ public:
                                 char* splt, double* cnt);
 
     void EventClear();
-    template<typename targetType> void EventDeal(targetType &target);
+
+    template<typename targetType> 
+    void EventDeal(targetType &target);
+
     void EventQueryAgent(Agent &targetAgent); 
+
     void EventQueryDealer(); 
 
     void RunSimulation(unsigned long long nIters);
@@ -44,7 +46,8 @@ private:
     bool agentsActivateStatus[MAX_N_AGENTS]; 
     unsigned int activatedAgents;
 
-    Shoe<std::mt19937_64> simShoe;  
+    Shoe<std::mt19937_64> simShoe;
+    Dealer simDealer;
 };
 
 #endif
