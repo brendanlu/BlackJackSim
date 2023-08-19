@@ -4,7 +4,7 @@ import cardstream
 import pandas as pd
 
 strat = pd.read_csv(
-    r"cardstream\BasicNoDeviations-4to8Decks-HitSoft17.csv", header=None
+    r"cardstream\teststrat\BasicNoDeviations-4to8Decks-HitSoft17.csv", header=None
 )
 
 """
@@ -24,7 +24,7 @@ splits = splits.values.astype(str)
 splts = splits[1:, 1:].astype("S1", order="C")
 
 # Read in the counting strategy
-count = pd.read_csv(r"cardstream\HiLoCount.csv", header=None)
+count = pd.read_csv(r"cardstream\teststrat\HiLoCount.csv", header=None)
 cnt = count.iloc[:, 1].values.astype(float, order="C")
 
 tryme = cardstream.PySimEngineBJ(6, 0.5)
