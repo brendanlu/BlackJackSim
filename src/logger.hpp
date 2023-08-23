@@ -5,8 +5,7 @@
 #include <iostream>
 
 /*
-Inherited buffer type for writing simulation information into via the ostream 
-class
+Simple logging class - easy to wrap in Cython
 */
 
 

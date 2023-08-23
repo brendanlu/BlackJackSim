@@ -1,6 +1,8 @@
 #ifndef AGENT_H
 #define AGENT_H 
 
+#include <array>
+
 #include "communication.hpp"
 #include "dealer.hpp"
 #include "types.hpp"
@@ -63,7 +65,7 @@ private:
     bool BJ_INSTANT;
     double BJ_PAYOUT; 
 
-    HandInfo hands[MAX_HANDS]; 
+    std::array<HandInfo, MAX_HANDS> hands;
     unsigned int newIdx;
     unsigned int currIdx; 
 

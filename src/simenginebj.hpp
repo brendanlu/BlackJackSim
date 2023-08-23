@@ -1,6 +1,7 @@
 #ifndef SIMENGINE_H
 #define SIMENGINE_H 
 
+#include <array>
 #include <iostream>
 #include <random>
 
@@ -62,7 +63,7 @@ private:
     Dealer simDealer;
 
     unsigned int nAgents;
-    Agent agents[MAX_N_AGENTS]; 
+    std::array<Agent, MAX_N_AGENTS> agents;
 };
 
 #endif

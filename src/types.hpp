@@ -7,11 +7,11 @@
 /*
 misc. constants
 */
-constexpr unsigned int BJVAL                = 21; 
-constexpr unsigned int INIT_DEAL            =  2;
-constexpr int ASCII_2                       = 50; // ascii value of 2 
-constexpr int ASCII_9                       = 57;
-constexpr int ASCII_A                       = 65; 
+constexpr unsigned int BJVAL               =  21; 
+constexpr unsigned int INIT_DEAL           =   2;
+constexpr int ASCII_2                      =  50; // ascii value of 2 
+constexpr int ASCII_9                      =  57;
+constexpr int ASCII_A                      =  65; 
 
 /*
 A simple struct to represent a card with minimal memory overhead and efficient
