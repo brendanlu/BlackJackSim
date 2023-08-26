@@ -5,7 +5,10 @@
 
 #include "communication.hpp"
 #include "dealer.hpp"
+#include "strategyinput.hpp"
 #include "types.hpp"
+
+static constexpr unsigned int MAX_N_HANDS = 4; 
 
 /*
 The simulation engine is actually designed to enforce a minimal set of 
@@ -46,8 +49,9 @@ public:
 
     Agent(); 
 
-    Agent(char* hrd, char* sft, char* splt, double* cnt); 
-
+    Agent(char* hrd, char* sft, char* splt, double* cnt);
+    Agent(StratPackage s); 
+    
     void ClearHandler(const Dealer &dealerRef);
 
     void DealTargetHandler(const Card &dCard); 
@@ -58,21 +62,16 @@ public:
     void FreshShuffleHandler();
 
 private:
-    // so we can stack allocate memory for hand information
-    static constexpr unsigned int MAX_HANDS = 4; 
-
     bool STRAT_INIT;
+
     bool BJ_INSTANT;
     double BJ_PAYOUT; 
 
-    std::array<HandInfo, MAX_HANDS> hands;
+    std::array<HandInfo, MAX_N_HANDS> hands;
     unsigned int newIdx;
     unsigned int currIdx; 
 
-    char* hrdPtr; 
-    char* sftPtr; 
-    char* spltPtr;
-    double* cntPtr; 
+    StratPackage strat; 
     
     double cntVal;
 };

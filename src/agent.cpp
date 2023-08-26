@@ -77,13 +77,21 @@ Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) :
     pnl(0),
     STRAT_INIT(true), BJ_INSTANT(false), BJ_PAYOUT(1.5),
     newIdx(1), currIdx(0),
-    hrdPtr(hrd), sftPtr(sft), spltPtr(splt), cntPtr(cnt), 
+    strat({hrd, sft, splt, cnt}),
     cntVal(0)
 {
-    for (unsigned int i=0; i<MAX_HANDS; ++i) {
+    for (unsigned int i=0; i<MAX_N_HANDS; ++i) {
         hands[i] = HandInfo();
     }
 }
+
+/*
+Messy construction of Agent, currently just for testing and wrapper 
+compatability
+*/
+Agent::Agent(StratPackage s) : 
+    Agent(s.hrd, s.sft, s.splt, s.cnt)
+{}
 
 /*
 This is called at the end of every round of the hand, to BOTH 1) settle wagers 
@@ -172,7 +180,7 @@ Ensure that there is no duplicate logic between these methods.
 void Agent::DealObserveHandler(const Card &dCard) 
 {
     // change internal running count
-    cntVal += cntFromPtr(cntPtr, dCard.val()); 
+    cntVal += cntFromPtr(strat.cnt, dCard.val()); 
 }
 
 /*
@@ -218,21 +226,21 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
     }
     else if (hands[currIdx].holdingPair) {
         internalAction = spltActionFromPtr(
-            spltPtr, 
+            strat.splt, 
             hands[currIdx].first.val(), 
             dealerRef.hInfo.upCard.val()
         );
     }
     else if (hands[currIdx].nSoftAces > 0) {
         internalAction = sftActionFromPtr(
-            sftPtr, 
+            strat.sft, 
             hands[currIdx].handVal, 
             dealerRef.hInfo.upCard.val()
         ); 
     }
     else {
         internalAction = hrdActionFromPtr(
-            hrdPtr, 
+            strat.hrd, 
             hands[currIdx].handVal, 
             dealerRef.hInfo.upCard.val()
         ); 
@@ -250,7 +258,7 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
         hands[currIdx].wager *= 2; 
         return ACTION::HIT;
     }
-    else if (internalAction == 'P' && newIdx < MAX_HANDS) {
+    else if (internalAction == 'P' && newIdx < MAX_N_HANDS) {
         // spawn two hands in place of one at index newIdx of hands
         // construct new hand with correct wager, and one of the pair cards
         //

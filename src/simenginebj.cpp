@@ -38,12 +38,7 @@ SimEngineBJ::SimEngineBJ(InitPackage init) :
     }
 
     for (unsigned int i=0; i<nAgents; ++i) {
-        agents[i] = Agent(
-            init.strats[i].hrd, 
-            init.strats[i].sft, 
-            init.strats[i].splt,
-            init.strats[i].cnt
-        );
+        agents[i] = Agent(init.strats[i]);
     }
 }
 
