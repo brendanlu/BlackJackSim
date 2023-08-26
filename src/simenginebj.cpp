@@ -37,7 +37,7 @@ SimEngineBJ::SimEngineBJ(InitPackage init) :
         nAgents = MAX_N_AGENTS; 
     }
 
-    for (unsigned int i=0; i<MAX_N_AGENTS; ++i) {
+    for (unsigned int i=0; i<nAgents; ++i) {
         agents[i] = Agent(
             init.strats[i].hrd, 
             init.strats[i].sft, 
