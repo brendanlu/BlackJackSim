@@ -21,8 +21,8 @@ enum class ERR_CODE : int
 };
 
 /*
-Simple logging class which is easy to wrap in Cython. 
-Write into csv format, enabling post-sim data analysis. 
+Really simple logging class, which is basically a wrapper of std::ofstream atm.
+Writes into csv format. 
 */
 enum class LOG_TYPE : int
 {
@@ -44,20 +44,35 @@ public:
     {
         outFile.open(filename); 
         outFile << colHeaders;
+        outFile.flush();
     }
 
-    void Record()
+    void Row(LOG_TYPE lt, const std::string& c, const std::string& d)
     {
-        
+        outFile << LogLabel(lt) << "," << c << "," << d << "\n";
     }
 
     ~Logger() 
     {
         outFile.close();
     }
+
 private: 
     std::ofstream outFile;
-    std::string colHeaders = "Source,Card,Context,Action,";
+    
+    /*
+    The csv data is written in a stacked-like format (long but not wide). 
+    This makes subsequent analysis much easier; column filters can be applied
+    to get relevant information, whilst the ordering of the data is preserved in 
+    the overall log. 
+
+    The current output format is as follows:
+
+        |Source | Where the log record comes from, in [X] format
+        |Context| What game event the log comes from
+        |Detail | This field will change drastically, depending on context
+    */
+    std::string colHeaders = "Source,Context,Detail\n";
 
     inline std::string LogLabel(LOG_TYPE lt) 
     {
