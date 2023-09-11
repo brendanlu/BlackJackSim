@@ -195,9 +195,9 @@ void SimEngineBJ::RunSimulation(unsigned long long nIters)
     simShoe.FreshShuffleN(simShoe.N_CARDS); 
 
     // each iteration is playing one shoe
-    for (unsigned long long i=0; i<nIters; ++i) { 
+    for (unsigned long long i=0; i<nIters; ++i) {
         // partial fresh shuffle - see Shoe implementation
-        EventFreshShuffle(simShoe.N_UNTIL_CUT); 
+        EventFreshShuffle(simShoe.N_UNTIL_CUT);
 
         // simulate until reshuffle condition is met - see Shoe implementation
         //
@@ -220,6 +220,12 @@ void SimEngineBJ::RunSimulation(unsigned long long nIters)
 
             EventQueryDealer(); 
         }
+
+        simLog.WriteRow(
+            LOG_TYPE::ENGINE, 
+            "Shoe Completed", 
+            ""
+        );
     }
 
     auto end = std::chrono::system_clock::now();

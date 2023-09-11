@@ -38,7 +38,7 @@ class Logger
 public: 
     Logger() : 
         currShoeNum(0), 
-        currHandNum(0)
+        currTableNum(0)
     {}
 
     /*
@@ -64,27 +64,26 @@ public:
     */
     void WriteRow(LOG_TYPE lt, const std::string& c, const std::string& d)
     {
-        // colHeaders = "Source,ShoeNum,HandNum,Context,Detail\n";
         outFile << LogLabel(lt) << "," 
                 << currShoeNum  << ","
-                << currHandNum  << ","
+                << currTableNum  << ","
                 << c            << "," 
                 << d            << "\n";
     }
 
-    void ManualFlush() 
+    inline void ManualFlush() 
     {
         outFile.flush(); 
     }
 
-    void FreshShuffleHandler()
+    inline void FreshShuffleHandler()
     {
         currShoeNum += 1; 
     }
 
-    void Clearhandler() 
+    inline void Clearhandler() 
     {
-        currHandNum += 1; 
+        currTableNum += 1; 
     }
 
     ~Logger() 
@@ -121,10 +120,10 @@ private:
         |Context| What game event the log comes from
         |Detail | This field will change drastically, depending on context
     */
-    std::string colHeaders = "Source,ShoeNum,HandNum,Context,Detail\n";
+    std::string colHeaders = "Source,ShoeNum,TableNum,Context,Detail\n";
 
     int currShoeNum; 
-    int currHandNum; 
+    int currTableNum; 
 };
 
 #endif
