@@ -10,8 +10,8 @@ def _strat_to_numpy_arrayfmt(
     strat_relpath: str,
     count_relpath: str,
 ) -> Tuple[np.ndarray]:
-    """ 
-    Convert strategy and count configurations into C-order numpy arrays. 
+    """
+    Convert strategy and count configurations into C-order numpy arrays.
     NOTE: These must be in an identical format to the preconfigured templates.
     """
     strat = pd.read_csv(strat_relpath, header=None)

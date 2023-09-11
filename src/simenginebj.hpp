@@ -4,6 +4,7 @@
 #include <array>
 #include <iostream>
 #include <random>
+#include <string>
 
 #include "agent.hpp"
 #include "card.hpp"
@@ -42,6 +43,9 @@ public:
     void SetDealer17(bool b);
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
                                 char* splt, double* cnt);
+    void SetLogFile(const std::string& filename); 
+
+    void EventFreshShuffle(unsigned int n); 
 
     void EventClear();
 
@@ -54,12 +58,8 @@ public:
 
     void RunSimulation(unsigned long long nIters);
 
-    long nPlayed; 
-    long shoeRounds; 
-    long total;
-
 private:
-    // Logger simLog; 
+    Logger simLog; 
 
     Shoe<std::mt19937_64> simShoe;
     Dealer simDealer;

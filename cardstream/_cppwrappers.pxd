@@ -36,8 +36,3 @@ cdef extern from "../src/simenginebj.hpp":
 
         void SetAgent(unsigned int, char*, char*, char*, double*)
         void RunSimulation(unsigned long long)
-
-        # debug stuff for now --------------------------------
-        int nPlayed
-        int shoeRounds
-        int total

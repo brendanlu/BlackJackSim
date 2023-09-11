@@ -1,4 +1,7 @@
+#include <chrono>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 #include "agent.hpp"
 #include "card.hpp"
@@ -22,7 +25,9 @@ This will seed the pseudo random number generator, just this once.
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
     simShoe(N_DECKS, penen),
     nAgents(0)
-{}
+{
+    simLog.InitLogFile("LOG.csv"); 
+}
 
 /*
 Constructor which appropriately constructs all of the simulation objects and 
@@ -66,6 +71,28 @@ void SimEngineBJ::SetAgent(
 /*
 
 */
+void SimEngineBJ::SetLogFile(const std::string& filename) 
+{
+    simLog.InitLogFile(filename); 
+}
+
+/*
+
+*/
+void SimEngineBJ::EventFreshShuffle(unsigned int n) 
+{
+    simShoe.FreshShuffleN(n); 
+
+    for (unsigned int i=0; i<nAgents; ++i) {
+        agents[i].FreshShuffleHandler(); 
+    }
+    
+    simLog.FreshShuffleHandler(); 
+}
+
+/*
+
+*/
 void SimEngineBJ::EventClear() 
 {
     // let agents implement wager-settling logic before clearing other objects
@@ -75,6 +102,8 @@ void SimEngineBJ::EventClear()
     
     simShoe.Clear(); 
     simDealer.ClearHandler(); 
+
+    simLog.Clearhandler(); 
 }
 
 /*
@@ -130,26 +159,45 @@ void SimEngineBJ::EventQueryDealer()
 */
 void SimEngineBJ::RunSimulation(unsigned long long nIters) 
 {
-    nPlayed = 0; 
-    shoeRounds = 0; 
-    total = 0; 
+    auto start = std::chrono::system_clock::now();
 
-    long curr; 
+    // to avoid making mistakes writing messages
+    std::string CONTEXTSTRING1 = "Simulation Status"; 
+
+    // this is currently redundant, as the log destination is configured in the
+    // constructor
+    //
+    // but it may be useful later if this gets done differently
+    if (!simLog) {
+        simLog.InitLogFile("ERROR.csv"); 
+        simLog.WriteRow(
+            LOG_TYPE::ENGINE, 
+            CONTEXTSTRING1, 
+            "ERROR - LOG FILE DESINATION NOT CONFIGURED"
+        );
+        simLog.ManualFlush(); 
+        return; 
+    }
+    else {
+        simLog.WriteRow(
+            LOG_TYPE::ENGINE, 
+            CONTEXTSTRING1,
+            "COMMENCING " 
+                + std::to_string(nIters)
+                + " SHOE SIMULATIONS"
+        );
+    }
     
     // do a full shuffle of the shoe
+    //
+    // directly call the shoe method to avoid affecting log
+    // the first iteration of the simulation will reshuffle again anyway
     simShoe.FreshShuffleN(simShoe.N_CARDS); 
 
     // each iteration is playing one shoe
     for (unsigned long long i=0; i<nIters; ++i) { 
         // partial fresh shuffle - see Shoe implementation
-        simShoe.FreshShuffleN(simShoe.N_UNTIL_CUT); 
-
-        for (unsigned int i=0; i<nAgents; ++i) {
-            agents[i].FreshShuffleHandler(); 
-        }
-
-        shoeRounds += 1; 
-        curr = 0;
+        EventFreshShuffle(simShoe.N_UNTIL_CUT); 
 
         // simulate until reshuffle condition is met - see Shoe implementation
         //
@@ -171,13 +219,23 @@ void SimEngineBJ::RunSimulation(unsigned long long nIters)
             }
 
             EventQueryDealer(); 
-
-            curr += 1; 
-            total += 1; 
         }
-
-        if (curr > nPlayed) {nPlayed = curr;}
     }
+
+    auto end = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+        end - start
+    );
+
+    simLog.WriteRow(
+        LOG_TYPE::ENGINE, 
+        CONTEXTSTRING1,
+        "SUCCESS - SIMULATION COMPLETED IN " 
+            + std::to_string(elapsed.count())
+            + "ms"
+    );
+
+    simLog.ManualFlush();
 
     return;
 }

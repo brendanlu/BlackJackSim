@@ -3,9 +3,9 @@ import shutil
 
 # Cython build files
 build_files = [
-    r"cardstream.cp39-win_amd64.pyd", 
-    r"cardstream.cp310-win_amd64.pyd", 
-    r"cardstream.cp311-win_amd64.pyd",  
+    r"cardstream.cp39-win_amd64.pyd",
+    r"cardstream.cp310-win_amd64.pyd",
+    r"cardstream.cp311-win_amd64.pyd",
     r"cardstream\cardstream.cpp",
     r"PySimEngineBJ.cp310-win_amd64.pyd",
     r"cardstream\PySimEngineBJ.cpp",

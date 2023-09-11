@@ -8,8 +8,8 @@ for file in os.listdir("src/"):
     if file.endswith(".cpp") and not file.startswith("test"):
         srcs.append("src/" + file)
 
-for file in os.listdir("cardstream/"): 
-    if file.endswith(".pyx"): 
+for file in os.listdir("cardstream/"):
+    if file.endswith(".pyx"):
         srcs.append("cardstream/" + file)
 
 extensions = [

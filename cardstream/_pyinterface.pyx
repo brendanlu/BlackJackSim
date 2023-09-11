@@ -22,9 +22,3 @@ cdef class PySimEngineBJ:
     def pyTest(self, unsigned int nIters): 
         self.cppSimEngine.RunSimulation(nIters)
         return 
-
-    # debug for now ------------------------
-    def returnCount(self):
-        return (self.cppSimEngine.nPlayed,
-                self.cppSimEngine.shoeRounds,
-                self.cppSimEngine.total)
