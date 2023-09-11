@@ -5,7 +5,7 @@
 #include "agent.hpp"
 #include "shoe.hpp"
 #include "simenginebj.hpp"
-#include "types.hpp"
+#include "card.hpp"
 
 using std::cout;
 

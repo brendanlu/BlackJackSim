@@ -3,9 +3,9 @@
 #include <random>
 #include <iostream>
 
+#include "card.hpp"
 #include "fisheryates.hpp"
 #include "shoe.hpp"
-#include "types.hpp"
 
 /*
 All member classes of the simulation engine have explicit nullary constructors 
@@ -124,7 +124,8 @@ void Shoe<RNG>::Clear() {
 }
 
 /*
-
+Used for low level debugging. 
+NOTE TO SELF: remove this when logging functionality complete.
 */
 template <typename RNG>
 void Shoe<RNG>::Display()

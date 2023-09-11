@@ -1,8 +1,8 @@
 #ifndef DEALER_H
 #define DEALER_H
 
+#include "card.hpp"
 #include "communication.hpp"
-#include "types.hpp"
 
 /*
 A simple struct to encapsulate the information and logic of a simulation dealer. 

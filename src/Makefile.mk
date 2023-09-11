@@ -10,19 +10,19 @@ dealer.o
 test : $(OBJs)
 	$(CXX) $(CXXFLAGS) -o test $(OBJs)
 
-test.o : test.cpp shoe.hpp types.hpp agent.hpp simenginebj.hpp
+test.o : test.cpp shoe.hpp card.hpp agent.hpp simenginebj.hpp
 	$(CXX) $(CXXFLAGS) -c test.cpp
 
-shoe.o : shoe.cpp shoe.hpp fisheryates.hpp types.hpp 
+shoe.o : shoe.cpp shoe.hpp fisheryates.hpp card.hpp 
 	$(CXX) $(CXXFLAGS) -c shoe.cpp
 
-simenginebj.o : simenginebj.cpp simenginebj.hpp shoe.hpp agent.hpp strategyinput.hpp types.hpp
+simenginebj.o : simenginebj.cpp simenginebj.hpp shoe.hpp agent.hpp strategyinput.hpp card.hpp
 	$(CXX) $(CXXFLAGS) -c simenginebj.cpp
 
-agent.o : agent.cpp agent.hpp types.hpp simenginebj.hpp strategyinput.hpp
+agent.o : agent.cpp agent.hpp card.hpp simenginebj.hpp strategyinput.hpp
 	$(CXX) $(CXXFLAGS) -c agent.cpp
 
-dealer.o : dealer.cpp dealer.hpp types.hpp
+dealer.o : dealer.cpp dealer.hpp card.hpp
 	$(CXX) $(CXXFLAGS) -c dealer.cpp
 
 # .PHONY : clean # run clean every time we make, might be redundant as we clunkily call it from Python already

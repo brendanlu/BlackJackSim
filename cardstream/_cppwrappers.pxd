@@ -6,6 +6,7 @@ https://cython.readthedocs.io/en/latest/src/userguide/wrapping_CPlusPlus.html
 """
 
 from libcpp cimport bool
+from libcpp.string cimport string
 
 cdef extern from "<iostream>" namespace "std": 
     cdef cppclass ostream: 

@@ -1,8 +1,8 @@
+#include "card.hpp"
 #include "agent.hpp"
 #include "communication.hpp"
 #include "dealer.hpp"
 #include "strategyinput.hpp"
-#include "types.hpp"
 
 /*
 Nullary constructor, which also serves as a 'reset' method for each new hand.

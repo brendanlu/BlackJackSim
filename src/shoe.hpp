@@ -3,7 +3,7 @@
 
 #include <array>
 #include <random>
-#include "types.hpp"
+#include "card.hpp"
 
 /*
 Templated Shoe class for different types of psuedo random number generators

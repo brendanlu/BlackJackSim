@@ -1,12 +1,12 @@
 #include <iostream>
 
 #include "agent.hpp"
+#include "card.hpp"
 #include "communication.hpp"
 #include "dealer.hpp"
 #include "shoe.hpp"
 #include "simenginebj.hpp"
 #include "strategyinput.hpp"
-#include "types.hpp"
 
 /*
 Nullary constructor, to minimise issues when wrapping with Cython. 

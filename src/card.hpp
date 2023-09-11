@@ -1,5 +1,5 @@
-#ifndef TYPES_H
-#define TYPES_H 
+#ifndef CARD_H
+#define CARD_H
 
 #include <array>
 #include <iostream>
@@ -70,8 +70,7 @@ constexpr Card BLANK_CARD = {BLANK_CHAR, BLANK_CHAR};
 // overload <<, inline the definition so it is not redefined each #include
 inline std::ostream& operator<< (std::ostream& os, const Card& c) 
 {
-    os << c.face; 
-    os << c.suit; 
+    os << c.face << c.suit;
     return os;
 }
 

@@ -3,10 +3,10 @@
 
 #include <array>
 
+#include "card.hpp"
 #include "communication.hpp"
 #include "dealer.hpp"
 #include "strategyinput.hpp"
-#include "types.hpp"
 
 static constexpr unsigned int MAX_N_HANDS = 4; 
 

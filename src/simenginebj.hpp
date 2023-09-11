@@ -6,11 +6,11 @@
 #include <random>
 
 #include "agent.hpp"
+#include "card.hpp"
 #include "communication.hpp"
 #include "dealer.hpp"
 #include "shoe.hpp"
 #include "strategyinput.hpp"
-#include "types.hpp"
 
 static constexpr unsigned int MAX_N_AGENTS = 10; 
 
@@ -59,6 +59,8 @@ public:
     long total;
 
 private:
+    // Logger simLog; 
+
     Shoe<std::mt19937_64> simShoe;
     Dealer simDealer;
 

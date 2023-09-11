@@ -1,4 +1,4 @@
-from engine_interface cimport StratPackage, InitPackage, SimEngineBJ
+from _cppwrappers cimport StratPackage, InitPackage, SimEngineBJ
 
 """
 Python class for running simulations and benchmarking

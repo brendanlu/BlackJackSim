@@ -9,7 +9,8 @@ build_files = [
     r"cardstream\cardstream.cpp",
     r"PySimEngineBJ.cp310-win_amd64.pyd",
     r"cardstream\PySimEngineBJ.cpp",
-    r"PySimEngineBJ.cp39-win_amd64.pyd"
+    r"PySimEngineBJ.cp39-win_amd64.pyd",
+    r"cardstream\_pyinterface.cpp",
 ]
 
 for file in build_files:

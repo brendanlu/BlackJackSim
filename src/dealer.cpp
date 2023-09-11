@@ -1,7 +1,7 @@
+#include "card.hpp"
 #include "communication.hpp"
 #include "dealer.hpp"
 #include "simenginebj.hpp"
-#include "types.hpp"
 
 /*
 Nullary constructor, which also serves as a 'reset' method

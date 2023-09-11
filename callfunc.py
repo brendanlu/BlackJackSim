@@ -1,7 +1,7 @@
 from PySimEngineBJ import PySimEngineBJ
-from cardstream import _utils
+from cardstream import _pyutils
 
-strat_args = _utils._strat_to_numpy_arrayfmt(
+strat_args = _pyutils._strat_to_numpy_arrayfmt(
     strat_relpath=r"cardstream\teststrat\BasicNoDeviations-4to8Decks-HitSoft17.csv",
     count_relpath=r"cardstream\teststrat\HiLoCount.csv",
 )
