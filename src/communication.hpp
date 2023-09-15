@@ -33,13 +33,37 @@ enum class LOG_TYPE : int
     SHOE
 };
 
+enum class LOG_LEVEL : int
+{
+    NONE = 0, 
+    BASIC = 1,
+    DETAIL = 2, 
+    VERBOSE = 3
+};
+
 class Logger 
 {
 public: 
     Logger() : 
         currShoeNum(0), 
-        currTableNum(0)
+        currTableNum(0), 
+        logLevelConfig(3)
     {}
+
+    /*
+    Controls the level of information logged. Affects simulation speed. 
+    */
+    inline void SetLogLevel(int ll) 
+    {
+        if (ll > 3) {
+            ll = 3; 
+        }
+        if (ll < 0) {
+            ll = 0; 
+        }
+
+        logLevelConfig = ll; 
+    }
 
     /*
     Pass in name of output file to write into
@@ -62,13 +86,23 @@ public:
     /*
     Write a new csv row. 
     */
+    void WriteRow(LOG_LEVEL ll, LOG_TYPE lt, const std::string& c, const std::string& d)
+    {
+        if (static_cast<int>(ll) <= logLevelConfig) {
+            outFile << LogLabel(lt) << "," 
+                    << currShoeNum  << ","
+                    << currTableNum << ","
+                    << c            << "," 
+                    << d            << "\n";
+        }
+    }
+
+    /*
+    If unspecified treat log as basic. Try to avoid use of this.
+    */
     void WriteRow(LOG_TYPE lt, const std::string& c, const std::string& d)
     {
-        outFile << LogLabel(lt) << "," 
-                << currShoeNum  << ","
-                << currTableNum  << ","
-                << c            << "," 
-                << d            << "\n";
+        WriteRow(LOG_LEVEL::BASIC, lt, c, d);
     }
 
     inline void ManualFlush() 
@@ -93,6 +127,7 @@ public:
 
 private: 
     std::ofstream outFile;
+    int logLevelConfig; 
 
     inline std::string LogLabel(LOG_TYPE lt) 
     {

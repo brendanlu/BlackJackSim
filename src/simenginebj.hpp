@@ -44,6 +44,7 @@ public:
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
                                 char* splt, double* cnt);
     void SetLogFile(const std::string& filename); 
+    void SetLogLevel(int ll); 
 
     void EventFreshShuffle(unsigned int n); 
 

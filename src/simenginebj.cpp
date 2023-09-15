@@ -79,6 +79,14 @@ void SimEngineBJ::SetLogFile(const std::string& filename)
 /*
 
 */
+void SimEngineBJ::SetLogLevel(int ll) 
+{
+    simLog.SetLogLevel(ll); 
+}
+
+/*
+
+*/
 void SimEngineBJ::EventFreshShuffle(unsigned int n) 
 {
     simShoe.FreshShuffleN(n); 
@@ -171,6 +179,7 @@ void SimEngineBJ::RunSimulation(unsigned long long nIters)
     if (!simLog) {
         simLog.InitLogFile("ERROR.csv"); 
         simLog.WriteRow(
+            LOG_LEVEL::BASIC,
             LOG_TYPE::ENGINE, 
             CONTEXTSTRING1, 
             "ERROR - LOG FILE DESINATION NOT CONFIGURED"
@@ -180,6 +189,7 @@ void SimEngineBJ::RunSimulation(unsigned long long nIters)
     }
     else {
         simLog.WriteRow(
+            LOG_LEVEL::BASIC,
             LOG_TYPE::ENGINE, 
             CONTEXTSTRING1,
             "COMMENCING " 
@@ -222,6 +232,7 @@ void SimEngineBJ::RunSimulation(unsigned long long nIters)
         }
 
         simLog.WriteRow(
+            LOG_LEVEL::VERBOSE,
             LOG_TYPE::ENGINE, 
             "Shoe Completed", 
             ""
@@ -234,6 +245,7 @@ void SimEngineBJ::RunSimulation(unsigned long long nIters)
     );
 
     simLog.WriteRow(
+        LOG_LEVEL::BASIC,
         LOG_TYPE::ENGINE, 
         CONTEXTSTRING1,
         "SUCCESS - SIMULATION COMPLETED IN " 
