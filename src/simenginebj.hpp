@@ -59,6 +59,8 @@ public:
 
     void RunSimulation(unsigned long nIters);
 
+    int debug; 
+
 private:
     Logger simLog; 
 

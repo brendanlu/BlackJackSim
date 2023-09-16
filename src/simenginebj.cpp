@@ -237,6 +237,7 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
             "Shoe Completed", 
             ""
         );
+        debug += 1; 
     }
 
     auto end = std::chrono::system_clock::now();

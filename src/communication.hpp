@@ -53,7 +53,7 @@ public:
     /*
     Controls the level of information logged. Affects simulation speed. 
     */
-    inline void SetLogLevel(int ll) 
+    void SetLogLevel(int ll) 
     {
         if (ll > 3) {
             ll = 3; 
@@ -87,7 +87,7 @@ public:
     /*
     Write a new csv row. 
     */
-    void WriteRow(
+    inline void WriteRow(
         LOG_LEVEL ll, LOG_TYPE lt, 
         const std::string& c, const std::string& d
     )
@@ -99,14 +99,6 @@ public:
                        << c            << "," 
                        << d            << "\n";
         }
-    }
-
-    /*
-    If unspecified treat log as basic. Try to avoid use of this.
-    */
-    void WriteRow(LOG_TYPE lt, const std::string& c, const std::string& d)
-    {
-        WriteRow(LOG_LEVEL::BASIC, lt, c, d);
     }
 
     inline void ManualFlush() 

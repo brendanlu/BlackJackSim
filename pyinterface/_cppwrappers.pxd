@@ -38,3 +38,5 @@ cdef extern from "../src/simenginebj.hpp":
         void SetLogFile(string)
         void SetLogLevel(int)
         void RunSimulation(unsigned long long)
+
+        int debug
