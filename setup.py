@@ -8,13 +8,13 @@ for file in os.listdir("src/"):
     if file.endswith(".cpp") and not file.startswith("test"):
         srcs.append("src/" + file)
 
-for file in os.listdir("cardstream/"):
+for file in os.listdir("pyinterface/"):
     if file.endswith(".pyx"):
-        srcs.append("cardstream/" + file)
+        srcs.append("pyinterface/" + file)
 
 extensions = [
     Extension(
-        "PySimEngineBJ",
+        "cardstream",
         sources=srcs,
         language="c++",
     )

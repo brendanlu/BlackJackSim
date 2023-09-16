@@ -11,6 +11,7 @@ build_files = [
     r"cardstream\PySimEngineBJ.cpp",
     r"PySimEngineBJ.cp39-win_amd64.pyd",
     r"cardstream\_pyinterface.cpp",
+    r"pyinterface\_pyinterface.cpp", 
 ]
 
 for file in build_files:
@@ -19,6 +20,11 @@ for file in build_files:
         print("Removed", file)
     except FileNotFoundError:
         print(file, "was not found.")
+
+try:
+    os.remove(r"LOG.csv")
+except FileNotFoundError:
+    pass
 
 try:
     shutil.rmtree(r"build")

@@ -57,7 +57,7 @@ public:
 
     void EventQueryDealer(); 
 
-    void RunSimulation(unsigned long long nIters);
+    void RunSimulation(unsigned long nIters);
 
 private:
     Logger simLog; 

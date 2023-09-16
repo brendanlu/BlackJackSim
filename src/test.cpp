@@ -62,6 +62,7 @@ int main()
 
     cout << "Setting agent strat pointers\n\n"; 
     testEngine.SetAgent(0, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]);
+    testEngine.SetLogLevel(2); 
 
     unsigned long long NITERS = 1000000;
     cout << "Running simulation of " << NITERS << " iterations\n";

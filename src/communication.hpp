@@ -45,9 +45,9 @@ class Logger
 {
 public: 
     Logger() : 
+        logLevelConfig(3), 
         currShoeNum(0), 
-        currTableNum(0), 
-        logLevelConfig(3)
+        currTableNum(0)
     {}
 
     /*
@@ -70,9 +70,10 @@ public:
     */
     void InitLogFile(const std::string& filename) 
     {
-        outFile.open(filename, std::ios::out); 
-        outFile << colHeaders;
-        outFile.flush();
+        outFile = new std::ofstream; 
+        outFile->open(filename, std::ios::out); 
+        (*outFile) << colHeaders;
+        outFile->flush();
     }
 
     /*
@@ -80,20 +81,23 @@ public:
     */
     operator bool() const 
     {
-        return outFile.is_open(); 
+        return outFile->is_open(); 
     }
 
     /*
     Write a new csv row. 
     */
-    void WriteRow(LOG_LEVEL ll, LOG_TYPE lt, const std::string& c, const std::string& d)
+    void WriteRow(
+        LOG_LEVEL ll, LOG_TYPE lt, 
+        const std::string& c, const std::string& d
+    )
     {
         if (static_cast<int>(ll) <= logLevelConfig) {
-            outFile << LogLabel(lt) << "," 
-                    << currShoeNum  << ","
-                    << currTableNum << ","
-                    << c            << "," 
-                    << d            << "\n";
+            (*outFile) << LogLabel(lt) << "," 
+                       << currShoeNum  << ","
+                       << currTableNum << ","
+                       << c            << "," 
+                       << d            << "\n";
         }
     }
 
@@ -107,7 +111,7 @@ public:
 
     inline void ManualFlush() 
     {
-        outFile.flush(); 
+        outFile->flush(); 
     }
 
     inline void FreshShuffleHandler()
@@ -122,11 +126,14 @@ public:
 
     ~Logger() 
     {
-        outFile.close();
+        outFile->close();
+        delete outFile; 
     }
 
 private: 
-    std::ofstream outFile;
+    // the file handler needs to be dynamically allocated for some reason
+    // Cython compilation complains when this is declared on the stack
+    std::ofstream *outFile;
     int logLevelConfig; 
 
     inline std::string LogLabel(LOG_TYPE lt) 

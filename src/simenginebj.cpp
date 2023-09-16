@@ -165,7 +165,7 @@ void SimEngineBJ::EventQueryDealer()
 /*
 
 */
-void SimEngineBJ::RunSimulation(unsigned long long nIters) 
+void SimEngineBJ::RunSimulation(unsigned long nIters) 
 {
     auto start = std::chrono::system_clock::now();
 
@@ -205,7 +205,7 @@ void SimEngineBJ::RunSimulation(unsigned long long nIters)
     simShoe.FreshShuffleN(simShoe.N_CARDS); 
 
     // each iteration is playing one shoe
-    for (unsigned long long i=0; i<nIters; ++i) {
+    for (unsigned long i=0; i<nIters; ++i) {
         // partial fresh shuffle - see Shoe implementation
         EventFreshShuffle(simShoe.N_UNTIL_CUT);
 

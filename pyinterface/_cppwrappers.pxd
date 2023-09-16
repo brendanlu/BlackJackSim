@@ -35,4 +35,6 @@ cdef extern from "../src/simenginebj.hpp":
         SimEngineBJ(InitPackage) except +
 
         void SetAgent(unsigned int, char*, char*, char*, double*)
+        void SetLogFile(string)
+        void SetLogLevel(int)
         void RunSimulation(unsigned long long)
