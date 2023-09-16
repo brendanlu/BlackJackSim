@@ -6,8 +6,9 @@ strat_args = _pyutils._strat_to_numpy_arrayfmt(
     count_relpath=r"pyinterface\teststrat\HiLoCount.csv",
 )
 
+print("utils are ok")
 tryme = cs.pySimEngineBJ(6, 0.5)
-print(tryme.pyTest(1000))
+print("Contructed object")
 tryme.pySetAgent(0, *strat_args)
 print("Set agent strat works")
 print(strat_args[0])

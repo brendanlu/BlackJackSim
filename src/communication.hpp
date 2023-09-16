@@ -4,6 +4,7 @@
 #include <array>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <string>
 
 /*
@@ -70,7 +71,8 @@ public:
     */
     void InitLogFile(const std::string& filename) 
     {
-        outFile = new std::ofstream; 
+        outFile.reset();
+        outFile = std::make_unique<std::ofstream>(); 
         outFile->open(filename, std::ios::out); 
         (*outFile) << colHeaders;
         outFile->flush();
@@ -119,13 +121,13 @@ public:
     ~Logger() 
     {
         outFile->close();
-        delete outFile; 
+        outFile.reset(); 
     }
 
 private: 
     // the file handler needs to be dynamically allocated for some reason
     // Cython compilation complains when this is declared on the stack
-    std::ofstream *outFile;
+    std::unique_ptr<std::ofstream> outFile;
     int logLevelConfig; 
 
     inline std::string LogLabel(LOG_TYPE lt) 
