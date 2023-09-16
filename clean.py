@@ -14,18 +14,17 @@ build_files = [
     r"pyinterface\_pyinterface.cpp", 
 ]
 
-for file in build_files:
+log_outs = [
+    r"LOG.csv", 
+    r"ERROR.csv",
+]
+
+for file in build_files + log_outs:
     try:
         os.remove(file)
         print("Removed", file)
     except FileNotFoundError:
         print(file, "was not found.")
-
-try:
-    os.remove(r"LOG.csv")
-except FileNotFoundError:
-    pass
-
 try:
     shutil.rmtree(r"build")
     print("Removed build folder.")

@@ -4,7 +4,6 @@
 #include <array>
 #include <fstream>
 #include <iostream>
-#include <memory>
 #include <string>
 
 /*
@@ -71,11 +70,9 @@ public:
     */
     void InitLogFile(const std::string& filename) 
     {
-        outFile.reset();
-        outFile = std::make_unique<std::ofstream>(); 
-        outFile->open(filename, std::ios::out); 
-        (*outFile) << colHeaders;
-        outFile->flush();
+        outFile.open(filename, std::ios::out); 
+        outFile << colHeaders;
+        outFile.flush();
     }
 
     /*
@@ -83,7 +80,7 @@ public:
     */
     operator bool() const 
     {
-        return outFile->is_open(); 
+        return outFile.is_open(); 
     }
 
     /*
@@ -95,17 +92,17 @@ public:
     )
     {
         if (static_cast<int>(ll) <= logLevelConfig) {
-            (*outFile) << LogLabel(lt) << "," 
-                       << currShoeNum  << ","
-                       << currTableNum << ","
-                       << c            << "," 
-                       << d            << "\n";
+            outFile << LogLabel(lt) << "," 
+                    << currShoeNum  << ","
+                    << currTableNum << ","
+                    << c            << "," 
+                    << d            << "\n";
         }
     }
 
     inline void ManualFlush() 
     {
-        outFile->flush(); 
+        outFile.flush(); 
     }
 
     inline void FreshShuffleHandler()
@@ -120,14 +117,11 @@ public:
 
     ~Logger() 
     {
-        outFile->close();
-        outFile.reset(); 
+        outFile.close();
     }
 
 private: 
-    // the file handler needs to be dynamically allocated for some reason
-    // Cython compilation complains when this is declared on the stack
-    std::unique_ptr<std::ofstream> outFile;
+    std::ofstream outFile;
     int logLevelConfig; 
 
     inline std::string LogLabel(LOG_TYPE lt) 

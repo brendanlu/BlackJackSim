@@ -3,6 +3,7 @@
 
 #include <array>
 #include <iostream>
+#include <memory>
 #include <random>
 #include <string>
 
@@ -30,6 +31,8 @@ struct InitPackage
 };
 
 /*
+TO BE WRAPPED IN CYTHON, THIS CLASS MUST BE COPYABLE. 
+
 A class which ochestrates the method calls of the simulation objects to 
 implement correct game logic. 
 */
@@ -62,7 +65,7 @@ public:
     int debug; 
 
 private:
-    Logger simLog; 
+    std::shared_ptr<Logger> simLog; 
 
     Shoe<std::mt19937_64> simShoe;
     Dealer simDealer;

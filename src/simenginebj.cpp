@@ -26,7 +26,9 @@ SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) :
     simShoe(N_DECKS, penen),
     nAgents(0)
 {
-    simLog.InitLogFile("LOG.csv"); 
+    simLog.reset(); 
+    simLog = std::make_shared<Logger>(); 
+    simLog->InitLogFile("LOG.csv"); 
 }
 
 /*
@@ -73,7 +75,7 @@ void SimEngineBJ::SetAgent(
 */
 void SimEngineBJ::SetLogFile(const std::string& filename) 
 {
-    simLog.InitLogFile(filename); 
+    simLog->InitLogFile(filename); 
 }
 
 /*
@@ -81,7 +83,7 @@ void SimEngineBJ::SetLogFile(const std::string& filename)
 */
 void SimEngineBJ::SetLogLevel(int ll) 
 {
-    simLog.SetLogLevel(ll); 
+    simLog->SetLogLevel(ll); 
 }
 
 /*
@@ -95,7 +97,7 @@ void SimEngineBJ::EventFreshShuffle(unsigned int n)
         agents[i].FreshShuffleHandler(); 
     }
     
-    simLog.FreshShuffleHandler(); 
+    simLog->FreshShuffleHandler(); 
 }
 
 /*
@@ -111,7 +113,7 @@ void SimEngineBJ::EventClear()
     simShoe.Clear(); 
     simDealer.ClearHandler(); 
 
-    simLog.Clearhandler(); 
+    simLog->Clearhandler(); 
 }
 
 /*
@@ -176,19 +178,19 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
     // constructor
     //
     // but it may be useful later if this gets done differently
-    if (!simLog) {
-        simLog.InitLogFile("ERROR.csv"); 
-        simLog.WriteRow(
+    if (!(*simLog)) {
+        simLog->InitLogFile("ERROR.csv"); 
+        simLog->WriteRow(
             LOG_LEVEL::BASIC,
             LOG_TYPE::ENGINE, 
             CONTEXTSTRING1, 
             "ERROR - LOG FILE DESINATION NOT CONFIGURED"
         );
-        simLog.ManualFlush(); 
+        simLog->ManualFlush(); 
         return; 
     }
     else {
-        simLog.WriteRow(
+        simLog->WriteRow(
             LOG_LEVEL::BASIC,
             LOG_TYPE::ENGINE, 
             CONTEXTSTRING1,
@@ -231,21 +233,19 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
             EventQueryDealer(); 
         }
 
-        simLog.WriteRow(
+        simLog->WriteRow(
             LOG_LEVEL::VERBOSE,
             LOG_TYPE::ENGINE, 
             "Shoe Completed", 
             ""
         );
-        debug += 1; 
     }
 
-    auto end = std::chrono::system_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
-        end - start
+        std::chrono::system_clock::now() - start
     );
 
-    simLog.WriteRow(
+    simLog->WriteRow(
         LOG_LEVEL::BASIC,
         LOG_TYPE::ENGINE, 
         CONTEXTSTRING1,
@@ -254,7 +254,6 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
             + "ms"
     );
 
-    simLog.ManualFlush();
-
+    simLog->ManualFlush();
     return;
 }
