@@ -31,10 +31,16 @@ struct InitPackage
 };
 
 /*
+A class which ochestrates the method calls of the simulation objects to 
+implement correct game logic. Maintains a connection to a Logger through a 
+shared pointer. 
+
 TO BE WRAPPED IN CYTHON, THIS CLASS MUST BE COPYABLE. 
 
-A class which ochestrates the method calls of the simulation objects to 
-implement correct game logic. 
+Cython wrapping observations:
+Cython creates a nullary constructed object first; our Python .__init__ 
+will then create a temporary object using a different consutrctor, and copy it  
+into the local stack object through = assignment. 
 */
 class SimEngineBJ
 {
@@ -47,18 +53,7 @@ public:
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
                                 char* splt, double* cnt);
     void SetLogFile(std::string filename); 
-    void SetLogLevel(int ll); 
-
-    void EventFreshShuffle(unsigned int n); 
-
-    void EventClear();
-
-    template<typename targetType> 
-    void EventDeal(targetType &target);
-
-    void EventQueryAgent(Agent &targetAgent); 
-
-    void EventQueryDealer(); 
+    void SetLogLevel(int ll);
 
     void RunSimulation(unsigned long nIters);
 
@@ -71,6 +66,17 @@ private:
 
     unsigned int nAgents;
     std::array<Agent, MAX_N_AGENTS> agents;
+
+    void EventFreshShuffle(unsigned int n); 
+
+    void EventClear();
+
+    template<typename targetType> 
+    void EventDeal(targetType &target);
+
+    void EventQueryAgent(Agent &targetAgent); 
+
+    void EventQueryDealer(); 
 };
 
 #endif

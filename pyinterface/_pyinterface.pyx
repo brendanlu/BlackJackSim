@@ -34,7 +34,3 @@ cdef class pySimEngineBJ:
     def pyRunSimulation(self, unsigned int nIters): 
         self.cppSimEngineBJ.RunSimulation(nIters)
         return 
-
-    @property
-    def debug(self):
-        return self.cppSimEngineBJ.debug
