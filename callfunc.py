@@ -15,7 +15,11 @@ print(strat_args[0])
 print(strat_args[1])
 print(strat_args[2])
 print(strat_args[3])
+
+print("Configuring log file")
+tryme.pySetLogLevel(3)
+tryme.pySetLogFile("LOG2.csv")
+
 print("\nTrying strat template event loop -------------------")
-tryme.pySetLogLevel(2)
 tryme.pyRunSimulation(1000000)
 print("COMPLETE")

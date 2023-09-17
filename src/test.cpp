@@ -55,6 +55,8 @@ char splt[10][10] = {
 
 double cnt[10] = {1,1,1,1,1,0,0,0,-1,-1}; 
 
+unsigned long long NITERS = 1000000;
+
 int main() 
 {
     cout << "Creating cpp test simengine\n\n"; 
@@ -62,16 +64,19 @@ int main()
 
     cout << "Setting agent strat pointers\n\n"; 
     testEngine.SetAgent(0, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]);
-    testEngine.SetLogLevel(3); 
+    cout << "Agents set\n\n";
 
-    unsigned long long NITERS = 1000000;
+    cout << "Confifuring logfile\n"; 
+    testEngine.SetLogLevel(3); 
+    cout << "Set log level success\n"; 
+    testEngine.SetLogFile("LOG2.csv");
+    cout << "Configured.\n\n";
+
     cout << "Running simulation of " << NITERS << " iterations\n";
     auto start = std::chrono::system_clock::now();
-    
     testEngine.RunSimulation(NITERS);  
-    auto end = std::chrono::system_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
-        end - start
+        std::chrono::system_clock::now() - start
     );
     cout << "Simulation time: " << elapsed.count() << "ms\n\n"; 
     

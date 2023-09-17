@@ -46,7 +46,7 @@ public:
     void SetDealer17(bool b);
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
                                 char* splt, double* cnt);
-    void SetLogFile(const std::string& filename); 
+    void SetLogFile(std::string filename); 
     void SetLogLevel(int ll); 
 
     void EventFreshShuffle(unsigned int n); 
@@ -62,10 +62,9 @@ public:
 
     void RunSimulation(unsigned long nIters);
 
-    int debug; 
-
 private:
-    std::shared_ptr<Logger> simLog; 
+    std::shared_ptr<Logger> simLog;
+    std::string LOGFNAME;
 
     Shoe<std::mt19937_64> simShoe;
     Dealer simDealer;

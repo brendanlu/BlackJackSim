@@ -9,6 +9,7 @@ import time
 delete = [
     r"ERROR.csv",
     r"LOG.csv",
+    r"LOG2.csv",
 ]
 
 for file in os.listdir():

@@ -11,11 +11,12 @@ build_files = [
     r"cardstream\PySimEngineBJ.cpp",
     r"PySimEngineBJ.cp39-win_amd64.pyd",
     r"cardstream\_pyinterface.cpp",
-    r"pyinterface\_pyinterface.cpp", 
+    r"pyinterface\_pyinterface.cpp",
 ]
 
 log_outs = [
-    r"LOG.csv", 
+    r"LOG.csv",
+    r"LOG2.csv",
     r"ERROR.csv",
 ]
 

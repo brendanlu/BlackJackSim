@@ -66,7 +66,8 @@ public:
     }
 
     /*
-    Pass in name of output file to write into
+    Pass in name of output file to write into. 
+    This will open the file and write + flush the data column headers in. 
     */
     void InitLogFile(const std::string& filename) 
     {
@@ -100,7 +101,7 @@ public:
         }
     }
 
-    inline void ManualFlush() 
+    void ManualFlush() 
     {
         outFile.flush(); 
     }
@@ -150,7 +151,7 @@ private:
         |Context| What game event the log comes from
         |Detail | This field will change drastically, depending on context
     */
-    std::string colHeaders = "Source,ShoeNum,TableNum,Context,Detail\n";
+    const std::string colHeaders = "Source,ShoeNum,TableNum,Context,Detail\n";
 
     int currShoeNum; 
     int currTableNum; 

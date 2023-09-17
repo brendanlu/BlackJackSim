@@ -23,12 +23,12 @@ Constructor which appropriately seeds the simShoe member object.
 This will seed the pseudo random number generator, just this once. 
 */
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
+    LOGFNAME("LOG.csv"),
     simShoe(N_DECKS, penen),
     nAgents(0)
 {
     simLog.reset(); 
-    simLog = std::make_shared<Logger>(); 
-    simLog->InitLogFile("LOG.csv"); 
+    simLog = std::make_shared<Logger>();
 }
 
 /*
@@ -71,11 +71,11 @@ void SimEngineBJ::SetAgent(
 }
 
 /*
-
+TODO: Write checks at higher level interface that file format is ok. 
 */
-void SimEngineBJ::SetLogFile(const std::string& filename) 
+void SimEngineBJ::SetLogFile(std::string filename) 
 {
-    simLog->InitLogFile(filename); 
+    LOGFNAME = filename; 
 }
 
 /*
@@ -167,17 +167,15 @@ void SimEngineBJ::EventQueryDealer()
 /*
 
 */
-void SimEngineBJ::RunSimulation(unsigned long nIters) 
+void SimEngineBJ::RunSimulation(unsigned long nIters)
 {
     auto start = std::chrono::system_clock::now();
+    simLog->InitLogFile(LOGFNAME);
 
     // to avoid making mistakes writing messages
     std::string CONTEXTSTRING1 = "Simulation Status"; 
 
-    // this is currently redundant, as the log destination is configured in the
-    // constructor
-    //
-    // but it may be useful later if this gets done differently
+    // check if Logger has valid fhandler object configured
     if (!(*simLog)) {
         simLog->InitLogFile("ERROR.csv"); 
         simLog->WriteRow(

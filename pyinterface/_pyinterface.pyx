@@ -24,7 +24,7 @@ cdef class pySimEngineBJ:
         )
 
     def pySetLogFile(self, filename):
-        self.cppSimEngineBJ.SetLogFile(filename.encode('utf-8'))
+        self.cppSimEngineBJ.SetLogFile(filename.encode('UTF-8'))
         return
 
     def pySetLogLevel(self, int ll) : 
