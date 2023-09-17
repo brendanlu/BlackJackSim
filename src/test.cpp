@@ -62,15 +62,15 @@ int main()
     cout << "Creating cpp test simengine\n\n"; 
     SimEngineBJ testEngine(6, 0.5);
 
-    cout << "Setting agent strat pointers\n\n"; 
-    testEngine.SetAgent(0, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]);
-    cout << "Agents set\n\n";
-
     cout << "Confifuring logfile\n"; 
-    testEngine.SetLogLevel(3); 
+    testEngine.SetLogLevel(2); 
     cout << "Set log level success\n"; 
     testEngine.SetLogFile("LOG2.csv");
     cout << "Configured.\n\n";
+
+    cout << "Setting agent strat pointers\n\n"; 
+    testEngine.SetAgent(0, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]);
+    cout << "Agents set\n\n";
 
     cout << "Running simulation of " << NITERS << " iterations\n";
     auto start = std::chrono::system_clock::now();

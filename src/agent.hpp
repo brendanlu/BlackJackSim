@@ -25,6 +25,11 @@ of interest.
 class Agent 
 {
 public:
+    // a unique identifier so log messages can be discerned
+    //
+    // currently just the (arbitrary) nth agent in a simulation
+    int id; 
+
     long double pnl; 
 
     // ensure that this always has a nullary constructor, which also serves as a
@@ -51,6 +56,8 @@ public:
 
     Agent(char* hrd, char* sft, char* splt, double* cnt);
     Agent(StratPackage s); 
+
+    void SetLog(Logger *logPtr); 
     
     void ClearHandler(const Dealer &dealerRef);
 
@@ -62,6 +69,8 @@ public:
     void FreshShuffleHandler();
 
 private:
+    Logger *log;
+
     bool STRAT_INIT;
 
     bool BJ_INSTANT;

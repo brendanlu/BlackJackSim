@@ -15,10 +15,10 @@ enum class ACTION : char
     STAND = 'S', 
 };
 
-enum class ERR_CODE : int 
-{
-    SUCCESS = 0
-};
+/*
+Some log messages. 
+*/
+static std::string CONTEXT_STRING_1 = "Simulation Status"; 
 
 /*
 Really simple logging class, which is basically a wrapper of std::ofstream atm.

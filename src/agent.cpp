@@ -94,6 +94,23 @@ Agent::Agent(StratPackage s) :
 {}
 
 /*
+
+*/
+void Agent::SetLog(Logger *logPtr) 
+{
+    log = logPtr;
+
+    log->WriteRow(
+        LOG_LEVEL::DETAIL,
+        LOG_TYPE::AGENT, 
+        CONTEXT_STRING_1,
+        "Player "  
+            + std::to_string(id) 
+            + "logging channel initialised"
+    );
+}
+
+/*
 This is called at the end of every round of the hand, to BOTH 1) settle wagers 
 from the previous round, abd 2) place wagers for the next round. 
 

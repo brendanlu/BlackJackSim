@@ -50,6 +50,8 @@ public:
     SimEngineBJ(unsigned int N_DECKS, double penen);
     SimEngineBJ(InitPackage init);
 
+    void InitLoggingChannels(); 
+
     void SetDealer17(bool b);
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
                                 char* splt, double* cnt);

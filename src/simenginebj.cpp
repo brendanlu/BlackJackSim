@@ -19,17 +19,16 @@ the Python class will always call the one below.
 SimEngineBJ::SimEngineBJ() {}
 
 /*
+TODO: deprecate this, in preference of the constructor method below.
+
 Constructor which appropriately seeds the simShoe member object.
 This will seed the pseudo random number generator, just this once. 
 */
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
     LOGFNAME("LOG.csv"),
     simShoe(N_DECKS, penen),
-    nAgents(1)
-{
-    simLog.reset(); 
-    simLog = std::make_shared<Logger>();
-}
+    nAgents(0)
+{}
 
 /*
 TODO: FIX. THIS IS NOT CURRENTLY WORKING, AND BAD DESIGN.
@@ -43,15 +42,31 @@ SimEngineBJ::SimEngineBJ(InitPackage init) :
     simDealer(init.dealer17),
     nAgents(init.nAgents)
 {
-    simLog.reset(); 
-    simLog = std::make_shared<Logger>();
-
     if (nAgents > MAX_N_AGENTS) {
         nAgents = MAX_N_AGENTS; 
     }
 
     for (unsigned int i=0; i<nAgents; ++i) {
         agents[i] = Agent(init.strats[i]);
+        agents[i].id = i+1; 
+    }
+
+    InitLoggingChannels(); 
+}
+
+/*
+Configure the logger, and pass in raw (unmanaged) pointers to member classes. 
+The simengine memory manages the logger. Member classes just use a raw pointer.
+*/
+void SimEngineBJ::InitLoggingChannels() 
+{
+    simLog.reset(); 
+    simLog = std::make_shared<Logger>();
+
+    Logger *rawPtr = simLog.get(); 
+
+    for (unsigned int i=0; i<nAgents; ++i) {
+        agents[i].SetLog(rawPtr); 
     }
 }
 
@@ -64,7 +79,7 @@ void SimEngineBJ::SetDealer17(bool b)
 }
 
 /*
-
+TODO: deprecate this, in preference of initialising everything in constructor.
 */
 void SimEngineBJ::SetAgent(
     unsigned int idx, 
@@ -74,6 +89,10 @@ void SimEngineBJ::SetAgent(
     double* cnt) 
 {
     agents[idx] = Agent(hrd, sft, splt, cnt);
+    agents[idx].id = idx + 1; 
+    nAgents += 1; 
+
+    InitLoggingChannels(); 
 }
 
 /*
@@ -178,16 +197,13 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
     auto start = std::chrono::system_clock::now();
     simLog->InitLogFile(LOGFNAME);
 
-    // to avoid making mistakes writing messages
-    std::string CONTEXTSTRING1 = "Simulation Status"; 
-
     // check if Logger has valid fhandler object configured
     if (!(*simLog)) {
         simLog->InitLogFile("ERROR.csv"); 
         simLog->WriteRow(
             LOG_LEVEL::BASIC,
             LOG_TYPE::ENGINE, 
-            CONTEXTSTRING1, 
+            CONTEXT_STRING_1, 
             "ERROR - LOG FILE DESINATION NOT CONFIGURED"
         );
         simLog->ManualFlush(); 
@@ -197,7 +213,7 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
         simLog->WriteRow(
             LOG_LEVEL::BASIC,
             LOG_TYPE::ENGINE, 
-            CONTEXTSTRING1,
+            CONTEXT_STRING_1,
             "COMMENCING " 
                 + std::to_string(nIters)
                 + " SHOE SIMULATIONS"
@@ -252,7 +268,7 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
     simLog->WriteRow(
         LOG_LEVEL::BASIC,
         LOG_TYPE::ENGINE, 
-        CONTEXTSTRING1,
+        CONTEXT_STRING_1,
         "SUCCESS - SIMULATION COMPLETED IN " 
             + std::to_string(elapsed.count())
             + "ms"
