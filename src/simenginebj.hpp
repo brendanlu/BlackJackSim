@@ -37,10 +37,11 @@ shared pointer.
 
 TO BE WRAPPED IN CYTHON, THIS CLASS MUST BE COPYABLE. 
 
-Cython wrapping observations:
+Cython wrapping observations ---------------------------------------------------
 Cython creates a nullary constructed object first; our Python .__init__ 
 will then create a temporary object using a different consutrctor, and copy it  
 into the local stack object through = assignment. 
+--------------------------------------------------------------------------------
 */
 class SimEngineBJ
 {
@@ -62,6 +63,7 @@ private:
     std::string LOGFNAME;
 
     Shoe<std::mt19937_64> simShoe;
+    
     Dealer simDealer;
 
     unsigned int nAgents;

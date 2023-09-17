@@ -25,21 +25,27 @@ This will seed the pseudo random number generator, just this once.
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
     LOGFNAME("LOG.csv"),
     simShoe(N_DECKS, penen),
-    nAgents(0)
+    nAgents(1)
 {
     simLog.reset(); 
     simLog = std::make_shared<Logger>();
 }
 
 /*
+TODO: FIX. THIS IS NOT CURRENTLY WORKING, AND BAD DESIGN.
+
 Constructor which appropriately constructs all of the simulation objects and 
 the game state. 
 */
 SimEngineBJ::SimEngineBJ(InitPackage init) :
+    LOGFNAME("LOG.csv"),
     simShoe(init.nDecks, init.shoePenentration),
     simDealer(init.dealer17),
     nAgents(init.nAgents)
 {
+    simLog.reset(); 
+    simLog = std::make_shared<Logger>();
+
     if (nAgents > MAX_N_AGENTS) {
         nAgents = MAX_N_AGENTS; 
     }
