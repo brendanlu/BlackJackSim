@@ -6,6 +6,7 @@
 #include <memory>
 #include <mutex>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <thread>
 
@@ -56,8 +57,11 @@ public:
         currShoeNum(0), 
         currTableNum(0)
     {
+        inStream.reset(); 
+        outStream.reset(); 
+
         inStream = std::make_unique<std::stringstream>(); 
-        outStream = std::make_unique<std::stringstream>(); 
+        outStream = std::make_unique<std::stringstream>();
     }
 
     /*
@@ -119,7 +123,7 @@ public:
 
     void ManualFlush() 
     {
-        // join in thread from previous flush operation
+        // ensures thread finishes last flush oepration
         if (outThread.joinable()) {
             outThread.join(); 
         }
@@ -158,7 +162,7 @@ private:
     // when it has a certain number of log rows in its stringstream buffer
     //
     // tune this for performance
-    static const unsigned int FLUSH_CHUNK_SIZE = 1000; 
+    static const int FLUSH_CHUNK_SIZE = 100000;
     int currChunk; 
 
     std::ofstream outFile;
@@ -195,8 +199,10 @@ private:
     void outStreamToFile() 
     {
         // write the stream to be outputted into the filstream
-        // std::lock_guard<std::mutex> lock1(outStreamMutex);
+        // std::lock_guard<std::mutex> lock(outStreamMutex);
         outFile << outStream->str();
+        outStream->str(""); 
+        outStream->clear(); 
         outFile.flush(); 
     }
     

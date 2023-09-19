@@ -106,7 +106,7 @@ void Agent::SetLog(Logger *logPtr)
         CONTEXT_STRING_1,
         "Player "  
             + std::to_string(id) 
-            + "logging channel initialised"
+            + " logging channel initialised"
     );
 }
 
