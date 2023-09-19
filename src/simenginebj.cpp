@@ -51,14 +51,14 @@ SimEngineBJ::SimEngineBJ(InitPackage init) :
         agents[i].id = i+1; 
     }
 
-    InitLoggingChannels(); 
+    InitNewLogging(); 
 }
 
 /*
 Configure the logger, and pass in raw (unmanaged) pointers to member classes. 
 The simengine memory manages the logger. Member classes just use a raw pointer.
 */
-void SimEngineBJ::InitLoggingChannels() 
+void SimEngineBJ::InitNewLogging() 
 {
     simLog.reset(); 
     simLog = std::make_shared<Logger>();
@@ -68,6 +68,22 @@ void SimEngineBJ::InitLoggingChannels()
     for (unsigned int i=0; i<nAgents; ++i) {
         agents[i].SetLog(rawPtr); 
     }
+}
+
+/*
+TODO: Write checks at higher level interface that file format is ok. 
+*/
+void SimEngineBJ::SetLogFile(std::string filename) 
+{
+    LOGFNAME = filename; 
+}
+
+/*
+
+*/
+void SimEngineBJ::SetLogLevel(int ll) 
+{
+    LOGLEVEL = ll; 
 }
 
 /*
@@ -92,23 +108,7 @@ void SimEngineBJ::SetAgent(
     agents[idx].id = idx + 1; 
     nAgents += 1; 
 
-    InitLoggingChannels(); 
-}
-
-/*
-TODO: Write checks at higher level interface that file format is ok. 
-*/
-void SimEngineBJ::SetLogFile(std::string filename) 
-{
-    LOGFNAME = filename; 
-}
-
-/*
-
-*/
-void SimEngineBJ::SetLogLevel(int ll) 
-{
-    simLog->SetLogLevel(ll); 
+    InitNewLogging(); 
 }
 
 /*
@@ -196,6 +196,7 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
 {
     auto start = std::chrono::system_clock::now();
     simLog->InitLogFile(LOGFNAME);
+    simLog->SetLogLevel(LOGLEVEL); 
 
     // check if Logger has valid fhandler object configured
     if (!(*simLog)) {

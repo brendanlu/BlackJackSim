@@ -3,11 +3,8 @@
 
 #include <array>
 #include <fstream>
-#include <memory>
-#include <mutex>
 #include <iostream>
 #include <string>
-#include <thread>
 
 /*
 The valid actions the simulation engine can process
@@ -19,10 +16,15 @@ enum class ACTION : char
 };
 
 /*
-Some logging things. 
+Some log messages. 
 */
 static std::string CONTEXT_STRING_1 = "Simulation Status"; 
 
+/*
+Really simple logging class, which is basically a wrapper of std::ofstream atm.
+
+Writes into csv format.
+*/
 enum class LOG_TYPE : int
 {
     AGENT,
@@ -39,26 +41,14 @@ enum class LOG_LEVEL : int
     VERBOSE = 3
 };
 
-/*
-Simple logging class that writes into csv format.
-
-Recieves messages and formats them into a recieving stringstream. Periodically, 
-it flushes this stream into a file. To ensure that this (potentially slow) write 
-process does not hold up the calling state, it presents a different recieving
-stringstream, and uses a thread to write the old one to file. 
-*/
 class Logger 
 {
 public: 
     Logger() : 
-        currChunk(0),
         logLevelConfig(3), 
         currShoeNum(0), 
         currTableNum(0)
-    {
-        inStream = std::make_unique<std::stringstream>(); 
-        outStream = std::make_unique<std::stringstream>(); 
-    }
+    {}
 
     /*
     Controls the level of information logged. Affects simulation speed. 
@@ -103,31 +93,17 @@ public:
     )
     {
         if (static_cast<int>(ll) <= logLevelConfig) {
-            (*inStream) << LogLabel(lt) << "," 
-                        << currShoeNum  << ","
-                        << currTableNum << ","
-                        << c            << "," 
-                        << d            << "\n";
-
-            currChunk += 1; 
-        }
-
-        if (currChunk > FLUSH_CHUNK_SIZE) {
-            ManualFlush(); 
+            outFile << LogLabel(lt) << "," 
+                    << currShoeNum  << ","
+                    << currTableNum << ","
+                    << c            << "," 
+                    << d            << "\n";
         }
     }
 
     void ManualFlush() 
     {
-        // join in thread from previous flush operation
-        if (outThread.joinable()) {
-            outThread.join(); 
-        }
-
-        swapStreams();
-        currChunk = 0; 
-
-        outThread = std::thread(&Logger::outStreamToFile, this); 
+        outFile.flush(); 
     }
 
     inline void FreshShuffleHandler()
@@ -142,36 +118,12 @@ public:
 
     ~Logger() 
     {
-        // complete one final write operation
-        ManualFlush(); 
-        outThread.join(); 
-
         outFile.close();
-
-        // release stream memory
-        inStream.reset(); 
-        outStream.reset(); 
     }
 
-private:
-    // the logger will flush to file using its internal threaded mechanism
-    // when it has a certain number of log rows in its stringstream buffer
-    //
-    // tune this for performance
-    static const unsigned int FLUSH_CHUNK_SIZE = 1000; 
-    int currChunk; 
-
+private: 
     std::ofstream outFile;
-    int logLevelConfig;
-
-    // recieving stream for messages into logger
-    std::unique_ptr<std::stringstream> inStream; 
-    // stream being written into file
-    std::unique_ptr<std::stringstream> outStream;  
-
-    // NOTE: the current design does not need the mutex
-    std::mutex outStreamMutex; 
-    std::thread outThread; 
+    int logLevelConfig; 
 
     inline std::string LogLabel(LOG_TYPE lt) 
     {
@@ -182,22 +134,6 @@ private:
             case LOG_TYPE::SHOE  : return "[S]";
             default              : return "[.]";
         }
-    }
-
-    inline void swapStreams() 
-    {
-        // swap the two streams, taking care that it is not in the middle of 
-        // copying and writing the output string
-        // std::lock_guard<std::mutex> lock(outStreamMutex);
-        std::swap(inStream, outStream); 
-    }
-
-    void outStreamToFile() 
-    {
-        // write the stream to be outputted into the filstream
-        // std::lock_guard<std::mutex> lock1(outStreamMutex);
-        outFile << outStream->str();
-        outFile.flush(); 
     }
     
     /*

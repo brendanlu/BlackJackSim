@@ -50,7 +50,7 @@ public:
     SimEngineBJ(unsigned int N_DECKS, double penen);
     SimEngineBJ(InitPackage init);
 
-    void InitLoggingChannels(); 
+    void InitNewLogging(); 
 
     void SetDealer17(bool b);
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
@@ -63,6 +63,7 @@ public:
 private:
     std::shared_ptr<Logger> simLog;
     std::string LOGFNAME;
+    int LOGLEVEL; 
 
     Shoe<std::mt19937_64> simShoe;
     
