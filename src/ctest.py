@@ -10,6 +10,7 @@ delete = [
     r"ERROR.csv",
     r"LOG.csv",
     r"LOG2.csv",
+    r"gmon.out",
 ]
 
 for file in os.listdir():

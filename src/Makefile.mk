@@ -1,32 +1,34 @@
-CXX=g++
-CXXFLAGS=-O3 -march=native -Wall -Wextra -flto -fprefetch-loop-arrays
+CXX = g++
+CXXFLAGS = -O3 -march=native -Wall -Wextra -flto -fprefetch-loop-arrays -pg
+LDFLAGS = -pg
 
 OBJs = test.o \
-shoe.o \
-simenginebj.o \
-agent.o \
-dealer.o
+		shoe.o \
+		simenginebj.o \
+		agent.o \
+		dealer.o
 
-test : $(OBJs)
-	$(CXX) $(CXXFLAGS) -o test $(OBJs)
+TARGET = test
 
-test.o : test.cpp shoe.hpp card.hpp agent.hpp simenginebj.hpp
+all: $(TARGET)
+
+$(TARGET): $(OBJs)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJs)
+
+test.o: test.cpp shoe.hpp card.hpp agent.hpp simenginebj.hpp
 	$(CXX) $(CXXFLAGS) -c test.cpp
 
-shoe.o : shoe.cpp shoe.hpp fisheryates.hpp card.hpp 
+shoe.o: shoe.cpp shoe.hpp fisheryates.hpp card.hpp 
 	$(CXX) $(CXXFLAGS) -c shoe.cpp
 
-simenginebj.o : simenginebj.cpp simenginebj.hpp shoe.hpp agent.hpp strategyinput.hpp card.hpp
+simenginebj.o: simenginebj.cpp simenginebj.hpp shoe.hpp agent.hpp strategyinput.hpp card.hpp
 	$(CXX) $(CXXFLAGS) -c simenginebj.cpp
 
-agent.o : agent.cpp agent.hpp card.hpp simenginebj.hpp strategyinput.hpp
+agent.o: agent.cpp agent.hpp card.hpp simenginebj.hpp strategyinput.hpp
 	$(CXX) $(CXXFLAGS) -c agent.cpp
 
-dealer.o : dealer.cpp dealer.hpp card.hpp
+dealer.o: dealer.cpp dealer.hpp card.hpp
 	$(CXX) $(CXXFLAGS) -c dealer.cpp
 
-# .PHONY : clean # run clean every time we make, might be redundant as we clunkily call it from Python already
-
-# clean : \
-	del test.exe $(OBJs)
-	
+clean:
+	del /q $(OBJs) $(TARGET)
