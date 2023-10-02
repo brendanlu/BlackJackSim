@@ -6,14 +6,28 @@ import pandas as pd
 
 
 def _strat_to_numpy_arrayfmt(
-    *,
-    strat_relpath: str,
-    count_relpath: str,
+    *, strat_relpath: str, count_relpath: str
 ) -> Tuple[np.ndarray]:
     """
     Convert strategy and count configurations into C-order numpy arrays.
-    NOTE: These must be in an identical format to the preconfigured templates.
+    Hard-coded for the format of the preconfigured templates!
+
+    Parameters
+    ----------
+    strat_relpat : str
+        Path to the populated strat template
+
+    count_relpath : str
+        Path to the populated count template
+
+    Returns
+    -------
+    hrd, sft, splts, cnt : Tuple[np.ndarray]
+        A tuple containing raw value numpy arrays for each of the strategy
+        categories
+
     """
+    
     strat = pd.read_csv(strat_relpath, header=None)
 
     hard = strat.iloc[0:18, :].copy().reset_index(drop=True)

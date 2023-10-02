@@ -2,6 +2,7 @@
 #define COMM_H
 
 #include <array>
+#include <chrono>
 #include <fstream>
 #include <memory>
 #include <mutex>
@@ -57,6 +58,8 @@ public:
         currShoeNum(0), 
         currTableNum(0)
     {
+        dynamChunk = FLUSH_CHUNK_SIZE; 
+
         inStream.reset(); 
         outStream.reset(); 
 
@@ -161,8 +164,11 @@ private:
     // the logger will flush to file using its internal threaded mechanism
     // when it has a certain number of log rows in its stringstream buffer
     //
-    // tune this for performance
-    static const int FLUSH_CHUNK_SIZE = 100000;
+    // this is the initial message count buffer limit, but it will attempt
+    // to do its own optimizations during usage
+    static const int FLUSH_CHUNK_SIZE = 10000;
+
+    int dynamChunk; 
     int currChunk; 
 
     std::ofstream outFile;
@@ -175,7 +181,9 @@ private:
 
     // NOTE: the current design does not need the mutex
     std::mutex outStreamMutex; 
-    std::thread outThread; 
+    std::thread outThread;
+
+    std::chrono::milliseconds lastWriteTime;
 
     inline std::string LogLabel(LOG_TYPE lt) 
     {
@@ -198,12 +206,19 @@ private:
 
     void outStreamToFile() 
     {
+        auto start = std::chrono::system_clock::now();
+
         // write the stream to be outputted into the filstream
         // std::lock_guard<std::mutex> lock(outStreamMutex);
         outFile << outStream->str();
         outStream->str(""); 
         outStream->clear(); 
         outFile.flush(); 
+
+        // record the file write time
+        lastWriteTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now() - start
+        );
     }
     
     /*

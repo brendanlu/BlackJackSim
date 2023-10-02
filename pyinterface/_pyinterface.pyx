@@ -37,6 +37,7 @@ cdef class pySimEngineBJ:
         """
         return
 
+    # TODO: deprecate in favour of configuring all in intializer
     def pySetAgent(
         self, 
         agentIdx, 
@@ -49,14 +50,17 @@ cdef class pySimEngineBJ:
             agentIdx, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]
         )
 
+    # TODO: deprecate in favour of configuring all in intializer
     def pySetLogFile(self, filename):
         self.cppSimEngineBJ.SetLogFile(filename.encode('UTF-8'))
         return
 
+    # TODO: deprecate in favour of configuring all in intializer
     def pySetLogLevel(self, int ll) : 
         self.cppSimEngineBJ.SetLogLevel(ll)
         return
 
+    # TODO: deprecate in favour of configuring all in intializer
     def pyRunSimulation(self, unsigned int nIters): 
         self.cppSimEngineBJ.RunSimulation(nIters)
         return 

@@ -26,8 +26,9 @@ struct InitPackage
 
     bool dealer17;
 
-    unsigned int nAgents; 
-    StratPackage strats[MAX_N_AGENTS]; 
+    unsigned int nAgents;
+    // pointer to the head of an array of StratPackage 's of size nAgents 
+    StratPackage *strats; 
 };
 
 /*
