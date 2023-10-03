@@ -46,8 +46,8 @@ cdef class pySimEngineBJ:
 
         return
 
-    #def _pyInitNewLogging(self):
-       #self.cppSimEngineBJ.InitNewLogging()
+    def _pyInitNewLogging(self):
+       self.cppSimEngineBJ.InitNewLogging()
 
     def pySetAgent(
         self, 

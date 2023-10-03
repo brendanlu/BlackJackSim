@@ -130,6 +130,8 @@ public:
             (*inStream) << LogLabel(lt) << "," 
                         << currShoeNum  << ","
                         << currTableNum << ","
+                        << currChunk    << "," // DEBUG
+                        << dynamChunk   << "," // DEBUG
                         << c            << "," 
                         << d            << "\n";
 
@@ -193,7 +195,7 @@ private:
     //
     // this is the initial message count buffer limit, but it will attempt
     // to do its own optimizations during usage
-    static const int INIT_CHUNK_SIZE = 10000;
+    static const int INIT_CHUNK_SIZE = 1000000;
 
     int dynamChunk; 
     int currChunk; 
@@ -270,6 +272,7 @@ private:
     void DynamChunkAdjust()
     {
         int NON_TRIVIAL_CHUNK = 5000; 
+        double MAX_ADJUSTMENT_RATIO = 100; 
 
         // go for adjustment if %change > tol
         double TOL = 0.05; 
@@ -290,20 +293,15 @@ private:
             // if too small, the writer thread is too busy 
             // if too large, the writer thread is too idle
             tRatio = static_cast<double>(lastLogChunkTime.count()) / tWrite;
-            idealChunkSize = std::round(tRatio * recordedChunkSize);
+            tRatio = std::min(tRatio, MAX_ADJUSTMENT_RATIO); 
+
+            idealChunkSize = static_cast<int>(
+                std::round(tRatio * recordedChunkSize)
+            );
 
             // now compare to existing dynamChunk (which may or may not be the
             // same as the recordedChunkSize)
             if (abs(idealChunkSize - dynamChunk) / dynamChunk > TOL) {
-                WriteRow(
-                    LOG_LEVEL::DETAIL, 
-                    LOG_TYPE::LOGGER,
-                    "Log Chunk Adjustment", 
-                    "Chunk size adjusted from " 
-                        + std::to_string(dynamChunk)
-                        + " to "
-                        + std::to_string(idealChunkSize)
-                );
                 dynamChunk = idealChunkSize; 
             }
             else {
@@ -332,7 +330,8 @@ private:
         |Context| What game event the log comes from
         |Detail | This field will change drastically, depending on context
     */
-    const std::string colHeaders = "Source,ShoeNum,TableNum,Context,Detail\n";
+    //const std::string colHeaders = "Source,ShoeNum,TableNum,Context,Detail\n";
+    const std::string colHeaders = "Source,ShoeNum,TableNum,CurrChunk,ChunkLim,Context,Detail\n";
 
     int currShoeNum; 
     int currTableNum; 
