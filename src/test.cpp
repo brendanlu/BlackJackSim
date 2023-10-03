@@ -64,9 +64,11 @@ int main()
 
     cout << "Setting agent strat pointers\n\n"; 
     testEngine.SetAgent(0, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]);
+    testEngine.SetAgent(1, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]);
     cout << "Agents set\n\n";
 
     cout << "Confifuring logfile\n"; 
+    testEngine.InitNewLogging(); 
     testEngine.SetLogLevel(3); 
     cout << "Set log level success\n"; 
     testEngine.SetLogFile("LOG2.csv");

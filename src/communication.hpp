@@ -3,6 +3,8 @@
 
 #include <array>
 #include <chrono>
+#include <cmath>
+#include <cstdlib>
 #include <fstream>
 #include <memory>
 #include <mutex>
@@ -30,7 +32,8 @@ enum class LOG_TYPE : int
     AGENT,
     DEALER,
     ENGINE,
-    SHOE
+    SHOE,
+    LOGGER
 };
 
 enum class LOG_LEVEL : int
@@ -45,20 +48,28 @@ enum class LOG_LEVEL : int
 Simple logging class that writes into csv format.
 
 Recieves messages and formats them into a recieving stringstream. Periodically, 
-it flushes this stream into a file. To ensure that this (potentially slow) write 
-process does not hold up the calling state, it presents a different recieving
-stringstream, and uses a thread to write the old one to file. 
+it flushes this stream into a file. 
+
+To ensure that this (potentially slow) write process does not hold up the 
+calling state, it presents a different recieving stringstream, and uses a thread 
+to write the old one to file. 
+
+It will also attempt to balance its write frequency such that the writer thread 
+is kept as busy as possible relative to the logging load. 
 */
 class Logger 
 {
 public: 
     Logger() : 
         currChunk(0),
+        adjust(true), 
         logLevelConfig(3), 
+        lastLogChunkTime(0),
+        lastWriteTime(0),
         currShoeNum(0), 
         currTableNum(0)
     {
-        dynamChunk = FLUSH_CHUNK_SIZE; 
+        dynamChunk = INIT_CHUNK_SIZE; 
 
         inStream.reset(); 
         outStream.reset(); 
@@ -109,6 +120,12 @@ public:
         const std::string& c, const std::string& d
     )
     {
+        // record the start time of a chunk to get a rough idea of how 
+        // frequently messages come in
+        if (currChunk == 0) {
+            logChunkStart = std::chrono::system_clock::now();
+        }
+
         if (static_cast<int>(ll) <= logLevelConfig) {
             (*inStream) << LogLabel(lt) << "," 
                         << currShoeNum  << ","
@@ -119,7 +136,17 @@ public:
             currChunk += 1; 
         }
 
-        if (currChunk > FLUSH_CHUNK_SIZE) {
+        // dynamChunk may or may not have been adjusted in the other thread
+        // and may or may not change between this section of code and the next
+        // chunk adjustment method call
+        //
+        // keep a clear record of what chunk size the timing corresponds to
+        if (currChunk > dynamChunk) {
+            recordedChunkSize = dynamChunk; 
+            lastLogChunkTime = 
+                std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now() - logChunkStart
+                );
             ManualFlush(); 
         }
     }
@@ -131,10 +158,10 @@ public:
             outThread.join(); 
         }
 
-        swapStreams();
+        SwapStreams();
         currChunk = 0; 
 
-        outThread = std::thread(&Logger::outStreamToFile, this); 
+        outThread = std::thread(&Logger::OutStreamToFile, this); 
     }
 
     inline void FreshShuffleHandler()
@@ -166,10 +193,13 @@ private:
     //
     // this is the initial message count buffer limit, but it will attempt
     // to do its own optimizations during usage
-    static const int FLUSH_CHUNK_SIZE = 10000;
+    static const int INIT_CHUNK_SIZE = 10000;
 
     int dynamChunk; 
     int currChunk; 
+
+    // turn on/off dynamic chunk adjustment logic
+    bool adjust; 
 
     std::ofstream outFile;
     int logLevelConfig;
@@ -183,28 +213,36 @@ private:
     std::mutex outStreamMutex; 
     std::thread outThread;
 
+    // this tells us what chunk size the last timings relate to 
+    int recordedChunkSize; 
+
+    std::chrono::system_clock::time_point logChunkStart; 
+    std::chrono::microseconds lastLogChunkTime;
     std::chrono::milliseconds lastWriteTime;
 
     inline std::string LogLabel(LOG_TYPE lt) 
     {
         switch (lt) {
-            case LOG_TYPE::AGENT : return "[A]"; 
-            case LOG_TYPE::DEALER: return "[D]";
-            case LOG_TYPE::ENGINE: return "[E]"; 
-            case LOG_TYPE::SHOE  : return "[S]";
-            default              : return "[.]";
+            case LOG_TYPE::AGENT  : return "[A]"; 
+            case LOG_TYPE::DEALER : return "[D]";
+            case LOG_TYPE::ENGINE : return "[E]"; 
+            case LOG_TYPE::SHOE   : return "[S]";
+            case LOG_TYPE::LOGGER : return "[!]"; 
+            default               : return "[.]";
         }
     }
 
-    inline void swapStreams() 
+    inline void SwapStreams() 
     {
         // swap the two streams, taking care that it is not in the middle of 
         // copying and writing the output string
         // std::lock_guard<std::mutex> lock(outStreamMutex);
-        std::swap(inStream, outStream); 
+        std::swap(inStream, outStream);
     }
 
-    void outStreamToFile() 
+    // CALLED IN THREAD
+    // ----------------
+    void OutStreamToFile() 
     {
         auto start = std::chrono::system_clock::now();
 
@@ -219,6 +257,64 @@ private:
         lastWriteTime = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now() - start
         );
+
+        if (adjust) {
+            DynamChunkAdjust();
+        }
+
+        return; 
+    }
+
+    // CALLED IN THREAD
+    // ----------------
+    void DynamChunkAdjust()
+    {
+        int NON_TRIVIAL_CHUNK = 5000; 
+
+        // go for adjustment if %change > tol
+        double TOL = 0.05; 
+
+        double tWrite = static_cast<double>(lastWriteTime.count()); 
+        double tRatio; 
+
+        int idealChunkSize;
+
+        // ensure nontrivial chunk and no division by 0
+        if (recordedChunkSize > NON_TRIVIAL_CHUNK && tWrite > 0) {
+            // ideally want the following ratio to be around 1
+            // this means that the writer thread is constantly active
+            // but does not cause the logger to block the calling state (much)
+            //
+            // will generally favour larger and larger write loads
+            //
+            // if too small, the writer thread is too busy 
+            // if too large, the writer thread is too idle
+            tRatio = static_cast<double>(lastLogChunkTime.count()) / tWrite;
+            idealChunkSize = std::round(tRatio * recordedChunkSize);
+
+            // now compare to existing dynamChunk (which may or may not be the
+            // same as the recordedChunkSize)
+            if (abs(idealChunkSize - dynamChunk) / dynamChunk > TOL) {
+                WriteRow(
+                    LOG_LEVEL::DETAIL, 
+                    LOG_TYPE::LOGGER,
+                    "Log Chunk Adjustment", 
+                    "Chunk size adjusted from " 
+                        + std::to_string(dynamChunk)
+                        + " to "
+                        + std::to_string(idealChunkSize)
+                );
+                dynamChunk = idealChunkSize; 
+            }
+            else {
+                // assuming some sense of constancy in future logging load
+                //
+                // this 'NON_TRIVIAL_CHUNK' 
+                adjust = false; 
+            }
+        }
+
+        return; 
     }
     
     /*

@@ -31,7 +31,7 @@ SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) :
 {}
 
 /*
-TODO: FIX. THIS IS NOT CURRENTLY WORKING, AND BAD DESIGN.
+Even if not used, this serves as a guide for appropriate game initialization. 
 
 Constructor which appropriately constructs all of the simulation objects and 
 the game state. 
@@ -48,7 +48,7 @@ SimEngineBJ::SimEngineBJ(InitPackage init) :
 
     for (unsigned int i=0; i<nAgents; ++i) {
         agents[i] = Agent(init.strats[i]);
-        agents[i].id = i+1; 
+        agents[i].id = i + 1; 
     }
 
     InitNewLogging(); 
@@ -87,14 +87,6 @@ void SimEngineBJ::SetLogLevel(int ll)
 }
 
 /*
-Set dealer hit / stand on soft17. Default is false, see Dealer implementation.
-*/
-void SimEngineBJ::SetDealer17(bool b) 
-{
-    simDealer.HITSOFT17 = b;
-}
-
-/*
 TODO: deprecate this, in preference of initialising everything in constructor.
 */
 void SimEngineBJ::SetAgent(
@@ -107,9 +99,16 @@ void SimEngineBJ::SetAgent(
     agents[idx] = Agent(hrd, sft, splt, cnt);
     agents[idx].id = idx + 1; 
     nAgents += 1; 
-
-    InitNewLogging(); 
 }
+
+/*
+Set dealer hit / stand on soft17. Default is false, see Dealer implementation.
+*/
+void SimEngineBJ::SetDealer17(bool b) 
+{
+    simDealer.HITSOFT17 = b;
+}
+
 
 /*
 

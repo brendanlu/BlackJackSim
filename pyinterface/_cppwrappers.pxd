@@ -37,10 +37,14 @@ cdef extern from "../src/simenginebj.hpp":
         SimEngineBJ(unsigned int, double) except +
         SimEngineBJ(InitPackage) except +
 
+        void InitNewLogging()
+
         void SetAgent(unsigned int, char*, char*, char*, double*)
+        void SetDealer17(bool)
         void SetLogFile(string)
         void SetLogLevel(int)
         void RunSimulation(unsigned long long)
+
 
 #@cython.boundscheck(False)
 #@cython.wraparound(False)
@@ -57,12 +61,14 @@ cdef inline _make_strat_package_arr(strat_list):
     Returns
     -------
     strats_ptr : StratPackage C Pointer
-        Points to a newly malloc'ed array 
+        Points to a newly malloc'ed array of StratPackages sized len(strat_list)
 
     """
 
     cdef unsigned int i
+    cdef unsigned int j
     for i in range(len(strat_list)): 
-        pass
+        for j in range(len(strat_list[i])): 
+            pass
 
     return

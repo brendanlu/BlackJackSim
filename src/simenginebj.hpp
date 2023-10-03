@@ -53,9 +53,9 @@ public:
 
     void InitNewLogging(); 
 
-    void SetDealer17(bool b);
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
                                 char* splt, double* cnt);
+    void SetDealer17(bool b);
     void SetLogFile(std::string filename); 
     void SetLogLevel(int ll);
 

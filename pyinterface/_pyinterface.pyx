@@ -8,11 +8,9 @@ cdef class pySimEngineBJ:
 
     cdef SimEngineBJ cppSimEngineBJ
 
-    
     def __init__(self, unsigned int nd, double p): 
         self.cppSimEngineBJ = SimEngineBJ(nd, p)
     
-
     def initinprogress(self, nd, p, d17, nA, strats): 
         """
         Parameters
@@ -35,9 +33,22 @@ cdef class pySimEngineBJ:
 
             These represent the agent configurations from the config files
         """
+        
+        # TODO: validate appropriate params
+
+        self.cppSimEngineBJ = SimEngineBJ(nd, p)
+        self.pySetDealer17(d17)
+
+        for i in range(nA):
+            self.pySetAgent(i, *strats[i])
+
+        self.cppSimEngineBJ.InitNewLogging()
+
         return
 
-    # TODO: deprecate in favour of configuring all in intializer
+    #def _pyInitNewLogging(self):
+       #self.cppSimEngineBJ.InitNewLogging()
+
     def pySetAgent(
         self, 
         agentIdx, 
@@ -50,17 +61,18 @@ cdef class pySimEngineBJ:
             agentIdx, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]
         )
 
-    # TODO: deprecate in favour of configuring all in intializer
+    def pySetDealer17(self, d17): 
+        self.cppSimEngineBJ.SetDealer17(d17)
+        return
+
     def pySetLogFile(self, filename):
         self.cppSimEngineBJ.SetLogFile(filename.encode('UTF-8'))
         return
 
-    # TODO: deprecate in favour of configuring all in intializer
     def pySetLogLevel(self, int ll) : 
         self.cppSimEngineBJ.SetLogLevel(ll)
         return
 
-    # TODO: deprecate in favour of configuring all in intializer
     def pyRunSimulation(self, unsigned int nIters): 
         self.cppSimEngineBJ.RunSimulation(nIters)
         return 
