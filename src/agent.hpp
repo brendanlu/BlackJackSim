@@ -50,6 +50,7 @@ public:
 
         bool natBlackJack;
         bool holdingPair;
+        bool doubled; 
     };
 
     Agent(); 

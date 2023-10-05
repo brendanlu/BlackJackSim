@@ -15,7 +15,8 @@ Agent::HandInfo::HandInfo() :
     first(BLANK_CARD),
     second(BLANK_CARD),
     natBlackJack(false),
-    holdingPair(false)
+    holdingPair(false),
+    doubled(false)
 {}
 
 /*
@@ -231,8 +232,10 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
     //
     // additional to implementing correct game logic, the first 'if' condition 
     // here is crucial for the memory-safeness of the lookup functions
-    if (hands[currIdx].handVal >= BJVAL) {
+    if (hands[currIdx].handVal >= BJVAL || hands[currIdx].doubled) {
         // we have already bust - do not do anything more
+        // or
+        // we have previously doubled-down, so cannot do anything else
         internalAction = 'S'; 
     }
     else if (hands[currIdx].nCards < 2) {
@@ -270,9 +273,10 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
     if (internalAction == 'H') {
         return ACTION::HIT;
     }
-    else if (internalAction == 'D') {
+    else if (internalAction == 'D' && !hands[currIdx].doubled) {
         // double the wager and hit
         hands[currIdx].wager *= 2; 
+        hands[currIdx].doubled = true; 
         return ACTION::HIT;
     }
     else if (internalAction == 'P' && newIdx < MAX_N_HANDS) {
