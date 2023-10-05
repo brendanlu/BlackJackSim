@@ -14,8 +14,6 @@
 #include "shoe.hpp"
 #include "strategyinput.hpp"
 
-static constexpr unsigned int MAX_N_AGENTS = 10; 
-
 /*
 
 */
@@ -62,6 +60,8 @@ public:
     void RunSimulation(unsigned long nIters);
 
 private:
+    static constexpr unsigned int MAX_N_AGENTS = 10; 
+
     std::shared_ptr<Logger> simLog;
     std::string LOGFNAME;
     int LOGLEVEL; 

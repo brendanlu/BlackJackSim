@@ -1,7 +1,6 @@
 from typing import Tuple
 
 import numpy as np
-from numpy import typing as npt
 import pandas as pd
 
 
@@ -27,7 +26,7 @@ def _strat_to_numpy_arrayfmt(
         categories
 
     """
-    
+
     strat = pd.read_csv(strat_relpath, header=None)
 
     hard = strat.iloc[0:18, :].copy().reset_index(drop=True)

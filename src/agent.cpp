@@ -79,7 +79,8 @@ Agent::Agent(char* hrd, char* sft, char* splt, double* cnt) :
     STRAT_INIT(true), BJ_INSTANT(false), BJ_PAYOUT(1.5),
     newIdx(1), currIdx(0),
     strat({hrd, sft, splt, cnt}),
-    cntVal(0)
+    cntVal(0),
+    nHandsPlayed(0)
 {
     for (unsigned int i=0; i<MAX_N_HANDS; ++i) {
         hands[i] = HandInfo();
@@ -179,6 +180,18 @@ void Agent::ClearHandler (const Dealer &dealerRef)
     // Agent appropriately for the first deal-out
     newIdx = 1; 
     currIdx = 0;
+
+    // ANALYSIS AND LOGGING
+    if (nHandsPlayed > 0) {
+        log->WriteRow(
+            LOG_LEVEL::DETAIL, 
+            LOG_TYPE::AGENT, 
+            "Agent " + std::to_string(id) + " avg. pnl/hand",
+            std::to_string(pnl / nHandsPlayed)
+        );
+    }
+
+    nHandsPlayed += 1; 
 }
 
 /*

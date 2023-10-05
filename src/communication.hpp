@@ -130,8 +130,8 @@ public:
             (*inStream) << LogLabel(lt) << "," 
                         << currShoeNum  << ","
                         << currTableNum << ","
-                        << currChunk    << "," // DEBUG
-                        << dynamChunk   << "," // DEBUG
+                        // << currChunk    << "," // DEBUG
+                        // << dynamChunk   << "," // DEBUG
                         << c            << "," 
                         << d            << "\n";
 
@@ -330,8 +330,8 @@ private:
         |Context| What game event the log comes from
         |Detail | This field will change drastically, depending on context
     */
-    //const std::string colHeaders = "Source,ShoeNum,TableNum,Context,Detail\n";
-    const std::string colHeaders = "Source,ShoeNum,TableNum,CurrChunk,ChunkLim,Context,Detail\n";
+    const std::string colHeaders = "Source,ShoeNum,TableNum,Context,Detail\n";
+    // const std::string colHeaders = "Source,ShoeNum,TableNum,CurrChunk,ChunkLim,Context,Detail\n"; // DEBUG
 
     int currShoeNum; 
     int currTableNum; 

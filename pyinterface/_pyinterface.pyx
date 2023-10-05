@@ -1,4 +1,4 @@
-from _cppwrappers cimport StratPackage, InitPackage, SimEngineBJ
+from _cppwrappers cimport SimEngineBJ
 
 cdef class Simulator: 
     """

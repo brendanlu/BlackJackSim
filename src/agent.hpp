@@ -84,6 +84,10 @@ private:
     StratPackage strat; 
     
     double cntVal;
+
+    // analysis related; not required for game mechanics
+    int nHandsPlayed; 
+
 };
 
 #endif
