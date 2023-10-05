@@ -1,18 +1,19 @@
 from _cppwrappers cimport StratPackage, InitPackage, SimEngineBJ
 
-
-cdef class pySimEngineBJ: 
+cdef class Simulator: 
     """
-    Cython wrapper class for Python.
+    Cython wrapper for C++ simulation interface. 
     """
 
     cdef SimEngineBJ cppSimEngineBJ
-
-    def __init__(self, unsigned int nd, double p): 
-        self.cppSimEngineBJ = SimEngineBJ(nd, p)
     
-    def initinprogress(self, nd, p, d17, nA, strats): 
+    def __init__(self, nd, p, d17, nA, strats): 
         """
+        Emulates a full game intialization, similar to the constructor in 
+        C++ using InitPackage parameter. 
+
+        Will appropriately, and explicitly initialize everything but logging.
+
         Parameters
         ----------
         nd : int
@@ -27,7 +28,8 @@ cdef class pySimEngineBJ:
         nA : int
             Number of agents in the simulation
 
-        strats : iterable of length nA
+        strats : Iterable[Tuple[np.ndarray]]
+            >> len(strats) = nA 
             Each item contains a strat tuple in the output format of 
             _strat_to_numpy_arrayfmt
 
@@ -36,23 +38,26 @@ cdef class pySimEngineBJ:
         
         # TODO: validate appropriate params
 
-        self.cppSimEngineBJ = SimEngineBJ(nd, p)
-        self.pySetDealer17(d17)
+        self._py_shoe_init(nd, p)
+        self._py_set_dealer_17(d17)
 
         for i in range(nA):
-            self.pySetAgent(i, *strats[i])
+            self._py_set_agent(i, *strats[i])
 
-        self.cppSimEngineBJ.InitNewLogging()
+        self._py_init_new_logging()
 
         return
 
-    def _pyInitNewLogging(self):
+    def _py_shoe_init(self, nd, p): 
+        self.cppSimEngineBJ = SimEngineBJ(nd, p)
+
+    def _py_init_new_logging(self):
        self.cppSimEngineBJ.InitNewLogging()
 
-    def pySetAgent(
+    def _py_set_agent(
         self, 
         agentIdx, 
-        char[:,:] hrd, 
+        char[:,:] hrd,
         char[:,:] sft, 
         char[:,:] splt, 
         double[:] cnt
@@ -61,18 +66,18 @@ cdef class pySimEngineBJ:
             agentIdx, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]
         )
 
-    def pySetDealer17(self, d17): 
+    def _py_set_dealer_17(self, d17): 
         self.cppSimEngineBJ.SetDealer17(d17)
         return
 
-    def pySetLogFile(self, filename):
+    def _py_set_log_file(self, filename):
         self.cppSimEngineBJ.SetLogFile(filename.encode('UTF-8'))
         return
 
-    def pySetLogLevel(self, int ll) : 
+    def _py_set_log_level(self, int ll) : 
         self.cppSimEngineBJ.SetLogLevel(ll)
         return
 
-    def pyRunSimulation(self, unsigned int nIters): 
+    def run(self, unsigned int nIters): 
         self.cppSimEngineBJ.RunSimulation(nIters)
         return 

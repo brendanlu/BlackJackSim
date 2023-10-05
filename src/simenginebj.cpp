@@ -19,7 +19,7 @@ the Python class will always call the one below.
 SimEngineBJ::SimEngineBJ() {}
 
 /*
-TODO: deprecate this, in preference of the constructor method below.
+Initialize with appropriate game shoe. 
 
 Constructor which appropriately seeds the simShoe member object.
 This will seed the pseudo random number generator, just this once. 
