@@ -227,41 +227,44 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
 
     char internalAction; 
 
+    // alias for readability
+    HandInfo& currHand = hands[currIdx]; 
+
     // perform action lookups via the configured strategy templates and the 
     // inline lookup functions
     //
     // additional to implementing correct game logic, the first 'if' condition 
     // here is crucial for the memory-safeness of the lookup functions
-    if (hands[currIdx].handVal >= BJVAL || hands[currIdx].doubled) {
+    if (currHand.handVal >= BJVAL || currHand.doubled) {
         // we have already bust - do not do anything more
         // or
         // we have previously doubled-down, so cannot do anything else
         internalAction = 'S'; 
     }
-    else if (hands[currIdx].nCards < 2) {
+    else if (currHand.nCards < 2) {
         // our current hand is instantiated from a split, we need to hit
         // as attempting to use the strategy input functions will result
         // in memory unsafe behaviour
         return ACTION::HIT;
     }
-    else if (hands[currIdx].holdingPair) {
+    else if (currHand.holdingPair) {
         internalAction = spltActionFromPtr(
             strat.splt, 
-            hands[currIdx].first.val(), 
+            currHand.first.val(), 
             dealerRef.hInfo.upCard.val()
         );
     }
-    else if (hands[currIdx].nSoftAces > 0) {
+    else if (currHand.nSoftAces > 0) {
         internalAction = sftActionFromPtr(
             strat.sft, 
-            hands[currIdx].handVal, 
+            currHand.handVal, 
             dealerRef.hInfo.upCard.val()
         ); 
     }
     else {
         internalAction = hrdActionFromPtr(
             strat.hrd, 
-            hands[currIdx].handVal, 
+            currHand.handVal, 
             dealerRef.hInfo.upCard.val()
         ); 
     }
@@ -273,10 +276,10 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
     if (internalAction == 'H') {
         return ACTION::HIT;
     }
-    else if (internalAction == 'D' && !hands[currIdx].doubled) {
+    else if (internalAction == 'D' && !currHand.doubled) {
         // double the wager and hit
-        hands[currIdx].wager *= 2; 
-        hands[currIdx].doubled = true; 
+        currHand.wager *= 2; 
+        currHand.doubled = true; 
         return ACTION::HIT;
     }
     else if (internalAction == 'P' && newIdx < MAX_N_HANDS) {
@@ -286,17 +289,17 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
         // place at the tail of stack array, allowing for potentially a 
         // previously split hand at position currIdx + 1
         hands[newIdx] = HandInfo(); 
-        hands[newIdx].wager = hands[currIdx].wager;
-        hands[newIdx].Recieve(hands[currIdx].second); 
+        hands[newIdx].wager = currHand.wager;
+        hands[newIdx].Recieve(currHand.second); 
         
         // overwrite the stack space of the pre-split hand with the second
         // split hand
         //
         // keep the same wager, and take the other pair card
-        temp = hands[currIdx].first;
-        hands[currIdx] = HandInfo(); 
-        hands[currIdx].wager = hands[newIdx].wager; 
-        hands[currIdx].Recieve(temp); 
+        temp = currHand.first;
+        currHand = HandInfo(); 
+        currHand.wager = hands[newIdx].wager; 
+        currHand.Recieve(temp); 
 
         newIdx += 1; 
 
@@ -304,9 +307,9 @@ ACTION Agent::YieldAction(const Dealer &dealerRef)
     }
     else if (internalAction == 'R') {
         // half the wager, and make the hand go bust manually
-        hands[currIdx].wager /= 2; 
-        hands[currIdx].natBlackJack = false; 
-        hands[currIdx].handVal = BJVAL + 1;
+        currHand.wager /= 2; 
+        currHand.natBlackJack = false; 
+        currHand.handVal = BJVAL + 1;
         internalAction = 'S'; 
     }
     else {
