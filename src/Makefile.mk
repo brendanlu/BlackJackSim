@@ -1,6 +1,9 @@
+# 
+# Makefile for Windows 
+#
 CXX = g++
 CXXFLAGS = -O3 -march=native -Wall -Wextra -flto -fprefetch-loop-arrays -pg
-LDFLAGS = -pg
+LDFLAGS = -pg -lws2_32
 
 OBJs = test.o \
 		shoe.o \
@@ -13,7 +16,7 @@ TARGET = test
 all: $(TARGET)
 
 $(TARGET): $(OBJs)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJs)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJs) $(LDFLAGS)
 
 test.o: test.cpp shoe.hpp card.hpp agent.hpp simenginebj.hpp
 	$(CXX) $(CXXFLAGS) -c test.cpp

@@ -11,6 +11,7 @@ delete = [
     r"LOG.csv",
     r"LOG2.csv",
     r"gmon.out",
+    r"report.txt"
 ]
 
 for file in os.listdir():

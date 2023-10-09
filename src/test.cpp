@@ -55,7 +55,7 @@ char splt[10][10] = {
 
 double cnt[10] = {1,1,1,1,1,0,0,0,-1,-1}; 
 
-unsigned long long NITERS = 1000000;
+unsigned long long NITERS = 100000;
 
 int main() 
 {

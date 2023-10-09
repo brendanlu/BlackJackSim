@@ -1,5 +1,6 @@
 #ifndef COMM_H
 #define COMM_H
+#undef NOMINMAX
 #define NOMINMAX // for some reason with C .h import?
 #define SEND_FLAG       0
 #define SINGLE_SOCKET   0 
@@ -278,6 +279,9 @@ private:
         (int)outStream.str().length(), SEND_FLAG);
 
         // TODO: account for data not fully sent through the socket
+        if (bytesSent) { // ...
+            ;
+        }
     }
 
     // CALLED IN THREAD
