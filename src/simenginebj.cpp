@@ -50,8 +50,6 @@ SimEngineBJ::SimEngineBJ(InitPackage init) :
         agents[i] = Agent(init.strats[i]);
         agents[i].id = i + 1; 
     }
-
-    InitNewLogging(); 
 }
 
 /*
@@ -194,7 +192,9 @@ void SimEngineBJ::EventQueryDealer()
 void SimEngineBJ::RunSimulation(unsigned long nIters)
 {
     auto start = std::chrono::system_clock::now();
+    InitNewLogging(); 
     simLog->InitLogFile(LOGFNAME);
+    simLog->InitLogSocket(LOCAL_HOST.c_str(), PORT); 
     simLog->SetLogLevel(LOGLEVEL); 
 
     // check if Logger has valid fhandler object configured
@@ -274,6 +274,6 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
             + "ms"
     );
 
-    simLog->ManualFlush();
+    simLog.reset(); 
     return;
 }
