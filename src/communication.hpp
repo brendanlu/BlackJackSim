@@ -1,6 +1,8 @@
 #ifndef COMM_H
 #define COMM_H
 #define NOMINMAX // for some reason with C .h import?
+#define SEND_FLAG       0
+#define SINGLE_SOCKET   0 
 
 #include <array>
 #include <chrono>
@@ -74,11 +76,10 @@ public:
     {
         dynamChunk = INIT_CHUNK_SIZE; 
 
-        inStream.reset(); 
-        outStream.reset(); 
+        inStream.str(""); 
+        outStream.str("");
 
-        inStream = std::make_unique<std::stringstream>(); 
-        outStream = std::make_unique<std::stringstream>();
+        outSocket = create_connection_manager(); 
     }
 
     /*
@@ -107,6 +108,13 @@ public:
         outFile.flush();
     }
 
+    void InitLogSocket(const char* ip, int port) 
+    {
+        add_connection(&outSocket, SINGLE_SOCKET, ip, port);
+        outStream << colHeaders;
+        OutStreamToSocket(); 
+    }
+
     /*
     Boolean value to indicate valid configuration and ready for use 
     */
@@ -130,13 +138,13 @@ public:
         }
 
         if (static_cast<int>(ll) <= logLevelConfig) {
-            (*inStream) << LogLabel(lt) << "," 
-                        << currShoeNum  << ","
-                        << currTableNum << ","
-                        // << currChunk    << "," // DEBUG
-                        // << dynamChunk   << "," // DEBUG
-                        << c            << "," 
-                        << d            << "\n";
+            inStream << LogLabel(lt) << "," 
+                     << currShoeNum  << ","
+                     << currTableNum << ","
+                     // << currChunk    << "," // DEBUG
+                     // << dynamChunk   << "," // DEBUG
+                     << c            << "," 
+                     << d            << "\n";
 
             currChunk += 1; 
         }
@@ -159,14 +167,14 @@ public:
     void ManualFlush() 
     {
         // ensures thread finishes last flush oepration
-        if (outThread.joinable()) {
-            outThread.join(); 
+        if (outFileThread.joinable()) {
+            outFileThread.join(); 
         }
 
         SwapStreams();
         currChunk = 0; 
 
-        outThread = std::thread(&Logger::OutStreamToFile, this); 
+        outFileThread = std::thread(&Logger::OutStreamToFile, this); 
     }
 
     inline void FreshShuffleHandler()
@@ -183,15 +191,12 @@ public:
     {
         // complete one final write operation
         ManualFlush(); 
-        outThread.join(); 
+        outFileThread.join(); 
 
-        outFile.close();
+        outFile.close(); // can always close
+        CloseSocket(); // this method will check if socket is open
 
         // TODO: make sure sockets are disconnected
-
-        // release stream memory
-        inStream.reset(); 
-        outStream.reset(); 
     }
 
 private:
@@ -212,16 +217,17 @@ private:
     int logLevelConfig;
 
     // only need one socket
-    std::unique_ptr<connection_manager> outSockets; 
+    connection_manager outSocket; 
 
     // recieving stream for messages into logger
-    std::unique_ptr<std::stringstream> inStream; 
+    std::stringstream inStream; 
     // stream being written into file
-    std::unique_ptr<std::stringstream> outStream;  
+    std::stringstream outStream;  
 
     // NOTE: the current design does not need the mutex
     std::mutex outStreamMutex; 
-    std::thread outThread;
+    std::thread outFileThread;
+    std::thread outSocketThread; 
 
     // this tells us what chunk size the last timings relate to 
     int recordedChunkSize; 
@@ -250,21 +256,28 @@ private:
         std::swap(inStream, outStream);
     }
 
-    void InitSocket() 
+    inline void ResetOutputStream() 
     {
-
+        outStream.str(""); 
+        outStream.clear(); 
     }
 
-    void DestroySockets()
+    void CloseSocket()
     {
-        
+        if (outSocket.n_active == 1) {
+            remove_connection(&outSocket, SINGLE_SOCKET); 
+        }
     }
 
     // CALLED IN THREAD 
     // ----------------
     void OutStreamToSocket() 
     {
+        int bytesSent;
+        bytesSent = send(&outSocket, SINGLE_SOCKET, outStream.str().c_str(), 
+        (int)outStream.str().length(), SEND_FLAG);
 
+        // TODO: account for data not fully sent through the socket
     }
 
     // CALLED IN THREAD
@@ -275,9 +288,7 @@ private:
 
         // write the stream to be outputted into the filstream
         // std::lock_guard<std::mutex> lock(outStreamMutex);
-        outFile << outStream->str();
-        outStream->str(""); 
-        outStream->clear(); 
+        outFile << outStream.str();
         outFile.flush(); 
 
         // record the file write time
@@ -288,6 +299,8 @@ private:
         if (adjust) {
             DynamChunkAdjust();
         }
+
+        ResetOutputStream(); 
 
         return; 
     }
