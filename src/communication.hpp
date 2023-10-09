@@ -282,6 +282,10 @@ private:
         if (bytesSent) { // ...
             ;
         }
+
+        ResetOutputStream(); 
+
+        return; 
     }
 
     // CALLED IN THREAD
@@ -310,6 +314,7 @@ private:
     }
 
     // CALLED IN THREAD
+    // TODO: actually look at this and make it useful (?)
     // ----------------
     void DynamChunkAdjust()
     {

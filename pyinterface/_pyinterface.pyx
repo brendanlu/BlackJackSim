@@ -44,15 +44,10 @@ cdef class Simulator:
         for i in range(nA):
             self._py_set_agent(i, *strats[i])
 
-        self._py_init_new_logging()
-
         return
 
     def _py_shoe_init(self, nd, p): 
         self.cppSimEngineBJ = SimEngineBJ(nd, p)
-
-    def _py_init_new_logging(self):
-       self.cppSimEngineBJ.InitNewLogging()
 
     def _py_set_agent(
         self, 
@@ -72,6 +67,10 @@ cdef class Simulator:
 
     def _py_set_log_file(self, filename):
         self.cppSimEngineBJ.SetLogFile(filename.encode('UTF-8'))
+        return
+
+    def _py_set_socket_connection(self, ip, port): 
+        self.cppSimEngineBJ.SetSocketConnection(ip.encode('UTF-8'), port)
         return
 
     def _py_set_log_level(self, int ll) : 

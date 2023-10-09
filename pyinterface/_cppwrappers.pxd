@@ -20,5 +20,6 @@ cdef extern from "../src/simenginebj.hpp":
         void SetAgent(unsigned int, char*, char*, char*, double*)
         void SetDealer17(bool)
         void SetLogFile(string)
+        void SetSocketConnection(string, int)
         void SetLogLevel(int)
         void RunSimulation(unsigned long long)

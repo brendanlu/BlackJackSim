@@ -56,12 +56,11 @@ public:
     SimEngineBJ(unsigned int N_DECKS, double penen);
     SimEngineBJ(InitPackage init);
 
-    void InitNewLogging(); 
-
     void SetAgent(unsigned int idx, char* hrd, char* sft, 
                                 char* splt, double* cnt);
     void SetDealer17(bool b);
     void SetLogFile(std::string filename); 
+    void SetSocketConnection(std::string ip, int port); 
     void SetLogLevel(int ll);
 
     void RunSimulation(unsigned long nIters);
@@ -71,6 +70,8 @@ private:
 
     std::shared_ptr<Logger> simLog;
     std::string LOGFNAME;
+    std::string SOCKETIP;
+    int SOCKETPORT;
     int LOGLEVEL; 
 
     Shoe<std::mt19937_64> simShoe;
@@ -79,6 +80,8 @@ private:
 
     unsigned int nAgents;
     std::array<Agent, MAX_N_AGENTS> agents;
+
+    void InitNewLogging(); 
 
     void EventFreshShuffle(unsigned int n); 
 

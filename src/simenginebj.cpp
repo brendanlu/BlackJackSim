@@ -76,6 +76,12 @@ void SimEngineBJ::SetLogFile(std::string filename)
     LOGFNAME = filename; 
 }
 
+void SimEngineBJ::SetSocketConnection(std::string ip, int port)
+{
+    SOCKETIP = ip; 
+    SOCKETPORT = port; 
+}
+
 /*
 
 */
@@ -106,7 +112,6 @@ void SimEngineBJ::SetDealer17(bool b)
 {
     simDealer.HITSOFT17 = b;
 }
-
 
 /*
 
@@ -194,7 +199,7 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
     auto start = std::chrono::system_clock::now();
     InitNewLogging(); 
     simLog->InitLogFile(LOGFNAME);
-    simLog->InitLogSocket(LOCAL_HOST.c_str(), PORT); 
+    simLog->InitLogSocket(SOCKETIP.c_str(), SOCKETPORT); 
     simLog->SetLogLevel(LOGLEVEL); 
 
     // check if Logger has valid fhandler object configured
