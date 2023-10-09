@@ -1,5 +1,6 @@
 #ifndef COMM_H
 #define COMM_H
+#define NOMINMAX // for some reason with C .h import?
 
 #include <array>
 #include <chrono>
@@ -12,6 +13,8 @@
 #include <sstream>
 #include <string>
 #include <thread>
+
+#include "../e-socks/include/e-c-sock/client.h"
 
 /*
 The valid actions the simulation engine can process
@@ -184,6 +187,8 @@ public:
 
         outFile.close();
 
+        // TODO: make sure sockets are disconnected
+
         // release stream memory
         inStream.reset(); 
         outStream.reset(); 
@@ -205,6 +210,9 @@ private:
 
     std::ofstream outFile;
     int logLevelConfig;
+
+    // only need one socket
+    std::unique_ptr<connection_manager> outSockets; 
 
     // recieving stream for messages into logger
     std::unique_ptr<std::stringstream> inStream; 
@@ -240,6 +248,23 @@ private:
         // copying and writing the output string
         // std::lock_guard<std::mutex> lock(outStreamMutex);
         std::swap(inStream, outStream);
+    }
+
+    void InitSocket() 
+    {
+
+    }
+
+    void DestroySockets()
+    {
+        
+    }
+
+    // CALLED IN THREAD 
+    // ----------------
+    void OutStreamToSocket() 
+    {
+
     }
 
     // CALLED IN THREAD

@@ -15,6 +15,13 @@
 #include "strategyinput.hpp"
 
 /*
+Use loopback address to share data through sockets
+Pick a random port that matches the Python socketserver
+*/
+const std::string LOCAL_HOST = "127.0.0.1";
+const int PORT = 11111;
+
+/*
 
 */
 struct InitPackage
