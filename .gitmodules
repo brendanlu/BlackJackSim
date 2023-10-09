@@ -1,0 +1,3 @@
+[submodule "e-socks"]
+	path = e-socks
+	url = https://github.com/brendanlu/e-socks.git
