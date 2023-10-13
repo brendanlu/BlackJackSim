@@ -68,7 +68,6 @@ int main()
     cout << "Agents set\n\n";
 
     cout << "Confifuring logfile\n"; 
-    testEngine.InitNewLogging(); 
     testEngine.SetLogLevel(3); 
     cout << "Set log level success\n"; 
     testEngine.SetLogFile("LOG2.csv");

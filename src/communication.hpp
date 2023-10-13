@@ -69,7 +69,7 @@ public:
     Logger() : 
         currChunk(0),
         adjust(true), 
-        logLevelConfig(3), 
+        LOGLEVELCONFIG(3), 
         lastLogChunkTime(0),
         lastWriteTime(0),
         currShoeNum(0), 
@@ -95,7 +95,7 @@ public:
             ll = 0; 
         }
 
-        logLevelConfig = ll; 
+        LOGLEVELCONFIG = ll; 
     }
 
     /*
@@ -111,9 +111,11 @@ public:
 
     void InitLogSocket(const char* ip, int port) 
     {
-        add_connection(&outSocket, SINGLE_SOCKET, ip, port);
-        outStream << colHeaders;
-        OutStreamToSocket(); 
+        if (outSocket.sockets[SINGLE_SOCKET] != ERROR_SOCKET) {
+            add_connection(&outSocket, SINGLE_SOCKET, ip, port);
+            outStream << colHeaders;
+            OutStreamToSocket(); 
+        }
     }
 
     /*
@@ -121,7 +123,10 @@ public:
     */
     operator bool() const 
     {
-        return outFile.is_open(); 
+        return 
+            outFile.is_open() 
+            && 
+            outSocket.sockets[SINGLE_SOCKET] != ERROR_SOCKET; 
     }
 
     /*
@@ -138,7 +143,7 @@ public:
             logChunkStart = std::chrono::system_clock::now();
         }
 
-        if (static_cast<int>(ll) <= logLevelConfig) {
+        if (static_cast<int>(ll) <= LOGLEVELCONFIG) {
             inStream << LogLabel(lt) << "," 
                      << currShoeNum  << ","
                      << currTableNum << ","
@@ -215,7 +220,7 @@ private:
     bool adjust; 
 
     std::ofstream outFile;
-    int logLevelConfig;
+    int LOGLEVELCONFIG;
 
     // only need one socket
     connection_manager outSocket; 
@@ -274,18 +279,27 @@ private:
     // ----------------
     void OutStreamToSocket() 
     {
-        int bytesSent;
-        bytesSent = send(&outSocket, SINGLE_SOCKET, outStream.str().c_str(), 
-        (int)outStream.str().length(), SEND_FLAG);
+        int totalBytesSent = 0;
+        int lastBytesSent = 0; 
+        int outStreamLen = (int)outStream.str().length();
 
-        // TODO: account for data not fully sent through the socket
-        if (bytesSent) { // ...
-            ;
+        // keep sending packets until the whole outStream has been sent
+        while (totalBytesSent != outStreamLen) {
+            lastBytesSent = send(
+                &outSocket, SINGLE_SOCKET, 
+                outStream.str().c_str() + totalBytesSent, 
+                outStreamLen - totalBytesSent, SEND_FLAG
+            );
+
+            if (lastBytesSent <= 0) {
+                break; // avoid an infinite loop if socket issue
+            }
+            else {
+                totalBytesSent += lastBytesSent; 
+            }
         }
 
         ResetOutputStream(); 
-
-        return; 
     }
 
     // CALLED IN THREAD
@@ -309,8 +323,6 @@ private:
         }
 
         ResetOutputStream(); 
-
-        return; 
     }
 
     // CALLED IN THREAD
@@ -358,8 +370,6 @@ private:
                 adjust = false; 
             }
         }
-
-        return; 
     }
     
     /*

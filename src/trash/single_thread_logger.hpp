@@ -45,7 +45,7 @@ class Logger
 {
 public: 
     Logger() : 
-        logLevelConfig(3), 
+        LOGLEVELCONFIG(3), 
         currShoeNum(0), 
         currTableNum(0)
     {}
@@ -62,7 +62,7 @@ public:
             ll = 0; 
         }
 
-        logLevelConfig = ll; 
+        LOGLEVELCONFIG = ll; 
     }
 
     /*
@@ -92,7 +92,7 @@ public:
         const std::string& c, const std::string& d
     )
     {
-        if (static_cast<int>(ll) <= logLevelConfig) {
+        if (static_cast<int>(ll) <= LOGLEVELCONFIG) {
             outFile << LogLabel(lt) << "," 
                     << currShoeNum  << ","
                     << currTableNum << ","
@@ -123,7 +123,7 @@ public:
 
 private: 
     std::ofstream outFile;
-    int logLevelConfig; 
+    int LOGLEVELCONFIG; 
 
     inline std::string LogLabel(LOG_TYPE lt) 
     {

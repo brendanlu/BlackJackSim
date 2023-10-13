@@ -47,8 +47,8 @@ SimEngineBJ::SimEngineBJ(InitPackage init) :
     }
 
     for (unsigned int i=0; i<nAgents; ++i) {
-        agents[i] = Agent(init.strats[i]);
-        agents[i].id = i + 1; 
+        simAgents[i] = Agent(init.strats[i]);
+        simAgents[i].id = i + 1; 
     }
 }
 
@@ -56,7 +56,7 @@ SimEngineBJ::SimEngineBJ(InitPackage init) :
 Configure the logger, and pass in raw (unmanaged) pointers to member classes. 
 The simengine memory manages the logger. Member classes just use a raw pointer.
 */
-void SimEngineBJ::InitNewLogging() 
+void SimEngineBJ::AssignConfiguredLogger() 
 {
     simLog.reset(); 
     simLog = std::make_shared<Logger>();
@@ -64,7 +64,7 @@ void SimEngineBJ::InitNewLogging()
     Logger *rawPtr = simLog.get(); 
 
     for (unsigned int i=0; i<nAgents; ++i) {
-        agents[i].SetLog(rawPtr); 
+        simAgents[i].SetLog(rawPtr); 
     }
 }
 
@@ -100,8 +100,8 @@ void SimEngineBJ::SetAgent(
     char* splt, 
     double* cnt) 
 {
-    agents[idx] = Agent(hrd, sft, splt, cnt);
-    agents[idx].id = idx + 1; 
+    simAgents[idx] = Agent(hrd, sft, splt, cnt);
+    simAgents[idx].id = idx + 1; 
     nAgents += 1; 
 }
 
@@ -121,7 +121,7 @@ void SimEngineBJ::EventFreshShuffle(unsigned int n)
     simShoe.FreshShuffleN(n); 
 
     for (unsigned int i=0; i<nAgents; ++i) {
-        agents[i].FreshShuffleHandler(); 
+        simAgents[i].FreshShuffleHandler(); 
     }
     
     simLog->FreshShuffleHandler(); 
@@ -132,9 +132,9 @@ void SimEngineBJ::EventFreshShuffle(unsigned int n)
 */
 void SimEngineBJ::EventClear() 
 {
-    // let agents implement wager-settling logic before clearing other objects
+    // let simAgents implement wager-settling logic before clearing other objects
     for (unsigned int i=0; i<nAgents; ++i) {
-        agents[i].ClearHandler(simDealer);
+        simAgents[i].ClearHandler(simDealer);
     }
     
     simShoe.Clear(); 
@@ -152,7 +152,7 @@ template<typename targetType> void SimEngineBJ::EventDeal(targetType &target)
     target.DealTargetHandler(dCard);
 
     for (unsigned int i=0; i<nAgents; ++i) {
-        agents[i].DealObserveHandler(dCard); 
+        simAgents[i].DealObserveHandler(dCard); 
     }
 }
 
@@ -197,19 +197,18 @@ void SimEngineBJ::EventQueryDealer()
 void SimEngineBJ::RunSimulation(unsigned long nIters)
 {
     auto start = std::chrono::system_clock::now();
-    InitNewLogging(); 
     simLog->InitLogFile(LOGFNAME);
     simLog->InitLogSocket(SOCKETIP.c_str(), SOCKETPORT); 
     simLog->SetLogLevel(LOGLEVEL); 
 
-    // check if Logger has valid fhandler object configured
+    // check if Logger has valid fhandler object and socket configured
     if (!(*simLog)) {
         simLog->InitLogFile("ERROR.csv"); 
         simLog->WriteRow(
             LOG_LEVEL::BASIC,
             LOG_TYPE::ENGINE, 
             CONTEXT_STRING_1, 
-            "ERROR - LOG FILE DESINATION NOT CONFIGURED"
+            "SOCKET/FILE PROBLEM"
         );
         simLog->ManualFlush(); 
         return; 
@@ -224,6 +223,8 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
                 + " SHOE SIMULATIONS"
         );
     }
+
+    AssignConfiguredLogger(); 
     
     // do a full shuffle of the shoe
     //
@@ -247,12 +248,12 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
             EventDeal(simDealer); 
 
             for (unsigned int i=0; i<nAgents; ++i) {
-                EventDeal(agents[i]); 
-                EventDeal(agents[i]);
+                EventDeal(simAgents[i]); 
+                EventDeal(simAgents[i]);
             }
 
             for (unsigned int i=0; i<nAgents; ++i) {
-                EventQueryAgent(agents[i]); 
+                EventQueryAgent(simAgents[i]); 
             }
 
             EventQueryDealer(); 
