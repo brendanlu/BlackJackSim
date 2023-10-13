@@ -16,14 +16,18 @@ for file in os.listdir("pyinterface/"):
 libs = []
 if platform.system() == "Windows":
     # link winsock
-    libs.append("ws2_32") 
+    libs.append("ws2_32")
 
-extensions = [Extension("cardstream", sources=srcs, language="c++", libraries=libs)]
+extensions = [
+    Extension(
+        "cardstream",
+        sources=srcs,
+        language="c++",
+        libraries=libs,
+        include_dirs=["src", "e-socks/include"],
+    )
+]
 
 print(srcs)
 
-setup(
-    ext_modules=cythonize(
-        extensions, compiler_directives={"language_level": "3"}
-    )
-)
+setup(ext_modules=cythonize(extensions, compiler_directives={"language_level": "3"}))

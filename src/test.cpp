@@ -62,7 +62,7 @@ int main()
     cout << "Creating cpp test simengine\n\n"; 
     SimEngineBJ testEngine(6, 0.5);
 
-    cout << "Setting agent strat pointers\n\n"; 
+    cout << "Setting agent strat pointers\n"; 
     testEngine.SetAgent(0, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]);
     testEngine.SetAgent(1, &hrd[0][0], &sft[0][0], &splt[0][0], &cnt[0]);
     cout << "Agents set\n\n";
@@ -71,7 +71,9 @@ int main()
     testEngine.SetLogLevel(3); 
     cout << "Set log level success\n"; 
     testEngine.SetLogFile("LOG2.csv");
-    cout << "Configured.\n\n";
+    cout << "Configured log file.\n";
+    testEngine.SetSocketConnection("127.0.0.1", 11111);
+    cout << "Socket connection initlsed\n\n";
 
     cout << "Running simulation of " << NITERS << " iterations\n";
     auto start = std::chrono::system_clock::now();

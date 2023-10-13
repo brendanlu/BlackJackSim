@@ -2,14 +2,10 @@
 # Makefile for Windows 
 #
 CXX = g++
-CXXFLAGS = -O3 -march=native -Wall -Wextra -flto -fprefetch-loop-arrays -pg
+CXXFLAGS = -O3 -march=native -Wall -Wextra -flto -fprefetch-loop-arrays -I../e-socks/include -pg
 LDFLAGS = -pg -lws2_32
 
-OBJs = test.o \
-		shoe.o \
-		simenginebj.o \
-		agent.o \
-		dealer.o
+OBJs = test.o shoe.o simenginebj.o agent.o dealer.o
 
 TARGET = test
 

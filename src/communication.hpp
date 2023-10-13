@@ -17,7 +17,7 @@
 #include <string>
 #include <thread>
 
-#include "../e-socks/include/e-c-sock/client.h"
+#include "e-c-sock/client.h"
 
 /*
 The valid actions the simulation engine can process

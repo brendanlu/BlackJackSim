@@ -6,13 +6,7 @@ import os
 import sys
 import time
 
-delete = [
-    r"ERROR.csv",
-    r"LOG.csv",
-    r"LOG2.csv",
-    r"gmon.out",
-    r"report.txt"
-]
+delete = [r"ERROR.csv", r"LOG.csv", r"LOG2.csv", r"gmon.out", r"report.txt"]
 
 for file in os.listdir():
     if file.endswith(".o") or file.endswith(".exe") or file in delete:
