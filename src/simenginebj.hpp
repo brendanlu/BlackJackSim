@@ -74,7 +74,7 @@ private:
     unsigned int nAgents;
     std::array<Agent, MAX_N_AGENTS> simAgents;
 
-    void AssignConfiguredLogger(); 
+    void InitLoggerInstance(); 
 
     void EventFreshShuffle(unsigned int n); 
 

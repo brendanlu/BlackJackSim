@@ -102,7 +102,7 @@ void Agent::SetLog(Logger *logPtr)
 {
     log = logPtr;
 
-    log->WriteRow(
+    log->csvLog(
         LOG_LEVEL::DETAIL,
         LOG_TYPE::AGENT, 
         CONTEXT_STRING_1,
@@ -183,7 +183,7 @@ void Agent::ClearHandler (const Dealer &dealerRef)
 
     // ANALYSIS AND LOGGING
     if (nHandsPlayed > 0) {
-        log->WriteRow(
+        log->csvLog(
             LOG_LEVEL::DETAIL, 
             LOG_TYPE::AGENT, 
             "Agent " + std::to_string(id) + " avg. pnl/hand",

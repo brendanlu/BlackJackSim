@@ -56,10 +56,15 @@ SimEngineBJ::SimEngineBJ(InitPackage init) :
 Configure the logger, and pass in raw (unmanaged) pointers to member classes. 
 The simengine memory manages the logger. Member classes just use a raw pointer.
 */
-void SimEngineBJ::AssignConfiguredLogger() 
+void SimEngineBJ::InitLoggerInstance() 
 {
     simLog.reset(); 
     simLog = std::make_shared<Logger>();
+
+    // configure the logger
+    simLog->InitLogFile(LOGFNAME);
+    simLog->InitLogSocket(SOCKETIP.c_str(), SOCKETPORT); 
+    simLog->SetLogLevel(LOGLEVEL); 
 
     Logger *rawPtr = simLog.get(); 
 
@@ -197,34 +202,16 @@ void SimEngineBJ::EventQueryDealer()
 void SimEngineBJ::RunSimulation(unsigned long nIters)
 {
     auto start = std::chrono::system_clock::now();
-    simLog->InitLogFile(LOGFNAME);
-    simLog->InitLogSocket(SOCKETIP.c_str(), SOCKETPORT); 
-    simLog->SetLogLevel(LOGLEVEL); 
+    
+    // intiialise a logger instance and configure it
+    InitLoggerInstance(); 
 
-    // check if Logger has valid fhandler object and socket configured
-    if (!(*simLog)) {
-        simLog->InitLogFile("ERROR.csv"); 
-        simLog->WriteRow(
-            LOG_LEVEL::BASIC,
-            LOG_TYPE::ENGINE, 
-            CONTEXT_STRING_1, 
-            "SOCKET/FILE PROBLEM"
-        );
-        simLog->ManualFlush(); 
-        return; 
-    }
-    else {
-        simLog->WriteRow(
-            LOG_LEVEL::BASIC,
-            LOG_TYPE::ENGINE, 
-            CONTEXT_STRING_1,
-            "COMMENCING " 
-                + std::to_string(nIters)
-                + " SHOE SIMULATIONS"
-        );
-    }
-
-    AssignConfiguredLogger(); 
+    simLog->csvLog(
+        LOG_LEVEL::BASIC,
+        LOG_TYPE::ENGINE, 
+        CONTEXT_STRING_1,
+        "COMMENCING " + std::to_string(nIters) + " SHOE SIMULATIONS"
+    );
     
     // do a full shuffle of the shoe
     //
@@ -259,7 +246,7 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
             EventQueryDealer(); 
         }
 
-        simLog->WriteRow(
+        simLog->csvLog(
             LOG_LEVEL::VERBOSE,
             LOG_TYPE::ENGINE, 
             "Shoe Completed", 
@@ -271,13 +258,11 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
         std::chrono::system_clock::now() - start
     );
 
-    simLog->WriteRow(
+    simLog->csvLog(
         LOG_LEVEL::BASIC,
         LOG_TYPE::ENGINE, 
         CONTEXT_STRING_1,
-        "SUCCESS - SIMULATION COMPLETED IN " 
-            + std::to_string(elapsed.count())
-            + "ms"
+        "SIMULATION COMPLETED IN " + std::to_string(elapsed.count()) + "ms"
     );
 
     simLog.reset(); 

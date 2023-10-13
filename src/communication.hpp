@@ -111,11 +111,10 @@ public:
 
     void InitLogSocket(const char* ip, int port) 
     {
-        if (outSocket.sockets[SINGLE_SOCKET] != ERROR_SOCKET) {
-            add_connection(&outSocket, SINGLE_SOCKET, ip, port);
-            outStream << colHeaders;
-            OutStreamToSocket(); 
-        }
+        add_connection(&outSocket, SINGLE_SOCKET, ip, port);
+        outStream << colHeaders;
+        OutStreamToSocket(); 
+        
     }
 
     /*
@@ -132,7 +131,7 @@ public:
     /*
     Write a new csv row. 
     */
-    inline void WriteRow(
+    inline void csvLog(
         LOG_LEVEL ll, LOG_TYPE lt, 
         const std::string& c, const std::string& d
     )
@@ -197,12 +196,14 @@ public:
     {
         // complete one final write operation
         ManualFlush(); 
-        outFileThread.join(); 
+
+        // join back in thread
+        if (outFileThread.joinable()) {
+            outFileThread.join();
+        }
 
         outFile.close(); // can always close
         CloseSocket(); // this method will check if socket is open
-
-        // TODO: make sure sockets are disconnected
     }
 
 private:
@@ -291,11 +292,10 @@ private:
                 outStreamLen - totalBytesSent, SEND_FLAG
             );
 
+            totalBytesSent += lastBytesSent;
+
             if (lastBytesSent <= 0) {
                 break; // avoid an infinite loop if socket issue
-            }
-            else {
-                totalBytesSent += lastBytesSent; 
             }
         }
 

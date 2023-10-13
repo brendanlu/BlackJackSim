@@ -87,7 +87,7 @@ public:
     /*
     Write a new csv row. 
     */
-    inline void WriteRow(
+    inline void csvLog(
         LOG_LEVEL ll, LOG_TYPE lt, 
         const std::string& c, const std::string& d
     )
