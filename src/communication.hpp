@@ -292,10 +292,11 @@ private:
                 outStreamLen - totalBytesSent, SEND_FLAG
             );
 
-            totalBytesSent += lastBytesSent;
-
             if (lastBytesSent <= 0) {
                 break; // avoid an infinite loop if socket issue
+            }
+            else {
+                totalBytesSent += lastBytesSent; 
             }
         }
 
