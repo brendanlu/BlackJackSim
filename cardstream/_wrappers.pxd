@@ -10,7 +10,7 @@ cimport cython
 from libcpp cimport bool
 from libcpp.string cimport string
 
-cdef extern from "../src/simenginebj.hpp":
+cdef extern from "src/simenginebj.hpp":
     cdef cppclass SimEngineBJ: 
         SimEngineBJ() except + 
         SimEngineBJ(unsigned int, double) except +

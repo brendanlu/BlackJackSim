@@ -5,13 +5,10 @@ from Cython.Build import cythonize
 import os
 
 srcs = []
+srcs.append("_wrappers.pyx")
 for file in os.listdir("src/"):
     if file.endswith(".cpp") and not file.startswith("test"):
         srcs.append("src/" + file)
-
-for file in os.listdir("pyinterface/"):
-    if file.endswith(".pyx"):
-        srcs.append("pyinterface/" + file)
 
 libs = []
 if platform.system() == "Windows":
@@ -20,14 +17,12 @@ if platform.system() == "Windows":
 
 extensions = [
     Extension(
-        "cardstream",
+        "_wrappers",
         sources=srcs,
         language="c++",
         libraries=libs,
-        include_dirs=["src", "e-socks/include"],
+        include_dirs=["src", "../e-socks/include"],
     )
 ]
-
-print(srcs)
 
 setup(ext_modules=cythonize(extensions, compiler_directives={"language_level": "3"}))

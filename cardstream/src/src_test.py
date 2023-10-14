@@ -20,7 +20,7 @@ if "-d" not in sys.argv:
     # let it compile - hopefully
     time.sleep(1.3)
     if "test.exe" in os.listdir():
-        print("Found file; output-------------------------------------------")
+        print("Calling executable:\n")
         os.system("test.exe")
     else:
         print("WAS UNABLE TO FIND EXE FILE IN TIME")

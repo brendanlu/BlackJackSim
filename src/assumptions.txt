@@ -1,2 +1,0 @@
-You can't have a table with more than (even at the very worse case) 52 cards. 
-This would break the simulator somehow (in shoe logic). 

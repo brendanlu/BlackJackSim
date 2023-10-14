@@ -1,4 +1,4 @@
-from _cppwrappers cimport SimEngineBJ
+from _wrappers cimport SimEngineBJ
 
 cdef class Simulator: 
     """
