@@ -1,4 +1,4 @@
-from _wrappers cimport SimEngineBJ
+from ._wrappers cimport SimEngineBJ
 
 cdef class _SimEngineWrapper: 
     """

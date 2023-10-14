@@ -1,5 +1,5 @@
 # 
-# Makefile for Windows to test just the C++ build
+# Makefile for g++ Windows to test just the C++ build
 #
 CXX = g++
 CXXFLAGS = -O3 -march=native -Wall -Wextra -flto -fprefetch-loop-arrays -I../../e-socks/include -pg
