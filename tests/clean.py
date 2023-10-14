@@ -6,7 +6,7 @@ after building and test-runs.
 import os
 import shutil
 
-MODULE_DIR = "../carstream"
+MODULE_DIR = "../cardstream/"
 
 # remove build folder
 try:
@@ -24,7 +24,7 @@ except FileNotFoundError:
 # remove cython generated files, and compiled extensions
 for file in os.listdir(MODULE_DIR):
     if file.endswith(".pyd"):
-        os.remove(file)
+        os.remove(MODULE_DIR + file)
         print("Removed", file)
 
 # clean from a simulation run

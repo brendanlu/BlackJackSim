@@ -1,6 +1,6 @@
 from _wrappers cimport SimEngineBJ
 
-cdef class Simulator: 
+cdef class _SimEngineWrapper: 
     """
     Cython wrapper for C++ simulation interface. 
     """
