@@ -71,12 +71,12 @@ public:
         toFile(false), 
         adjust(true), 
         LOGLEVELCONFIG(3), 
-        lastLogChunkTime(0),
-        lastWriteTime(0),
+        // lastLogChunkTime(0),
+        // lastWriteTime(0),
         currShoeNum(0), 
         currTableNum(0)
     {
-        dynamChunk = INIT_CHUNK_SIZE; 
+        // dynamChunk = INIT_CHUNK_SIZE; 
 
         inStream.str(""); 
         outStream.str("");
@@ -161,21 +161,27 @@ public:
             currChunk += 1; 
         }
 
+        if (currChunk > 10) {
+            ManualFlush(); 
+        }
+
         // dynamChunk may or may not have been adjusted in the other thread
         // and may or may not change between this section of code and the next
         // chunk adjustment method call
         //
         // keep a clear record of what chunk size the timing corresponds to
+        /*
         if (currChunk > dynamChunk) {
-            // recordedChunkSize = dynamChunk; 
-            /*
+            recordedChunkSize = dynamChunk; 
+            
             lastLogChunkTime = 
                 std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now() - logChunkStart
                 );
-            */ 
+            
             ManualFlush(); 
         }
+        */
     }
 
     void ManualFlush() 
@@ -219,9 +225,9 @@ private:
     //
     // this is the initial message count buffer limit, but it will attempt
     // to do its own optimizations during usage
-    static const int INIT_CHUNK_SIZE = 10;
+    // static const int INIT_CHUNK_SIZE = 1000000;
 
-    int dynamChunk; 
+    // int dynamChunk; 
     int currChunk; 
 
     // turn on/off dynamic chunk adjustment logic
@@ -349,6 +355,7 @@ private:
         */
     }
 
+    /*
     // CALLED IN THREAD
     // TODO: actually look at this and make it useful (?)
     // NOTE: this is currently not used at all
@@ -396,6 +403,7 @@ private:
             }
         }
     }
+    */
     
     /*
     The csv data is written in a stacked-like format (long but not wide). 

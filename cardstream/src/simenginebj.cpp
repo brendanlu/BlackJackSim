@@ -203,7 +203,10 @@ void SimEngineBJ::EventQueryDealer()
 }
 
 /*
+Run the main event loop. This should be very clear to anyone with a functional 
+understanding of blackjack. 
 
+Note: It creates and configures a new logger instance each time. 
 */
 void SimEngineBJ::RunSimulation(unsigned long nIters)
 {
@@ -271,6 +274,8 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
         "SIMULATION COMPLETED IN " + std::to_string(elapsed.count()) + "ms"
     );
 
+    // ensures all logging information is correctly transported at the end of 
+    // the simulation loop 
     simLog.reset(); 
     return;
 }
