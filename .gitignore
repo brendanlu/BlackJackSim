@@ -204,5 +204,4 @@ cython_debug/
 # Cython generated files ------------------------------
 
 # ignore Cython generated code for now
-cardstream.cpp 
-PySimEngineBJ.cpp
+_wrappers.cpp
