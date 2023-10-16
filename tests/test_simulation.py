@@ -19,13 +19,11 @@ def setup_before_all_tests():
 
     make_clean_build_env()
     invoke_setup_script(["build_ext", "--inplace"])
-
     assert glob.glob(os.path.join(MODULE_DIR, "*.pyd")), "No extension module found"
-    global cs
+    
     sys.path.append("../")
     import cardstream
-
-    cs = cardstream
+    global cs; cs = cardstream
 
     yield
 
@@ -34,16 +32,14 @@ def setup_before_all_tests():
 
 
 def test_strat_input_utils():
-    global strat_args
-    strat_args = cs._strat_to_numpy_arrayfmt(
+    global strat_args; strat_args = cs._strat_to_numpy_arrayfmt(
         strat_relpath="teststrat/BasicNoDeviations-4to8Decks-HitSoft17.csv",
         count_relpath="teststrat/HiLoCount.csv",
     )
 
 
 def test_simulator_constructor():
-    global test_simulator
-    test_simulator = cs._wrappers._SimEngineWrapper(
+    global test_simulator; test_simulator = cs._wrappers._SimEngineWrapper(
         6, 0.5, True, 3, [strat_args for i in range(3)]
     )
 
@@ -59,9 +55,8 @@ def test_socket_config():
 def test_simulation_run():
     make_clean_dir()
     test_simulator.run(100)
-    current_directory = os.getcwd()
     assert os.path.isfile(
-        os.path.join(current_directory, LOGFNAME)
+        os.path.join(os.getcwd(), LOGFNAME)
     ), f"{LOGFNAME} does not exist in the current directory."
 
 
