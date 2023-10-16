@@ -249,7 +249,7 @@ private:
     std::stringstream outStream;  
 
     // NOTE: the current design does not need the mutex
-    std::mutex outStreamMutex; 
+    // std::mutex outStreamMutex; 
     std::thread outFileThread;
     std::thread outSocketThread; 
 

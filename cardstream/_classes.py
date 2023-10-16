@@ -8,11 +8,11 @@ from . import _wrappers
 
 class _SocketDataToBufferHandler(socketserver.BaseRequestHandler):
     """
-    The idea here is to accumulate a byte buffer in csv format, and once it 
-    becomes large enough, convert as many complete lines as possible into a 
-    dataframe on the GPU for data processing. 
+    The idea here is to accumulate a byte buffer in csv format, and once it
+    becomes large enough, convert as many complete lines as possible into a
+    dataframe on the GPU for data processing.
 
-    In doing so, it is able to process the generated simulation data on the fly. 
+    In doing so, it is able to process the generated simulation data on the fly.
     """
 
     def __init__(self, request, client_address, server):
@@ -25,6 +25,5 @@ class _SocketDataToBufferHandler(socketserver.BaseRequestHandler):
         batch = b""
         while True:
             batch = self.request.recv()
-            if batch: 
-                self.buf += batch
-                
+            self.buf += batch
+            
