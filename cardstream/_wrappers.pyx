@@ -1,4 +1,4 @@
-from ._wrappers cimport SimEngineBJ
+from cardstream._wrappers cimport SimEngineBJ
 
 cdef class _SimEngineWrapper: 
     """

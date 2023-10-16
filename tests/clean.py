@@ -18,6 +18,7 @@ except FileNotFoundError:
 # Cython generated C++ file
 try:
     os.remove(MODULE_DIR + "_wrappers.cpp")
+    print("Removed Cython generated C++ file")
 except FileNotFoundError:
     pass
 
