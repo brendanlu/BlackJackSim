@@ -1,33 +1,36 @@
+import glob
 import os
 import pytest
-from setuptools import setup
 import shutil
+import subprocess
 import sys
-
-import cardstream as cs
+from typing import List
 
 LOGFNAME = "LOG2.csv"
 MODULE_DIR = "../cardstream/"
+SETUP_DIR = "../"
 
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_before_all_tests():
+    """
+    A really hackish way to initiate a build.
+    """
+
+    make_clean_build_env()
+    invoke_setup_script(["build_ext", "--inplace"])
+
+    assert glob.glob(os.path.join(MODULE_DIR, "*.pyd")), "No extension module found"
+    global cs
+    sys.path.append("../")
+    import cardstream
+
+    cs = cardstream
+
+    yield
+
     make_clean_dir()
-    setup_script_path = "../setup.py"
-
-    # Load and execute the setup.py script
-    setup_script_globals = {}
-    with open(setup_script_path, "rb") as f:
-        exec(compile(f.read(), setup_script_path, "exec"), setup_script_globals)
-
-    # Run the setup function in the setup.py script
-    assert "setup" in setup_script_globals
-    setup(**setup_script_globals["setup"])
-
-
-@pytest.fixture(scope="session", autouse=True)
-def teardown_after_all_tests():
-    make_clean_dir
+    invoke_setup_script(["clean", "--all"])
 
 
 def test_strat_input_utils():
@@ -54,6 +57,7 @@ def test_socket_config():
 
 
 def test_simulation_run():
+    make_clean_dir()
     test_simulator.run(100)
     current_directory = os.getcwd()
     assert os.path.isfile(
@@ -61,28 +65,40 @@ def test_simulation_run():
     ), f"{LOGFNAME} does not exist in the current directory."
 
 
-def make_clean_dir():
-    # remove build folder
+def make_clean_build_env():
+    # build folder
     try:
-        shutil.rmtree(MODULE_DIR + "build")
-        print("Removed build folder")
+        shutil.rmtree(os.path.join(MODULE_DIR, "build"))
     except FileNotFoundError:
         pass
 
     # Cython generated C++ file
     try:
-        os.remove(MODULE_DIR + "_wrappers.cpp")
+        os.remove(os.path.join(MODULE_DIR, "_wrappers.cpp"))
     except FileNotFoundError:
         pass
 
-    # remove cython generated files, and compiled extensions
+    # compiled extensions
     for file in os.listdir(MODULE_DIR):
-        if file.endswith(".pyd"):
-            os.remove(MODULE_DIR + file)
-            print("Removed", file)
+        if file.endswith(".pyd") and file.startswith("_wrappers"):
+            # do not place in try-except block
+            os.remove(os.path.join(MODULE_DIR, file))
 
+
+def make_clean_dir():
     # clean from a simulation run
     for file in os.listdir():
         if "LOG" in file or "ERROR" in file:
             os.remove(file)
-            print("Removed", file)
+
+
+def invoke_setup_script(args: List[str]):
+    """
+    Hacky way to invoke the setup.py file.
+    """
+    original_dir = os.getcwd()
+    os.chdir(SETUP_DIR)
+    assert (
+        subprocess.run([sys.executable, "setup.py"] + args).returncode == 0
+    ), f"Setup script with {args} arguments failed!"
+    os.chdir(original_dir)

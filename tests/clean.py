@@ -10,7 +10,7 @@ MODULE_DIR = "../cardstream/"
 
 # remove build folder
 try:
-    shutil.rmtree(MODULE_DIR + "build")
+    shutil.rmtree("../build")
     print("Removed build folder")
 except FileNotFoundError:
     pass
