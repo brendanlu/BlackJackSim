@@ -22,4 +22,4 @@ cdef extern from "src/simenginebj.hpp":
         void SetLogFile(string)
         void SetSocketConnection(string, int)
         void SetLogLevel(int)
-        void RunSimulation(unsigned long long)
+        void RunSimulation(unsigned long long) nogil

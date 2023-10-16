@@ -20,26 +20,30 @@ def setup_before_all_tests():
     make_clean_build_env()
     invoke_setup_script(["build_ext", "--inplace"])
     assert glob.glob(os.path.join(MODULE_DIR, "*.pyd")), "No extension module found"
-    
+
     sys.path.append("../")
     import cardstream
-    global cs; cs = cardstream
+
+    global cs
+    cs = cardstream
 
     yield
 
-    make_clean_dir()
+    # make_clean_dir()
     invoke_setup_script(["clean", "--all"])
 
 
 def test_strat_input_utils():
-    global strat_args; strat_args = cs._strat_to_numpy_arrayfmt(
+    global strat_args
+    strat_args = cs._strat_to_numpy_arrayfmt(
         strat_relpath="teststrat/BasicNoDeviations-4to8Decks-HitSoft17.csv",
         count_relpath="teststrat/HiLoCount.csv",
     )
 
 
 def test_simulator_constructor():
-    global test_simulator; test_simulator = cs._wrappers._SimEngineWrapper(
+    global test_simulator
+    test_simulator = cs._wrappers._SimEngineWrapper(
         6, 0.5, True, 3, [strat_args for i in range(3)]
     )
 

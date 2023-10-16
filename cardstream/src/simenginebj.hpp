@@ -66,6 +66,7 @@ private:
     std::string SOCKETIP;
     int SOCKETPORT;
     int LOGLEVEL; 
+    bool TOFILE; 
 
     Shoe<std::mt19937_64> simShoe;
     

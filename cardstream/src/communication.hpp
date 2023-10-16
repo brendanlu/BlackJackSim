@@ -68,6 +68,7 @@ class Logger
 public: 
     Logger() : 
         currChunk(0),
+        toFile(false), 
         adjust(true), 
         LOGLEVELCONFIG(3), 
         lastLogChunkTime(0),
@@ -98,15 +99,23 @@ public:
         LOGLEVELCONFIG = ll; 
     }
 
+    void EnableLogFile()
+    {
+        toFile = true;
+    }
+
     /*
     Pass in name of output file to write into. 
     This will open the file and write + flush the data column headers in. 
     */
     void InitLogFile(const std::string& filename) 
     {
-        outFile.open(filename, std::ios::out); 
-        outFile << colHeaders;
-        outFile.flush();
+        if (toFile) {
+            outFile.open(filename, std::ios::out); 
+            outFile << colHeaders;
+            outFile.flush();
+        }
+
     }
 
     void InitLogSocket(const char* ip, int port) 
@@ -114,7 +123,6 @@ public:
         add_connection(&outSocket, SINGLE_SOCKET, ip, port);
         outStream << colHeaders;
         OutStreamToSocket(); 
-        
     }
 
     /*
@@ -122,25 +130,24 @@ public:
     */
     operator bool() const 
     {
-        return 
-            outFile.is_open() 
-            && 
-            outSocket.sockets[SINGLE_SOCKET] != ERROR_SOCKET; 
+        return outSocket.sockets[SINGLE_SOCKET] != ERROR_SOCKET; 
     }
 
     /*
     Write a new csv row. 
     */
-    inline void csvLog(
+    inline void CSVLog(
         LOG_LEVEL ll, LOG_TYPE lt, 
         const std::string& c, const std::string& d
     )
     {
         // record the start time of a chunk to get a rough idea of how 
         // frequently messages come in
+        /*
         if (currChunk == 0) {
             logChunkStart = std::chrono::system_clock::now();
         }
+        */
 
         if (static_cast<int>(ll) <= LOGLEVELCONFIG) {
             inStream << LogLabel(lt) << "," 
@@ -160,26 +167,29 @@ public:
         //
         // keep a clear record of what chunk size the timing corresponds to
         if (currChunk > dynamChunk) {
-            recordedChunkSize = dynamChunk; 
+            // recordedChunkSize = dynamChunk; 
+            /*
             lastLogChunkTime = 
                 std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now() - logChunkStart
                 );
+            */ 
             ManualFlush(); 
         }
     }
 
     void ManualFlush() 
     {
-        // ensures thread finishes last flush oepration
-        if (outFileThread.joinable()) {
-            outFileThread.join(); 
-        }
-
+        JoinThreads(); 
+        ResetOutputStream(); 
         SwapStreams();
+
         currChunk = 0; 
 
-        outFileThread = std::thread(&Logger::OutStreamToFile, this); 
+        if (toFile) {
+            outFileThread = std::thread(&Logger::OutStreamToFile, this);
+        } 
+        outSocketThread = std::thread(&Logger::OutStreamToSocket, this); 
     }
 
     inline void FreshShuffleHandler()
@@ -197,13 +207,10 @@ public:
         // complete one final write operation
         ManualFlush(); 
 
-        // join back in thread
-        if (outFileThread.joinable()) {
-            outFileThread.join();
-        }
+        JoinThreads(); 
 
-        outFile.close(); // can always close
-        CloseSocket(); // this method will check if socket is open
+        outFile.close(); // can always call close regardless of open file
+        CloseSocket(); // this can be called whenever, it will check sockets
     }
 
 private:
@@ -212,13 +219,17 @@ private:
     //
     // this is the initial message count buffer limit, but it will attempt
     // to do its own optimizations during usage
-    static const int INIT_CHUNK_SIZE = 1000000;
+    static const int INIT_CHUNK_SIZE = 10;
 
     int dynamChunk; 
     int currChunk; 
 
     // turn on/off dynamic chunk adjustment logic
+    // NOTE: this will be based on the buffer size now
     bool adjust; 
+
+    // once the simulation data becomes large, do not write to file anymore
+    bool toFile;
 
     std::ofstream outFile;
     int LOGLEVELCONFIG;
@@ -276,6 +287,18 @@ private:
         }
     }
 
+    inline void JoinThreads()
+    {   
+        if (toFile) {
+            if (outFileThread.joinable()) {
+                outFileThread.join();
+            }
+        }
+        if (outSocketThread.joinable()) {
+            outSocketThread.join();
+        }
+    }
+
     // CALLED IN THREAD 
     // ----------------
     void OutStreamToSocket() 
@@ -299,8 +322,6 @@ private:
                 totalBytesSent += lastBytesSent; 
             }
         }
-
-        ResetOutputStream(); 
     }
 
     // CALLED IN THREAD
@@ -315,19 +336,22 @@ private:
         outFile.flush(); 
 
         // record the file write time
+        /*
         lastWriteTime = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now() - start
         );
+        */ 
 
+        /*
         if (adjust) {
             DynamChunkAdjust();
         }
-
-        ResetOutputStream(); 
+        */
     }
 
     // CALLED IN THREAD
     // TODO: actually look at this and make it useful (?)
+    // NOTE: this is currently not used at all
     // ----------------
     void DynamChunkAdjust()
     {

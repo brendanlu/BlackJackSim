@@ -25,7 +25,9 @@ Constructor which appropriately seeds the simShoe member object.
 This will seed the pseudo random number generator, just this once. 
 */
 SimEngineBJ::SimEngineBJ(unsigned int N_DECKS, double penen) : 
-    LOGFNAME("LOG.csv"),
+    SOCKETIP("127.0.0.1"),
+    SOCKETPORT(11111),
+    TOFILE(false),
     simShoe(N_DECKS, penen),
     nAgents(0)
 {}
@@ -62,7 +64,10 @@ void SimEngineBJ::InitLoggerInstance()
     simLog = std::make_shared<Logger>();
 
     // configure the logger
-    simLog->InitLogFile(LOGFNAME);
+    if (TOFILE) {
+        simLog->EnableLogFile(); 
+        simLog->InitLogFile(LOGFNAME);
+    }
     simLog->InitLogSocket(SOCKETIP.c_str(), SOCKETPORT); 
     simLog->SetLogLevel(LOGLEVEL); 
 
@@ -79,6 +84,7 @@ TODO: Write checks at higher level interface that file format is ok.
 void SimEngineBJ::SetLogFile(std::string filename) 
 {
     LOGFNAME = filename; 
+    TOFILE = true; 
 }
 
 void SimEngineBJ::SetSocketConnection(std::string ip, int port)
@@ -206,7 +212,7 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
     // intiialise a logger instance and configure it
     InitLoggerInstance(); 
 
-    simLog->csvLog(
+    simLog->CSVLog(
         LOG_LEVEL::BASIC,
         LOG_TYPE::ENGINE, 
         CONTEXT_STRING_1,
@@ -246,7 +252,7 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
             EventQueryDealer(); 
         }
 
-        simLog->csvLog(
+        simLog->CSVLog(
             LOG_LEVEL::VERBOSE,
             LOG_TYPE::ENGINE, 
             "Shoe Completed", 
@@ -258,7 +264,7 @@ void SimEngineBJ::RunSimulation(unsigned long nIters)
         std::chrono::system_clock::now() - start
     );
 
-    simLog->csvLog(
+    simLog->CSVLog(
         LOG_LEVEL::BASIC,
         LOG_TYPE::ENGINE, 
         CONTEXT_STRING_1,
