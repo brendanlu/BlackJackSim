@@ -32,6 +32,7 @@ def setup_before_all_tests():
     # make_clean_dir()
     invoke_setup_script(["clean", "--all"])
 
+
 @pytest.mark.order(1)
 def test_strat_input_utils():
     global strat_args
@@ -40,6 +41,7 @@ def test_strat_input_utils():
         count_relpath="teststrat/HiLoCount.csv",
     )
 
+
 @pytest.mark.order(2)
 def test_simulator_constructor():
     global test_simulator
@@ -47,13 +49,16 @@ def test_simulator_constructor():
         6, 0.5, True, 3, [strat_args for i in range(3)]
     )
 
+
 @pytest.mark.order(3)
 def test_log_file_config():
     test_simulator._py_set_log_file(LOGFNAME)
 
+
 @pytest.mark.order(4)
 def test_socket_config():
     test_simulator._py_set_socket_connection("127.0.0.1", 11111)
+
 
 @pytest.mark.order(5)
 def test_simulation_run():
