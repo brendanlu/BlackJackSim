@@ -8,7 +8,16 @@ from ._utils import _strat_to_numpy_arrayfmt
 from . import _wrappers
 
 
-def _processing_function(server_ready: multiprocessing.Event, *, host="127.0.0.1", port=11111):
+# this will need to be tuned alongside communication.hpp
+RECV_BUFFER = 1024
+
+
+def _processing_function(server_ready: multiprocessing.Event, host: str, port: int):
+    """
+    Runs a server which receives the simulation data, and processes it on the
+    fly.
+    """
+
     # ipv4 and tcp
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))
@@ -18,22 +27,42 @@ def _processing_function(server_ready: multiprocessing.Event, *, host="127.0.0.1
     server_ready.set()
 
     simulation, _ = server.socket.accept()
+    buf = b""
 
     # do some processing from recv calls (this will probably be threaded)
+    while True:
+        # this will block and release the GIL 
+        batch = simulation.recv(RECV_BUFFER)
+        if not batch:
+            # recv call has come back with 0
+            break
+        else:
+            buf += batch
+
+    # write to file or something
+    pass
+
+    simulation.close()
+    server.close()
 
 
 def _simulation_function(
     server_ready: multiprocessing.Event,
+    host: str,
+    port: int,
+    niters,
     nd,
     p,
     d17,
     nA,
     strats,
     *,
-    host: str = "127.0.0.1",
-    port: int = 11111,
     log: str = None
 ):
+    """
+    Configure a simulation engine, and run a simulation
+    """
+
     engine = _wrappers._SimEngineWrapper(nd, p, d17, nA, strats)
 
     if host and port:
@@ -45,7 +74,8 @@ def _simulation_function(
         engine._py_set_log_file(log)
 
     server_ready.wait()
-    engine.run()
+    engine.run(niters)
+
 
 class Simulator:
     """
@@ -61,22 +91,34 @@ class Simulator:
     def __init__(self, nd, p, d17, nA, strats, *, host="127.0.0.1", port=11111):
         self.nd = nd
         self.p = p
-        self.d17 = 17
+        self.d17 = d17
         self.nA = nA
         self.strats = strats
+        self.host = host
+        self.port = port
+
         self.buf = b""
 
-    def run(self):
+    def run(self, niters):
         server_ready = multiprocessing.Event()
 
         anlys_process = multiprocessing.Process(
-            target=_processing_function, 
-            args=(server_ready)
+            target=_processing_function, args=(server_ready, self.host, self.port)
         )
 
         sim_process = multiprocessing.Process(
             target=_simulation_function,
-            args=(server_ready, self.nd, self.p, self.d17, self.nA, self.strats),
+            args=(
+                server_ready,
+                self.host,
+                self.port,
+                niters,
+                self.nd,
+                self.p,
+                self.d17,
+                self.nA,
+                self.strats,
+            ),
         )
 
         anlys_process.start()
@@ -84,4 +126,3 @@ class Simulator:
 
         anlys_process.join()
         sim_process.join()
-
