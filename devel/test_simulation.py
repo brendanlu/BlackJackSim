@@ -52,18 +52,18 @@ def test_simulator_constructor():
 
 @pytest.mark.order(3)
 def test_log_file_config():
-    test_simulator._py_set_log_file(LOGFNAME)
+    test_simulator.py_set_log_file(LOGFNAME)
 
 
 @pytest.mark.order(4)
 def test_socket_config():
-    test_simulator._py_set_socket_connection("127.0.0.1", 11111)
+    test_simulator.py_set_socket_connection("127.0.0.1", 11111)
 
 
 @pytest.mark.order(5)
 def test_simulation_run():
     make_clean_dir()
-    test_simulator.run(100)
+    test_simulator.run(10000)
     assert os.path.isfile(
         os.path.join(os.getcwd(), LOGFNAME)
     ), f"{LOGFNAME} does not exist in the current directory."

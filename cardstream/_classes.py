@@ -1,21 +1,27 @@
-from io import BytesIO
+import io 
 import multiprocessing
 import pandas as pd  # this should change to cudf later
 import socket
 import threading
 
 from ._utils import _strat_to_numpy_arrayfmt
-from . import _wrappers
+from . import _wrappers as wrappers
 
 
 # this will need to be tuned alongside communication.hpp
+# sizes are in bytes
 RECV_BUFFER = 1024
+PROCESSING_BATCH_SIZE = 1048576 # 2e20 approx 1MB
 
 
-def _processing_function(server_ready: multiprocessing.Event, host: str, port: int):
+def _server_func(server_ready: multiprocessing.Event, host: str, port: int):
     """
     Runs a server which receives the simulation data, and processes it on the
-    fly.
+    fly in batches. 
+
+    NOTE: If recv() is blocking, the GIL should be released. Many of the 
+    processing functions in pandas/cudf should release the GIL (???) so 
+    multithreading here should achieve a reasonable degree of concurrency (?). 
     """
 
     # ipv4 and tcp
@@ -26,27 +32,29 @@ def _processing_function(server_ready: multiprocessing.Event, host: str, port: i
     # signal that the server is ready before the simulation loop commences
     server_ready.set()
 
-    simulation, _ = server.socket.accept()
-    buf = b""
+    sim_client, _ = server.socket.accept()
+    buf = io.BytesIO()
 
     # do some processing from recv calls (this will probably be threaded)
     while True:
         # this will block and release the GIL 
-        batch = simulation.recv(RECV_BUFFER)
-        if not batch:
+        curr = sim_client.recv(RECV_BUFFER)
+        if not curr:
             # recv call has come back with 0
             break
         else:
-            buf += batch
+            buf.write(curr)
+
 
     # write to file or something
     pass
 
-    simulation.close()
+    # close client connection and socket
+    sim_client.close()
     server.close()
 
 
-def _simulation_function(
+def _sim_client_func(
     server_ready: multiprocessing.Event,
     host: str,
     port: int,
@@ -63,7 +71,7 @@ def _simulation_function(
     Configure a simulation engine, and run a simulation
     """
 
-    engine = _wrappers._SimEngineWrapper(nd, p, d17, nA, strats)
+    engine = wrappers._SimEngineWrapper(nd, p, d17, nA, strats)
 
     if host and port:
         # do some checking of host and port input and pass to engine setter
@@ -103,11 +111,11 @@ class Simulator:
         server_ready = multiprocessing.Event()
 
         anlys_process = multiprocessing.Process(
-            target=_processing_function, args=(server_ready, self.host, self.port)
+            target=_server_func, args=(server_ready, self.host, self.port)
         )
 
         sim_process = multiprocessing.Process(
-            target=_simulation_function,
+            target=_sim_client_func,
             args=(
                 server_ready,
                 self.host,

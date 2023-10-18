@@ -65,15 +65,15 @@ cdef class _SimEngineWrapper:
         self.cppSimEngineBJ.SetDealer17(d17)
         return
 
-    def _py_set_log_file(self, filename):
+    def py_set_log_file(self, filename):
         self.cppSimEngineBJ.SetLogFile(filename.encode('UTF-8'))
         return
 
-    def _py_set_socket_connection(self, ip, port): 
+    def py_set_socket_connection(self, ip, port): 
         self.cppSimEngineBJ.SetSocketConnection(ip.encode('UTF-8'), port)
         return
 
-    def _py_set_log_level(self, int ll) : 
+    def py_set_log_level(self, int ll) : 
         self.cppSimEngineBJ.SetLogLevel(ll)
         return
 
