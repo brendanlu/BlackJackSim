@@ -6,7 +6,8 @@ cdef class _SimEngineWrapper:
     """
 
     cdef SimEngineBJ cppSimEngineBJ
-    
+    # cdef SimEngineBJ* cppSimEngineBJ
+
     def __init__(self, nd, p, d17, nA, strats): 
         """
         Emulates a full game intialization, similar to the constructor in 
@@ -48,6 +49,7 @@ cdef class _SimEngineWrapper:
 
     def _py_shoe_init(self, nd, p): 
         self.cppSimEngineBJ = SimEngineBJ(nd, p)
+        # self.cppSimEngineBJ = new SimEngineBJ(nd, p)
 
     def _py_set_agent(
         self, 
@@ -80,3 +82,6 @@ cdef class _SimEngineWrapper:
     def run(self, unsigned int nIters): 
         self.cppSimEngineBJ.RunSimulation(nIters)
         return 
+
+    # def __dealloc__(self):
+        # del self.cppSimEngineBJ

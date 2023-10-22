@@ -135,6 +135,7 @@ public:
 
     /*
     Write a new csv row. 
+    This method should be thread-safe. 
     */
     inline void CSVLog(
         LOG_LEVEL ll, LOG_TYPE lt, 
@@ -147,9 +148,10 @@ public:
         if (currChunk == 0) {
             logChunkStart = std::chrono::system_clock::now();
         }
-        */
-
+        */ 
+        
         if (static_cast<int>(ll) <= LOGLEVELCONFIG) {
+            inStreamMutex.lock(); 
             inStream << LogLabel(lt) << "," 
                      << currShoeNum  << ","
                      << currTableNum << ","
@@ -157,12 +159,13 @@ public:
                      // << dynamChunk   << "," // DEBUG
                      << c            << "," 
                      << d            << "\n";
+            inStreamMutex.unlock();
 
             currChunk += 1; 
-        }
 
-        if (currChunk > 10) {
-            ManualFlush(); 
+            if (currChunk >= 100) {
+                ManualFlush(); 
+            }
         }
 
         // dynamChunk may or may not have been adjusted in the other thread
@@ -187,7 +190,9 @@ public:
     void ManualFlush() 
     {
         JoinThreads(); 
+
         ResetOutputStream(); 
+
         SwapStreams();
 
         currChunk = 0; 
@@ -245,20 +250,21 @@ private:
 
     // recieving stream for messages into logger
     std::stringstream inStream; 
+    std::mutex inStreamMutex;
+
     // stream being written into file
     std::stringstream outStream;  
-
-    // NOTE: the current design does not need the mutex
     // std::mutex outStreamMutex; 
+
     std::thread outFileThread;
     std::thread outSocketThread; 
 
     // this tells us what chunk size the last timings relate to 
     int recordedChunkSize; 
 
-    std::chrono::system_clock::time_point logChunkStart; 
-    std::chrono::microseconds lastLogChunkTime;
-    std::chrono::milliseconds lastWriteTime;
+    // std::chrono::system_clock::time_point logChunkStart; 
+    // std::chrono::microseconds lastLogChunkTime;
+    // std::chrono::milliseconds lastWriteTime;
 
     inline std::string LogLabel(LOG_TYPE lt) 
     {
@@ -274,10 +280,12 @@ private:
 
     inline void SwapStreams() 
     {
-        // swap the two streams, taking care that it is not in the middle of 
-        // copying and writing the output string
-        // std::lock_guard<std::mutex> lock(outStreamMutex);
+        // called after the writing threads are joined
+        //
+        // acquire mutext to prevent corruption from more logging calls
+        inStreamMutex.lock(); 
         std::swap(inStream, outStream);
+        inStreamMutex.unlock();
     }
 
     inline void ResetOutputStream() 
@@ -334,7 +342,7 @@ private:
     // ----------------
     void OutStreamToFile() 
     {
-        auto start = std::chrono::system_clock::now();
+        // auto start = std::chrono::system_clock::now();
 
         // write the stream to be outputted into the filstream
         // std::lock_guard<std::mutex> lock(outStreamMutex);

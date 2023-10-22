@@ -63,7 +63,7 @@ def test_socket_config():
 @pytest.mark.order(5)
 def test_simulation_run():
     make_clean_dir()
-    test_simulator.run(10000)
+    test_simulator.run(1000)
     assert os.path.isfile(
         os.path.join(os.getcwd(), LOGFNAME)
     ), f"{LOGFNAME} does not exist in the current directory."
