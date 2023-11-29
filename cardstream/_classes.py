@@ -2,7 +2,7 @@ import io
 import multiprocessing
 import pandas as pd  # this should change to cudf later
 import socket
-import threading
+# import threading
 
 from ._utils import _strat_to_numpy_arrayfmt
 from . import _wrappers as wrappers
@@ -45,6 +45,10 @@ def _server_func(server_ready: multiprocessing.Event, host: str, port: int):
         else:
             buf.write(curr)
 
+    # TEST
+    buf.seek(0)
+    testdf = pd.DataFrame(buf)
+    print(testdf)
 
     # write to file or something
     pass
