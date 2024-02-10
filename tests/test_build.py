@@ -6,9 +6,12 @@ import subprocess
 import sys
 from typing import List
 
+# pytest runs in the parent directory of this script (the root of the repository)
+MODULE_DIR = "./cardstream/"
+SETUP_DIR = "./"
+TEST_DIR = "./tests/"
+
 LOGFNAME = "LOG2.csv"
-MODULE_DIR = "../cardstream/"
-SETUP_DIR = "../"
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -21,7 +24,6 @@ def setup_before_all_tests():
     invoke_setup_script(["build_ext", "--inplace"])
     assert glob.glob(os.path.join(MODULE_DIR, "*.pyd")), "No extension module found"
 
-    sys.path.append("../")
     import cardstream
 
     global cs
@@ -37,8 +39,8 @@ def setup_before_all_tests():
 def test_strat_input_utils():
     global strat_args
     strat_args = cs._strat_to_numpy_arrayfmt(
-        strat_relpath="teststrat/BasicNoDeviations-4to8Decks-HitSoft17.csv",
-        count_relpath="teststrat/HiLoCount.csv",
+        strat_relpath=TEST_DIR + "strategy/BasicNoDeviations-4to8Decks-HitSoft17.csv",
+        count_relpath=TEST_DIR + "strategy/HiLoCount.csv",
     )
 
 
@@ -91,9 +93,9 @@ def make_clean_build_env():
 
 def make_clean_dir():
     # clean from a simulation run
-    for file in os.listdir():
+    for file in os.listdir(TEST_DIR):
         if "LOG" in file or "ERROR" in file:
-            os.remove(file)
+            os.remove(os.path.join(TEST_DIR, file))
 
 
 def invoke_setup_script(args: List[str]):

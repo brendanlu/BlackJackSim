@@ -1,7 +1,8 @@
-import io 
+import io
 import multiprocessing
 import pandas as pd  # this should change to cudf later
 import socket
+
 # import threading
 
 from ._utils import _strat_to_numpy_arrayfmt
@@ -11,17 +12,17 @@ from . import _wrappers as wrappers
 # this will need to be tuned alongside communication.hpp
 # sizes are in bytes
 RECV_BUFFER = 1024
-PROCESSING_BATCH_SIZE = 1048576 # 2e20 approx 1MB
+PROCESSING_BATCH_SIZE = 1048576  # 2e20 approx 1MB
 
 
 def _server_func(server_ready: multiprocessing.Event, host: str, port: int):
     """
     Runs a server which receives the simulation data, and processes it on the
-    fly in batches. 
+    fly in batches.
 
-    NOTE: If recv() is blocking, the GIL should be released. Many of the 
-    processing functions in pandas/cudf should release the GIL (???) so 
-    multithreading here should achieve a reasonable degree of concurrency (?). 
+    NOTE: If recv() is blocking, the GIL should be released. Many of the
+    processing functions in pandas/cudf should release the GIL (???) so
+    multithreading here should achieve a reasonable degree of concurrency (?).
     """
 
     # ipv4 and tcp
@@ -37,7 +38,7 @@ def _server_func(server_ready: multiprocessing.Event, host: str, port: int):
 
     # do some processing from recv calls (this will probably be threaded)
     while True:
-        # this will block and release the GIL 
+        # this will block and release the GIL
         curr = sim_client.recv(RECV_BUFFER)
         if not curr:
             # recv call has come back with 0
