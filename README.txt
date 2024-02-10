@@ -1,29 +1,39 @@
 IN PROGRESS
 -----------
-cardstream is a C++ BlackJack simulation engine, exposed to Python through some
-clunky Cython wrappers. 
+cardstream is yet another BlackJack simulator in Python, with core game logic 
+written in C++.
 
 
-It aims to do the following:
-----------------------------
-    1. Implement an intuitive object-oriented abstraction of BlackJack in C++
+It aims to:
+-----------
+    1. Implement an intuitive object-oriented abstraction of BlackJack in C++, 
+    which allows for nonstandard game mechanisms (push on 22, side bets on 
+    special hands etc.) to be added fairly easily.
 
-    2. Allow users to easily configure different game variations, playing 
-    strategies, betting strategies, and card counts from Python
+    2. Allow users to configure:
+        - playing strategy
+        - (TODO) betting strategy 
+        - card counting strategy
+        - number of decks
+        - deck penetration (before reshuffle)
+        - dealer action on soft-17s 
+        - (TODO) BlackJack payout multiplier
+    at runtime using Python arguments and csv configuration files.
 
-    3. Run simulations, and log the granular game data
+    3. Log data from simulation runs using one of two main approaches:
+        - (1) write all the data to a csv file.
+        - (2) concurrently send the data through a socket to a different 
+        process, which extracts key statistics from the data based on 
+        user-defined functions, and avoids large, slow writes of redundant 
+        information to file.
 
-    4. 
-        (Simple users) Write the data into csv format
+    4. Ultimately, ship as a Python package, and ideally avoid any external C++
+    libraries (Boost, Asio C++) that add headaches for those who want to build 
+    and develop themselves (using Cython).
 
-        (Advanced users) Leveraging concurrency and functional-programming in 
-        Python, enable users to specify analytical operations to process the 
-        logging data on-the-fly, and avoid (the slow process of) dumping it all 
-        to file 
-
-Most of the core stuff is here, but there's a bit more programming (on the 
-Python side), testing, benchmarking, and refining, before it can become a useful 
-tool for analysing the game of BlackJack. 
+Most of the core stuff is here, but there's a bit more Python programming, 
+testing, benchmarking, and refining, before it can become a useful tool for 
+analysing the game of BlackJack. 
 
 
 To get developing:
