@@ -93,9 +93,9 @@ def make_clean_build_env():
 
 def make_clean_dir():
     # clean from a simulation run
-    for file in os.listdir(TEST_DIR):
+    for file in os.listdir():
         if "LOG" in file or "ERROR" in file:
-            os.remove(os.path.join(TEST_DIR, file))
+            os.remove(os.path.join(file))
 
 
 def invoke_setup_script(args: List[str]):

@@ -8,8 +8,8 @@ It aims to do the following:
 ----------------------------
     1. Implement an intuitive object-oriented abstraction of BlackJack in C++
 
-    2. Allow users to configure different card playing/counting strategies, and 
-    game variations easily, and interact with the simulation engine in Python
+    2. Allow users to easily configure different game variations, playing 
+    strategies, betting strategies, and card counts from Python
 
     3. Run simulations, and log the granular game data
 
